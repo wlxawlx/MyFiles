@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta http-equiv="Expires" content="-1">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta http-equiv="Cache" content="no-cache">
+    <title>课程列表</title>
+    <link rel="stylesheet" type="text/css" href="frozenui-1.3.0/css/frozen.css"/>
+    <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
+    <script type="text/javascript" src="js/min/zepto-min.js"></script>
+
+    <script type="text/javascript" src="js/min/base-min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="/css/main.css"/>
+
+</head>
+
+<body>
+<div class="trainCenter">
+    <div class="head head-blue-blue-12"></div>
+    <div class="course-list">
+        <div class="detail01">
+            <div class="line-check bottomborder">
+                <span class="item">拯救心脏CPR AED(非健康从业人员课程)</span>
+                <a class="float-right orderLink link-red" href="trainItemDetail.html">预约</a>
+            </div>
+        </div>
+
+    </div>
+    <!--<a class="bookingRecord" href="trainItemList.html">报名记录</a>-->
+</div>
+<script type="text/javascript">
+
+    // 课程列表
+    var trainDict = {};
+
+    // 获得课程列表
+    var coursesSuccess = function (returnData) {
+        if (returnData.status == '99') {
+            $('.course-list').append(getNothingHtml(returnData.msg));
+        } else {
+            var courses = returnData.data.list;
+            var coursesHtml = '';
+
+            $.each(courses, function (index, value) {
+                coursesHtml += '<div class=\"detail01\"><div class=\"line-check bottomborder\">' +
+                        '<span class=\"item\">' + value.coursename + '</span>' +
+                        '<a class=\"float-right orderLink link-red\" data-id=\"' + value.courseid + '\">预约</a></div></div>';
+                trainDict[value.courseid] = value;
+            });
+            $('.course-list').html(coursesHtml);
+        }
+
+        $('.orderLink').on('click', function () {
+            var courseid = $(this).attr('data-id');
+            sessionStorage.trainInfo = JSON.stringify(trainDict[courseid]);
+            location.href = "trainItemDetail.html";
+        });
+    };
+
+    $(function () {
+        if ($.isEmptyObject(sessionStorage.trainClassifyInfo)) {
+            $('.prep-data').html(getNothingHtml('没有培训课程信息信息'));
+        } else {
+            $('.head').html(JSON.parse(sessionStorage.trainClassifyInfo).coursename);
+        }
+        trainDict = [];
+        $.JDoAjax().isLoading(false).add('SK010201', coursesSuccess,{
+            'coursecode': JSON.parse(sessionStorage.trainClassifyInfo).coursecode
+        }).run();
+    })
+</script>
+
+</body>
+
+</html>

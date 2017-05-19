@@ -1,0 +1,608 @@
+using System;
+using System.Collections.Generic;
+using System.Web;
+
+namespace hospitaPaymentService.wzsrmyy.utils
+{
+    public struct HospitalInfo
+    {
+        public string hospid;  //医院编号
+        public string yymc;  //医院名称
+        public string yyjc;  //医院简称
+        public string yydj;  //医院等级
+        public string yydz;  //医院地址
+        public string yydh;  //预约电话
+        public string yyjj;  //医院简介
+        public string jzxz;  //就诊须知
+    }
+    public struct DoctorInfo
+    {
+        public string ysbm;  //医生编码
+        public string ysxm;  //医生姓名
+        public long ysxb;  //医生性别
+        public long ksbm;  //科室编码
+        public string ksmc;  //科室名称
+        public string zcmc;  //职称名称
+        public string ysjs;  //医生介绍
+        public string scjb;  //擅长疾病
+    }
+    public struct QueueInfo
+    {
+        public long brid;  //病人ID
+        public long pdlsh;  //排队序号
+        public DateTime pdrq;//排队时间
+        public long bcbm;    //班次编码
+        public string bcmc;  //班次名称
+        public string pdhm;  //排队号码
+        public string ksbm;  //科室编码
+        public string ksmc;  //科室名称
+        public string ysbm;  //医生编码
+        public string ysxm;  //医生姓名
+        public long zsid;  //诊室ID
+        public string zsmc;  //诊室名称
+        public string zswz;  //诊室位置
+        public string fjhm;  //房间号码
+        public long pdzt;  //排队状态
+    }
+    public struct DoctorStop
+    {
+        public DateTime tzrq;//停诊日期
+        public long bcbm;     //班次编码
+        public string bcmc;  //班次名称
+        public string ksbm;  //科室代码
+        public string ksmc;  //科室名称
+        public string ysbm;  //医生编码
+        public string ysxm;  //医生姓名
+        public long zcbm;  //医生级别
+        public string zcmc;  //擅长疾病
+    }
+    public struct CkxxList
+    {
+        public string cklx;  //磁卡类型
+        public string ckkh;  //磁卡卡号
+        public string sfzh;  //身份证号
+        public long   brid;  //病人ID
+        public string brxm;  //病人姓名
+        public string csny;  //出生年夜
+        public string lxdh;  //联系地址
+        public double zhye;  //账户余额
+        public double ljfy;  //累计费用
+
+    }
+
+    public struct CardInfo
+    {
+        public string mzhm;  //门诊号码
+        public long   brid;  //病人ID
+        public string brxm;  //病人姓名
+        public string csny;  //出生年夜
+        public string brxb;  //病人性别
+        public string sfzh;  //身份证号
+        public string xzmc;  //性质名称
+        public string lxdh;  //联系电话
+        public string lxdz;  //联系地址
+
+    }
+
+
+    public struct UserInfo
+    {
+        public long   yhid;  //用户ID
+        public long brid;    //病人ID
+        public string yhxm;  //用户姓名
+        public string sfzh;  //身份证号
+        public string lxdh;  //联系电话
+        public string lxdz;  //联系地址
+        public string headurl;//头像url
+        public string openid; //微信连接号
+        public DateTime zcsj;  //注册时间
+        public long bkzt;    //绑卡账户
+        public string ckkh;  //磁卡卡号
+    }
+    public struct PatientList
+    {
+        public long cyxh;    //常用序号
+        public string cyxm;    //常用姓名
+        public string lxdh;  //联系电话
+        public string sfzh;    //身份证号
+        public string openid;    //微信连接号
+        public DateTime zcsj;  //注册时间
+        public long bkzt;    //绑卡账户
+        public long brid;    //病人ID
+    }
+    public struct YyksList
+    {
+        public string ksfl;    //科室分类
+        public string deptid;  //科室分类
+        public string ksdm;    //科室编码
+        public string ksmc;    //科室名称
+        public string ksms;    //科室描述
+    }
+    public struct YyysList
+    {
+        public string ysbm;    //医生代码
+        public string ysxm;    //医生姓名
+        public string ysjb;    //医生级别
+        public long kyrs;    //可约人数
+    }
+    public struct YspbList
+    {
+        public long pblsh;   //排班流水号
+        public string pbrq;    //排班日期
+        public string ysbm;    //医生编码
+        public string ysxm;    //医生姓名
+        public string ksbm;    //科室编码
+        public string ksmc;    //科室名称
+        public long bcbm;    //班次编码
+        public string bcmc;    //班次名称
+        public long kyrs;    //可约人数
+        public long yyzs;    //预约人数
+        public string ghf;     //挂号费
+        public string jzdd;    //就诊地点
+        public long txbz;    //特需标志
+    }
+    public struct YyhyList
+    {
+        public long hylsh;   //号源流水号
+        public long fzxh;    //分诊序号
+        public string yysj;    //预约时间点
+    }
+    public struct YyxxList
+    {
+        public long yylsh;   //预约流水号
+        public string ysxm;    //医生姓名
+        public string ksmc;    //科室名称
+        public string brxm;    //病人姓名
+        public string lxdh;    //联系电话
+        public string ghf;     //挂号费
+        public string jzdd;    //就诊地址
+        public long fzxh;    //分诊序号
+        public string yysj;    //预约时间
+        public long yyzt;    //预约状态
+        public string yylb;    //预约类别
+        public long bdzt;    //预约状态
+    }
+    public struct CheckyyxxList
+    {
+        public long yylsh;   //预约流水号
+        public string brxm;    //病人姓名
+        public string lxdh;    //联系电话
+        public long dlxh;     //挂号费
+        public string dlmc;    //就诊地址
+        public string jcxm;    //分诊序号
+        public long qyid;    //区域ID
+        public string qymc;    //区域名称
+        public string yysj;    //预约时间
+        public long bdzt;    //预约状态
+    }
+    public struct DoctorbdxxList
+    {
+        public long brid;  //病人ID
+        public long yylsh;  //预约流水号
+        public long pdlsh;  //排队序号
+        public string brxm;  //病人姓名
+        public long fzxh;    //分诊序号
+        public string yysj;    //预约时间
+        public long bdzt;    //预约状态
+        public string yylb;    //预约类别
+        public DateTime pdrq;//排队时间
+        public long bcbm;    //班次编码
+        public string bcmc;  //班次名称
+        public string pdhm;  //排队号码
+        public string ksbm;  //科室编码
+        public string ksmc;  //科室名称
+        public string ysbm;  //医生编码
+        public string ysxm;  //医生姓名
+        public long zsid;  //诊室ID
+        public string zsmc;  //诊室名称
+        public string zswz;  //诊室位置
+        public string fjhm;  //房间号码
+        public long pdzt;  //排队状态
+    }
+    public struct CheckbdxxList
+    {
+        public long brid;  //病人ID
+        public long yylsh;   //预约流水号
+        public long pdlsh;  //排队序号
+        public string brxm;    //病人姓名
+        public long fzxh;    //分诊序号
+        public string yysj;    //预约日期
+        public long bdzt;    //报道状态
+        public DateTime pdrq;//排队时间
+        public long bcbm;    //班次编码
+        public string bcmc;  //班次名称
+        public long   dlxh;    //队列序号
+        public string dlmc;    //队列名称
+        public string jcxm;    //检查项目
+        public long qyid;    //区域ID
+        public string qymc;    //区域名称
+        public long ypdbz;    //预排队标志
+        public string pdhm;    //排队号码
+        public long zsid;  //诊室ID
+        public string zsmc;  //诊室名称
+        public string zswz;  //诊室位置
+        public string fjhm;  //房间号码
+        public long pdzt;  //排队状态
+    }
+    public struct CheckzysxList
+    {
+        public string zysx; //注意事项
+    }
+    public struct DictMedicineList
+    {
+        public string fphm; //发票号码
+        public string brxm; //病人姓名
+        public long cflsh; //处方流水号
+        public long ksbm; //科室编码
+        public string ksmc; //科室名称
+        public string ysbm; //医生编码
+        public string ysxm; //医生姓名
+        public long brid; //病人ID
+        public DateTime kfrq; //开方日期
+        public DateTime sfrq; //收费日期
+        public double zjje; //总计金额
+        public long cflx; //处方类型
+        public string lxmc; //类型名称
+    }
+    public struct DictMedicineInfo
+    {
+        public string ypmc; //药品名称
+        public string ypgg; //药品规格
+        public string ypsl; //药品数量
+        public string ycyl; //一次用量
+        public string sypc; //使用频次
+        public string gytj; //给药途径
+        
+    }
+    public struct TakeMedicineInfo
+    {
+        public string fphm; //发票号码
+        public string brxm; //病人姓名
+        public long brid; //病人ID
+        public DateTime sfrq; //收费日期
+        public double zjje; //总计金额
+        public string lxmc; //处方类型
+        public string yfmc; //药房名称
+        public string qywz; //药房位置
+        public string fyck; //发药窗口
+
+    }
+    //门诊未付款信息列表
+    public struct UnfinishPayList
+    {
+        public long cfxh; //处方序号
+        public string fphm; //发票号码
+        public long jzxh; //就诊序号
+        public long cflx; //出发类型
+        public string kfrq; //处方日期
+        public long sfxm; //收费项目
+        public string xmmc; //项目名称
+        public string ysdm; //医生代码
+        public string ysxm; //医生明细
+        public long ksdm; //科室代码
+        public string ksmc; //科室名称
+        public double zjje; //总计金额
+    }
+    
+    //门诊已付款信息列表
+    public struct FinishPayList
+    {
+        public long cfxh; //处方序号
+        public string fphm; //发票号码
+        public long jzxh; //就诊序号
+        public long cflx; //出发类型
+        public string kfrq; //处方日期
+        public long sfxm; //收费项目
+        public string xmmc; //项目名称
+        public string ysdm; //医生代码
+        public string ysxm; //医生明细
+        public long ksdm; //科室代码
+        public string ksmc; //科室名称
+        public double zjje; //总计金额
+
+    }
+
+    //付款信息明细表
+    public struct PayDetialInfo
+    {
+        public string xmmc; //项目名称
+        public long fyxh; //费用序号
+        public string fymc; //费用名称
+        public double fysl; //费用数量
+        public double fydj; //费用单价
+        public string fydw; //费用单位
+        public string fygg; //费用规格
+        public double zjje; //总计金额
+    }
+
+    //门诊就诊信息列表
+    public struct ClinicHistoryList
+    {
+        public long jzxh; //就诊序号
+        public string jzrq; //就诊日期
+        public string ksmc; //科室名称
+        public string ysxm; //医生姓名
+        public string zdxx; //诊断信息
+    }
+
+    //门诊就诊信息指引单
+    public struct ClinicTheWay
+    {
+        public long  cfxh; //处方序号
+        public string fphm; //发票号码
+        public string kfrq; //开方日期
+        public long cflx; //处方类型
+        public long kfks; //开方科室
+        public string kfksmc; //开方科室名称
+        public long zxks; //执行科室
+        public string zxksmc; //执行科室名称
+        public long fyck; //发药窗口
+        public string zynr; //指引内容
+        public string zywz; //指引位置
+        public long zxpb; //执行标志
+        public long yjpb; //医技判别
+        public string ysxm; //医生姓名
+        public double zjje; //总计金额
+    }
+
+    //门诊电子病历
+    public struct ClinicEmr
+    {
+        public string mzzs; //主　　诉
+        public string xbs; //现 病 史
+        public string jws; //既 往 史
+        public string grs; //个 人 史
+        public string gms; //过 敏 史
+        public string hys; //婚 育 史
+        public string jzs; //家 族 史
+        public string tgjc; //体格检查
+        public string fzjc; //辅助检查
+        public string clyj; //处理意见
+    }
+
+}using System;
+using System.Collections.Generic;
+using System.Web;
+
+namespace hospitaPaymentService.wzsrmyy.utils
+{
+    public struct OrderList
+    {
+        public string openid; //微信 ID
+        public string wxorderno; //微信支付订单号
+        public string orderno; //订单号
+        public long   orderstatus; //状态
+        public string ordername; //名称
+        public double orderm; //总金额
+        public DateTime ctime; //创建时间
+        public DateTime paytime; //付款时间
+        public DateTime rtntime; //退款时间
+        public long yhid; //用户 ID
+        public long brid; //病人 ID
+        public string brxm; //病人姓名
+        public string sfzh; //身份证号
+        public string usertext; //支付 ID
+    }
+
+    public struct InpatientOrderList
+    {
+        public string openid; //微信 ID
+        public string wxorderno; //微信支付订单号
+        public string orderno; //订单号
+        public long orderstatus; //状态
+        public string ordername; //名称
+        public double orderm; //总金额
+        public DateTime ctime; //创建时间
+        public DateTime paytime; //付款时间
+        public DateTime rtntime; //退款时间
+        public long yhid; //用户 ID
+        public long zyh; //住院号
+        public string zyhm; //住院号码
+        public string brxm; //病人姓名
+        public string sfzh; //身份证号
+        public string usertext; //支付 ID
+    }
+
+}using System;
+using System.Collections.Generic;
+using System.Web;
+
+namespace hospitaPaymentService.wzsrmyy.utils
+{
+    //病人信息
+    public struct InpatientInfo
+    {
+        public long zyh; //住院号，医院内码
+        public string zyhm;//住院号码
+        public string brxm;//病人姓名
+        public string mzhm;//门诊号码
+        public string sfzh;//身份证号
+        public string brxb;//病人性别
+        public string csny;//出生年月
+        public string lxdz;//联系地址
+        public string lxdh;//联系电话
+        public string ryrq;//入院日期
+        public string cyrq;//出院日期
+        public long zyts;//住院天数
+        public string xzmc;//病人性质
+        public string bqmc;//病区名称
+        public string brch;//病人床号
+        public string ksmc;//科室名称
+        public double ylhj;//医疗合计
+        public double lwhj;//劳务合计
+        public double zfje;//自负金额
+        public double jkje;//缴款金额
+        public string zyzt;//住院状态
+        public string zzys;//主诊医生
+        public string ysxm;//医生姓名
+    }
+    //住院费用分类汇总
+    public struct InpatientChargeTotal
+    {
+        public long fyxm;  //费用项目
+        public string xmmc;//项目名称
+        public double zjje;//总计金额
+        public double zfje;//自负金额
+    }
+    //住院费用分类明细
+    public struct InpatientChargeTypeDetail
+    {
+        public long fyxh; //费用序号
+        public long fyxm; //费用项目
+        public string fymc;//费用名称
+        public string fygg;//费用规格
+        public string fydw;//费用单位
+        public string ybdm;//医保代码
+        public double zfbl;//自负比例
+        public long   yplx;//费用类型 //1药品，0，费用，-1劳务
+        public double fysl;//费用数量
+        public double fydj;//费用单价
+        public double zjje;//总计金额
+        public double zfje;//自负金额
+    }
+
+    //住院预交金查询
+    public struct InpatientPrepayQuery
+    {
+        public string jkrq; //缴款日期
+        public double jkje; //缴款金额
+        public long jkfs; //缴款方式
+        public string fsmc; //方式名称
+        public long jkzt; //缴款状态
+        public string ztmc; //状态名称
+        public string zfrq; //作废日期
+    }
+}using System;
+using System.Collections.Generic;
+using System.Web;
+
+namespace hospitaPaymentService.wzsrmyy.utils
+{
+    //体检套餐列表
+    public struct TjtcList
+    {
+        public string tcid; //套餐ID
+        public string tcmc; //套餐名称
+        public double tcjg;//套餐价格
+        public string tcbz; //套餐说明
+        public string tclb; //套餐性别
+    }
+    //体检套餐明细
+    public struct TcmxList
+    {
+        public string tcid; //套餐ID
+        public string xmfl; //项目分类
+        public string xmmc; //明细名称
+    }
+    //体检状态信息
+    public struct TjxxInfo
+    {
+        public string tjbh; //体检编号
+        public string xm;   //姓名
+        public string xb;   //性别
+        public long nl;     //年龄
+        public string tcmc; //套餐名称
+        public DateTime tjrq; //体检日期
+        public string tjzt; //体检状态
+    }
+}using System;
+using System.Collections.Generic;
+using System.Web;
+
+namespace hospitaPaymentService.wzsrmyy.utils
+{
+    //检验列表
+    public struct InspectionList
+    {
+        public string doctadviseno; //条码号
+        public string examinaim; //检查项目
+        public string requesttime;//申请时间
+        public string requester; //申请医生
+    }
+    //检验病人信息
+    public struct InspectionHead
+    {
+        public string doctadviseno; //条码号
+        public string requesttime; //申请时间
+        public string requester;//申请医生
+        public string executetime;//采集时间
+        public string executer;//采集人
+        public string receivetime;//接收时间
+        public string receiver;//接收人
+        public string stayhospitalmode;//标本来源
+        public string patientid;//病人编号
+        public string section;//申请科室
+        public string bedno;//床号
+        public string patientname;//病人姓名
+        public string sex;//性别
+        public string age;//年龄
+        public string diagnostic;//诊断
+        public string sampletype;//标本类型
+        public string examinaim;//检查项目
+        public string requestmode;//平/急诊
+        public string checker;//审核人
+        public string checktime;//审核时间
+        public string csyq;//测试仪器
+        public string profiletest;//测试方法
+
+    }
+    //检验结果
+    public struct InspectionDetial
+    {
+        public string jylx;   //检验类型
+        public string xmmc;   //项目名称
+        public string result; //结果
+        public string hint;   //异常提示
+        public string ckfw;   //参考范围
+        public string xmdw;   //项目单位
+        public string micmc;  //细菌项目名称
+        public string mictpjg; //细菌涂培养结果
+        public string micjg;   //细菌结果
+        public string mickss;  //细菌抗生素
+        public string micdl;   //细菌定量
+        public string micdx;   //细菌定性
+    }
+
+    //检查列表
+    public struct CheckList
+    {
+        public string doctadviseno; //条码号
+        public string examinaim; //检查项目
+        public string requesttime;//申请时间
+        public string requester; //申请医生
+    }
+    //检查病人信息
+    public struct CheckHead
+    {
+        public string doctadviseno; //条码号
+        public string requesttime; //申请时间
+        public string requester;//申请医生
+        public string executetime;//采集时间
+        public string executer;//采集人
+        public string receivetime;//接收时间
+        public string receiver;//接收人
+        public string stayhospitalmode;//标本来源
+        public string patientid;//病人编号
+        public string section;//申请科室
+        public string bedno;//床号
+        public string patientname;//病人姓名
+        public string sex;//性别
+        public string age;//年龄
+        public string diagnostic;//诊断
+        public string sampletype;//标本类型
+        public string examinaim;//检查项目
+        public string requestmode;//平/急诊
+        public string checker;//审核人
+        public string checktime;//审核时间
+        public string csyq;//测试仪器
+        public string profiletest;//测试方法
+
+    }
+    //检查结果
+    public struct CheckDetial
+    {
+        public string studyresult;   //检查所见
+        public string diagresult;   //检查诊断
+    }
+
+}

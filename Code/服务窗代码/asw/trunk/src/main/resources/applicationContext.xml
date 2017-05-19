@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="utf-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/context
+                      http://www.springframework.org/schema/context/spring-context-3.0.xsd
+                      http://www.springframework.org/schema/data/mongo
+                      http://www.springframework.org/schema/data/mongo/spring-mongo-1.0.xsd
+                      http://www.springframework.org/schema/beans
+                     http://www.springframework.org/schema/beans/spring-beans-3.2.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <!--加载配置文件-->
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:/mongo.properties</value>
+                <value>classpath:jdbc.properties</value>
+            </list>
+        </property>
+    </bean>
+
+    <mongo:mongo host="${mongodb.host}" port="${mongodb.port}">
+        <!--<mongo:options connections-per-host="8"-->
+        <!--threads-allowed-to-block-for-connection-multiplier="4"-->
+        <!--connect-timeout="1000"-->
+        <!--max-wait-time="1500"-->
+        <!--auto-connect-retry="true"-->
+        <!--socket-keep-alive="true"-->
+        <!--socket-timeout="1500"-->
+        <!--slave-ok="true"-->
+        <!--write-number="1"-->
+        <!--write-timeout="0"-->
+        <!--write-fsync="true"/>-->
+    </mongo:mongo>
+    <mongo:db-factory dbname="${mongodb.database}" mongo-ref="mongo"/>
+
+    <!-- 去除“_class”字段 -->
+    <bean id="mappingContext" class="org.springframework.data.mongodb.core.mapping.MongoMappingContext" />
+    <bean id="customMongoTypeMapper" class="org.springframework.data.mongodb.core.convert.DefaultMongoTypeMapper">
+        <constructor-arg name="typeKey"><null/></constructor-arg> <!-- 去除“_class”字段 -->
+    </bean>
+    <bean id="mappingMongoConverter" class="org.springframework.data.mongodb.core.convert.MappingMongoConverter">
+        <constructor-arg name="mongoDbFactory" ref="mongoDbFactory" />
+        <constructor-arg name="mappingContext" ref="mappingContext" />
+        <property name="typeMapper" ref="customMongoTypeMapper" />
+    </bean>
+
+    <!--实例对象-->
+    <bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+        <constructor-arg name="mongoDbFactory" ref="mongoDbFactory"/>
+        <constructor-arg name="mongoConverter" ref="mappingMongoConverter" />
+    </bean>
+
+    <!-- 映射转换器，扫描back-package目录下的文件，根据注释，把它们作为mongodb的一个collection的映射 -->
+    <mongo:mapping-converter base-package="com.jandar.cloud.hospital.bean"/>
+    <mongo:mapping-converter base-package="com.jandar.bean"/>
+
+    <!-- mongodb bean的仓库目录，会自动扫描扩展了MongoRepository接口的接口进行注入 -->
+    <mongo:repositories base-package="com.jandar.cloud.hospital.dao"/>
+    <mongo:repositories base-package="com.jandar.dao"/>
+
+    <!-- 扫描注解Bean -->
+    <!--<context:component-scan base-package="com.jandar.bean"/>-->
+    <!--<context:component-scan base-package="com.jandar.dao"/>-->
+    <context:component-scan base-package="com.jandar.servlet"/>
+    <context:component-scan base-package="com.jandar.cloud.hospital.protocol"/>
+    <context:component-scan base-package="com.jandar.cloud.hospital.service"/>
+    <context:component-scan base-package="com.jandar.cloud.hospital.im.execute"/>
+    <context:component-scan base-package="com.jandar.cloud.hospital.job"/>
+
+    <!--非spring注入时使用-->
+    <bean class="com.jandar.util.SpringBeanUtil"/>
+
+
+
+    <!--===================================-->
+    <context:component-scan base-package="com.jandar.db"/>
+
+    <!--<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">-->
+    <!--<property name="location" value="classpath:jdbc.properties"/>-->
+    <!--</bean>-->
+
+    <!--<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"-->
+    <!--destroy-method="close">-->
+    <!--<property name="driverClassName" value="${driver}" />-->
+    <!--<property name="url" value="${url}" />-->
+    <!--<property name="username" value="${username}" />-->
+    <!--<property name="password" value="${password}" />-->
+    <!--&lt;!&ndash; 初始化连接大小 &ndash;&gt;-->
+    <!--<property name="initialSize" value="${initialSize}"/>-->
+    <!--&lt;!&ndash; 连接池最大数量 &ndash;&gt;-->
+    <!--<property name="maxActive" value="${maxActive}"/>-->
+    <!--&lt;!&ndash; 连接池最大空闲 &ndash;&gt;-->
+    <!--<property name="maxIdle" value="${maxIdle}"/>-->
+    <!--&lt;!&ndash; 连接池最小空闲 &ndash;&gt;-->
+    <!--<property name="minIdle" value="${minIdle}"/>-->
+    <!--&lt;!&ndash; 获取连接最大等待时间 &ndash;&gt;-->
+    <!--<property name="maxWait" value="${maxWait}"/>-->
+    <!--</bean>-->
+
+    <!--&lt;!&ndash; spring和MyBatis完美整合，不需要mybatis的配置映射文件 &ndash;&gt;-->
+    <!--<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">-->
+    <!--<property name="dataSource" ref="dataSource" />-->
+    <!--&lt;!&ndash; 自动扫描mapping.xml文件 &ndash;&gt;-->
+    <!--<property name="mapperLocations" value="classpath:com/jandar/db/pojo/*.xml"/>-->
+    <!--</bean>-->
+
+    <!--&lt;!&ndash; DAO接口所在包名，Spring会自动查找其下的类 &ndash;&gt;-->
+    <!--<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">-->
+    <!--<property name="basePackage" value="com.jandar.db.dao" />-->
+    <!--<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>-->
+    <!--</bean>-->
+
+    <!--&lt;!&ndash; (事务管理)transaction manager, use JtaTransactionManager for global tx &ndash;&gt;-->
+    <!--<bean id="transactionManager"-->
+    <!--class="org.springframework.jdbc.datasource.DataSourceTransactionManager">-->
+    <!--<property name="dataSource" ref="dataSource" />-->
+    <!--</bean>-->
+
+    <!--&lt;!&ndash;配置事务传播特性&ndash;&gt;-->
+    <!--<tx:advice id="fongAdvice" transaction-manager="transactionManager">-->
+    <!--<tx:attributes>-->
+    <!--<tx:method name="select*" propagation="REQUIRED"/>-->
+    <!--<tx:method name="insert*" propagation="REQUIRED"/>-->
+    <!--</tx:attributes>-->
+    <!--</tx:advice>-->
+
+    <!--&lt;!&ndash;配置参与事务的类&ndash;&gt;-->
+    <!--<aop:config>-->
+    <!--<aop:pointcut id="allServiceMethod" expression="execution(* com.jandar.db.service.*.*(..))"/>-->
+    <!--<aop:advisor advice-ref="fongAdvice" pointcut-ref="allServiceMethod"/>-->
+    <!--</aop:config>-->
+    <!--====================separate line======================-->
+
+
+
+
+    <bean id="getOutpatientQueueInfoJobtask"
+          class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="getOutpatientQueueInfoJob"/>
+        <property name="targetMethod" value="execute"/>
+        <property name="concurrent" value="false"/>
+    </bean>
+
+    <bean id="sendInDoctor2PatientJobTask"
+          class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="sendInDoctor2PatientJob"/>
+        <property name="targetMethod" value="execute"/>
+        <property name="concurrent" value="false"/>
+    </bean>
+
+    <bean id="alipayTradeQueryJobTask"
+          class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="alipayTradeQueryJob"/>
+        <property name="targetMethod" value="execute"/>
+        <property name="concurrent" value="false"/>
+    </bean>
+
+    <bean id="alipayCloudHospitalTradeQueryJobTask"
+          class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="alipayCloudHospitalTradeQueryJob"/>
+        <property name="targetMethod" value="execute"/>
+        <property name="concurrent" value="false"/>
+    </bean>
+
+
+    <bean id="hisCloudHospitalRefundQueryTask"
+          class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="hisCloudHospitalRefundQueryJob"/>
+        <property name="targetMethod" value="execute"/>
+        <property name="concurrent" value="false"/>
+    </bean>
+
+    <bean id="alipayCloudHospitalTradeRefundJobTask"
+          class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="alipayCloudHospitalTradeRefundJob"/>
+        <property name="targetMethod" value="execute"/>
+        <property name="concurrent" value="false"/>
+    </bean>
+
+
+
+
+    <bean id="hisCloudHospitalTradeQueryJobTask"
+          class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="hisCloudHospitalTradeQueryJob"/>
+        <property name="targetMethod" value="execute"/>
+        <property name="concurrent" value="false"/>
+    </bean>
+
+    <bean id="getOutpatientQueueInfoJobtaskTime" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="getOutpatientQueueInfoJobtask"/>
+        <property name="cronExpression" value="0/1 * * * * ?"/>
+    </bean>
+
+    <bean id="sendInDoctor2PatientTime" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="sendInDoctor2PatientJobTask"/>
+        <property name="cronExpression" value="0 0 0/1 * * ?"/>
+    </bean>
+
+    <bean id="alipayTradeQueryJobTaskTime" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="alipayTradeQueryJobTask"/>
+        <property name="cronExpression" value="0 0/1 * * * ?"/>
+    </bean>
+    <!--查询付款订单0的线程-->
+    <bean id="alipayCloudHospitalTradeQueryJobTaskTime" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="alipayCloudHospitalTradeQueryJobTask"/>
+        <property name="cronExpression" value="0 0/1 * * * ?"/>
+    </bean>
+    <!--查询付款订单1的线程-->
+    <bean id="hisCloudHospitalTradeQueryJobTaskTime" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="hisCloudHospitalTradeQueryJobTask"/>
+        <property name="cronExpression" value="0 0/1 * * * ?"/>
+    </bean>
+    <!--查询退款订单1的线程-->
+    <bean id="hisCloudHospitalRefundQueryJobTaskTime" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="hisCloudHospitalRefundQueryTask"/>
+        <property name="cronExpression" value="0 0/1 * * * ?"/>
+    </bean>
+    <!--查询退款订单0的线程-->
+    <bean id="alipayCloudHospitalTradeRefundJobTaskTime" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="alipayCloudHospitalTradeRefundJobTask"/>
+        <property name="cronExpression" value="0 0/1 * * * ?"/>
+    </bean>
+
+
+    <bean id="getOutpatientQueueInfoJob" class="com.jandar.alipay.job.GetOutpatientQueueInfoJob"/>
+    <bean id="sendInDoctor2PatientJob" class="com.jandar.alipay.job.SendInDoctor2PatientJob"/>
+    <bean id="alipayTradeQueryJob" class="com.jandar.alipay.job.AlipayTradeQueryJob"/>
+    <!--修改缴费订单的线程-->
+    <bean id="alipayCloudHospitalTradeQueryJob" class="com.jandar.alipay.job.AlipayCloudHospitalTradeQueryJob"/>
+    <bean id="hisCloudHospitalTradeQueryJob" class="com.jandar.alipay.job.HisCloudHospitalTradeQueryJob"/>
+    <!--修改退费订单的线程-->
+    <bean id="hisCloudHospitalRefundQueryJob" class="com.jandar.alipay.job.HisCloudHospitalRefundQueryJob"/>
+    <bean id="alipayCloudHospitalTradeRefundJob" class="com.jandar.alipay.job.AlipayCloudHospitalTradeRefundJob"/>
+
+    <bean id="startQuertz" lazy-init="true" autowire="no"
+          class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <!-- <ref bean="alipayCloudHospitalTradeQueryJobTaskTime"/>-->
+               <!-- <ref bean="hisCloudHospitalTradeQueryJobTaskTime"/>
+                <ref bean="hisCloudHospitalRefundQueryJobTaskTime"/>-->
+               <ref bean="alipayCloudHospitalTradeRefundJobTaskTime"/>
+             <!--  <ref bean="hisCloudHospitalRefundQueryJobTaskTime"/>-->
+            </list>
+        </property>
+    </bean>
+
+
+</beans>

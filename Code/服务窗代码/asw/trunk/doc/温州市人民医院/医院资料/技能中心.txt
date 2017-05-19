@@ -1,0 +1,72 @@
+//微信住院充值---创建订单
+        public const string Command_WxPay_CreateOtherOrderWx = "F011";
+        //微信住院充值---取消订单
+        public const string Command_WxPay_CancelOtherOrderWx = "F012";
+        //微信住院充值---查询订单信息
+        public const string Command_WxPay_QueryOtherOrderWx = "F013";
+        //微信住院充值---完成订单
+        public const string Command_WxPay_FinishOtherOrderWx = "F014";
+        //支付宝住院充值---完成订单
+        public const string Command_WxPay_FinishOtherOrderZfb = "F015";
+
+
+ //技能中心——费用列表
+    public struct JnzxFyList
+    {
+        public long fyxh; //费用序号
+        public string fymc; //费用名称
+        public double fydj;//费用单价
+        public string bzxx; //备注信息
+
+
+ //微信费用支付---创建订单
+        public int DB_createOtherOrderWx(long yhid, long fyxh,long fysl, string openid, string ordername, double orderm,string usertext, out string orderno, out string msg)
+
+
+//支付宝费用支付----完成订单
+        public int DB_finishOtherOrderZfb(string orderno, string openid, string wxorderno, double orderm
+
+
+ public struct OtherOrderList
+    {
+        public string openid; //微信 ID
+        public string wxorderno; //微信支付订单号
+        public string orderno; //订单号
+        public long orderstatus; //状态
+        public string ordername; //名称
+        public double orderm; //总金额
+        public DateTime ctime; //创建时间
+        public DateTime paytime; //付款时间
+        public DateTime rtntime; //退款时间
+        public long yhid; //用户 ID
+        public long fyxh; //费用数量
+        public string fymc; //费用名称
+        public long fysl; //费用数量
+        public double fydj; //费用单价
+        public string brxm; //病人姓名
+        public string sfzh; //身份证号
+        public string usertext; //用户备注信息
+    }
+
+
+
+
+<?xml version='1.0' encoding='utf-8'?><root><hospid>2</hospid></root>
+
+
+public struct HospitalInfo
+    {
+        public string hospid;  //医院编号
+        public string yymc;  //医院名称
+        public string yyjc;  //医院简称        public string yydj;  //医院等级
+        public string yydz;  //医院地址
+        public string yydh;  //预约电话
+        public string yyjj;  //医院简介        public string jzxz;  //就诊须知
+
+
+
+
+
+
+
+    }

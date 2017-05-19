@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+         id="WebApp_ID" version="3.0">
+    <display-name>AlipayFuwuDemo</display-name>
+
+    <!-- 初始化上下文Filter -->
+    <filter>
+        <filter-name>serviceContextFilter</filter-name>
+        <filter-class>com.jandar.filter.PrepareFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>serviceContextFilter</filter-name>
+        <url-pattern>*.html</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>serviceContextFilter</filter-name>
+        <servlet-name>ServiceServlet</servlet-name>
+    </filter-mapping>
+    <!--<filter-mapping>-->
+    <!--<filter-name>serviceContextFilter</filter-name>-->
+    <!--<servlet-name>notifyServlet</servlet-name>-->
+    <!--</filter-mapping>-->
+
+    <!-- 获取支付宝账户共享信息授权码相关Filter -->
+    <filter>
+        <filter-name>alipayUserInfoValidationFilter</filter-name>
+        <filter-class>com.jandar.filter.auth.ThirdUserInfoValidationFilter</filter-class>
+        <init-param>
+            <param-name>excludedPatterns</param-name>
+            <param-value>.*\/404.*html</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>alipayUserInfoValidationFilter</filter-name>
+        <url-pattern>*.html</url-pattern>
+    </filter-mapping>
+
+    <!-- 获取支付宝账户共享信息相关Filter -->
+    <filter>
+        <filter-name>alipayUserInfoObtainFilter</filter-name>
+        <filter-class>com.jandar.filter.auth.ThirdUserInfoObtainFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>alipayUserInfoObtainFilter</filter-name>
+        <url-pattern>*.html</url-pattern>
+    </filter-mapping>
+
+    <!--统一异步通知-->
+    <servlet>
+        <servlet-name>notifyServlet</servlet-name>
+        <servlet-class>com.jandar.servlet.NotifyServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>notifyServlet</servlet-name>
+        <url-pattern>/notify.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>notifyServlet</servlet-name>
+        <url-pattern>/alipay_notify_url.jsp</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>refundNotifyServlet</servlet-name>
+        <servlet-class>com.jandar.servlet.RefundNotifyServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>refundNotifyServlet</servlet-name>
+        <url-pattern>/alipay_refund_notify_url.jsp</url-pattern>
+    </servlet-mapping>
+    <!--&lt;!&ndash;支付宝异步通知&ndash;&gt;-->
+    <!--<servlet>-->
+    <!--<servlet-name>notifyServlet</servlet-name>-->
+    <!--<servlet-class>com.alipay.servlet.payment.AlipayNotifyServlet</servlet-class>-->
+    <!--</servlet>-->
+    <!--<servlet-mapping>-->
+    <!--<servlet-name>notifyServlet</servlet-name>-->
+    <!--<url-pattern>/alipay_notify_url.jsp</url-pattern>-->
+    <!--</servlet-mapping>-->
+
+    <!--&lt;!&ndash;微信异步通知&ndash;&gt;-->
+    <!--<servlet>-->
+    <!--<servlet-name>notifyServlet</servlet-name>-->
+    <!--<servlet-class>com.wechat.servlet.payment.WechatNotifyServlet</servlet-class>-->
+    <!--</servlet>-->
+    <!--<servlet-mapping>-->
+    <!--<servlet-name>notifyServlet</servlet-name>-->
+    <!--<url-pattern>/wechat_notify_url.jsp</url-pattern>-->
+    <!--</servlet-mapping>-->
+
+    <!--同步通知-->
+    <!--<servlet>-->
+    <!--<servlet-name>returnServlet</servlet-name>-->
+    <!--<servlet-class>com.alipay.servlet.payment.AlipayWapReturnServlet</servlet-class>-->
+    <!--</servlet>-->
+    <!--<servlet-mapping>-->
+    <!--<servlet-name>returnServlet</servlet-name>-->
+    <!--<url-pattern>/return_url.jsp</url-pattern>-->
+    <!--</servlet-mapping>-->
+
+    <!--统一网关入口-->
+    <servlet>
+        <servlet-name>gatewayServlet</servlet-name>
+        <servlet-class>com.jandar.servlet.GatewayServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>gatewayServlet</servlet-name>
+        <url-pattern>/gateway.do</url-pattern>
+    </servlet-mapping>
+
+    <!--<servlet>-->
+    <!--<servlet-name>AliGatewayServlet</servlet-name>-->
+    <!--<servlet-class>com.alipay.servlet.gateway.AlipayGatewayServlet</servlet-class>-->
+    <!--</servlet>-->
+    <!--<servlet-mapping>-->
+    <!--<servlet-name>AliGatewayServlet</servlet-name>-->
+    <!--<url-pattern>/alipaygateway.do</url-pattern>-->
+    <!--</servlet-mapping>-->
+
+    <!--<servlet>-->
+    <!--<servlet-name>WxGatewayServlet</servlet-name>-->
+    <!--<servlet-class>com.wechat.servlet.gateway.WxMpServlet</servlet-class>-->
+    <!--</servlet>-->
+    <!--<servlet-mapping>-->
+    <!--<servlet-name>WxGatewayServlet</servlet-name>-->
+    <!--<url-pattern>/wechatgateway.do</url-pattern>-->
+    <!--</servlet-mapping>-->
+
+    <!--<servlet>-->
+    <!--<servlet-name>loginAuthServlet</servlet-name>-->
+    <!--<servlet-class>com.alipay.servlet.auth.LoginAuthServlet</servlet-class>-->
+    <!--</servlet>-->
+    <!--<servlet-mapping>-->
+    <!--<servlet-name>loginAuthServlet</servlet-name>-->
+    <!--<url-pattern>/loginAuth.html</url-pattern>-->
+    <!--</servlet-mapping>-->
+
+
+    <!-- 下面两个servlet, 考虑是否要加到handler处理流程中去。-->
+    <servlet>
+        <servlet-name>PrePayServlet</servlet-name>
+        <servlet-class>com.tencent.servlet.PrePayServlelt</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>PrePayServlet</servlet-name>
+        <url-pattern>/prePayServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>SignatureServlet</servlet-name>
+        <servlet-class>com.tencent.servlet.SignatureServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SignatureServlet</servlet-name>
+        <url-pattern>/signatureServlet</url-pattern>
+    </servlet-mapping>
+
+    
+    <servlet>
+        <servlet-name>ServiceServlet</servlet-name>
+        <servlet-class>com.jandar.servlet.ServiceServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ServiceServlet</servlet-name>
+        <url-pattern>/service</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServiceServlet</servlet-name>
+        <url-pattern>/alipayservice</url-pattern>
+    </servlet-mapping>
+
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>classpath:applicationContext.xml</param-value>
+    </context-param>
+
+    <!--  WebService回调接口-->
+    <!-- <servlet>
+        <servlet-name>CallBackServiceServlet</servlet-name>
+        <servlet-class>com.jandar.alipay.servlet.CallBackServiceServlet</servlet-class>
+        <servlet-mapping>
+                <servlet-name>CallBackServiceServlet</servlet-name>
+                <url-pattern>/callbackservice</url-pattern>
+        </servlet-mapping>
+    </servlet>  -->
+
+    <!--<welcome-file-list>-->
+    <!--<welcome-file>index.html</welcome-file>-->
+    <!--<welcome-file>index.htm</welcome-file>-->
+    <!--<welcome-file>index.jsp</welcome-file>-->
+    <!--<welcome-file>default.html</welcome-file>-->
+    <!--<welcome-file>default.htm</welcome-file>-->
+    <!--<welcome-file>default.jsp</welcome-file>-->
+    <!--</welcome-file-list>-->
+</web-app>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta http-equiv="Expires" content="-1">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta http-equiv="Cache" content="no-cache">
+    <title>症状选择</title>
+    <link rel="stylesheet" type="text/css" href="/frozenui-1.3.0/css/frozen.css">
+    <link rel="stylesheet" type="text/css" href="/css/font-awesome.min.css">
+    <script type="text/javascript" src="/js/min/zepto-min.js"></script>
+    <script type="text/javascript" src="/js/min/base-min.js"></script>
+    <!--<script type="text/javascript" src="/js/marquee.js"></script>-->
+    <link rel="stylesheet" type="text/css" href="/css/main.css"/>
+    <style>
+        .accountRecord .menu {
+            width: 35%;
+            margin-top: 0;
+        }
+
+        .accountRecord .list {
+            width: 65%;
+        }
+
+        .indicate {
+            position: absolute;
+            right: 10px;
+            color: #777777;
+        }
+
+        .double-column .list ul .list-content {
+            line-height: 1em;
+            height: auto;
+            padding: 14px 10px;
+        }
+
+        .indicate {
+            top: 50%;
+            margin-top: -8px;
+        }
+
+        .double-column .menu .menu-title {
+            height: auto;
+            line-height: 1.2em;
+            padding: 10px 10px;
+            color: #333333;
+            border-bottom: 1px #fff solid;
+        }
+
+    </style>
+</head>
+
+<body>
+<div class="accountRecord">
+    <div class="">
+        <div id="menu01_list" class="markStatu00">
+            <div class="double-column blue">
+                <div class="menu">
+                    <ul class="first list-unstyled">
+                    </ul>
+                </div>
+                <div class="list">
+                    <ul class='list-unstyled'>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    var success = function (returnData) {
+        if (returnData.status == "99") {
+            $('.list').html(getNothingHtml(returnData.msg));
+            alert(returnData.msg);
+        } else {
+            var data = returnData.data;
+            $(".first li").remove();
+            var firstData = "";
+            var secondData = "";
+            $.each(data, function (index, value) {
+                if (index == 0) {
+                    firstData += '<li class="menu-title disease-title-' + index + ' roomaction"><span>' + value.name + '</span></li>';
+                    secondData += '<div class="disease-' + index + ' active"> <ul class=" list-unstyled">'
+                } else {
+                    firstData += '<li class="menu-title disease-title-' + index + '"><span>' + value.name + '</span></li>';
+                    secondData += '<div class="disease-' + index + ' hide"> <ul class=" list-unstyled">'
+                }
+                $.each(value.symptom, function (index, value) {
+                    secondData += '<li class="list-content" data-id="' + value.corCode + '"> <span class="disease-room">' + value.name + '</span> <span class="indicate"><i class="fa fa-angle-right"></i></span> </li>'
+                });
+                secondData += '</ul></div>'
+            });
+            $(".first").html(firstData);
+            $(".list").html(secondData);
+
+            $("li.list-content").on('click', function () {
+                sessionStorage.code02 = $(this).attr('data-id');
+                location.href = 'diagnosisCorrespond.html'
+            });
+            var index_now = 0;
+            $('.menu-title').on('click', function () {
+                var index = $(".menu-title").index(this);
+                if (index_now != index) {
+                    $(".disease-" + index_now).removeClass("active");
+                    $(".disease-" + index_now).addClass("hide");
+                    $(".disease-" + index).addClass("active");
+                    $(".disease-" + index).removeClass("hide");
+                    $(".disease-title-" + index).addClass("roomaction");
+                    $(".disease-title-" + index_now).removeClass("roomaction");
+                    index_now = index;
+                }
+            });
+        }
+    };
+
+    $(function () {
+        $.ajax({
+            url: '/json/smart.json',
+            dataType: "json",
+            success: function (returnData) {
+                success(returnData);
+            }
+        });
+    });
+</script>
+
+
+</body>
+
+</html>

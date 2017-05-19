@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta http-equiv="Expires" content="-1">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta http-equiv="Cache" content="no-cache">
+    <title>排队信息</title>
+    <link rel="stylesheet" href="/frozenui-1.3.0/css/frozen.css">
+    <link rel="stylesheet" type="text/css" href="/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/main.css"/>
+    <script type="text/javascript" src="/js/min/zepto-min.js"></script>
+    <script type="text/javascript" src="/js/min/base-min.js"></script>
+    <style>
+        .lineup-out {
+            margin: 12px;
+            height: 24px;
+            line-height: 24px;
+            color: #ffffff;
+            background-color: #ff6344;
+            text-align: center;
+            border-radius: 2px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="line-cure"></div>
+<script type="text/javascript">
+    function lineupClose(returnData) {
+        if (returnData.status == "99") {
+            swal(returnData.msg);
+        } else {
+            swal({
+                title: '取消报到成功',
+                type: 'success',
+                confirmButtonText: '确定'
+            }, function () {
+                location.reload();
+            })
+        }
+    }
+
+    function lineInfoSuccess(returnData) {
+        if (returnData.status == "99") {
+            $('.line-cure').html(getNothingHtml('当前还未有排队信息，请稍等片刻，信息会自动刷新'));
+        } else {
+            var data = returnData.data.list;
+            if ($.isEmptyObject(data)) {
+                $('.line-cure').html(getNothingHtml('当前还未有排队信息，请稍等片刻，信息会自动刷新'));
+            } else {
+                var contactsData = '';
+                $.each(data, function (i, n) {
+                    var lineupState = n.pdzt;
+                    if (lineupState != '2' && lineupState != '5') {
+                        contactsData += '<div class="item item' + n.pdhm + '" data-id="' + n.pdhm + '" id="' + n.pdlsh + '">' +
+                                '<div class="detail01"><span class="ksmc">' + n.ksmc + '</span></div>' +
+                                '<div class="detail02"><span>病人姓名:</span><span class="ysxm">' + n.patientname + '</span></div>' +
+                                '<div class="detail02"><span>就诊医生:</span><span class="ysxm">' + n.ysxm + '</span></div>' +
+                                '<div class="detail02"><span>就诊序号:</span><span class="pdhm">' + n.fzxh + '</span></div>' +
+                                '<div class="detail02"><span>排队时间:</span><span class="pdrq">' + n.pdrq + '</span></div>' +
+                                '<div class="detail02"><span>诊室名称:</span><span class="zsmc">' + n.zsmc + '</span></div>' +
+                                '<div class="detail02"><span>诊室位置:</span><span>' + n.zswz + n.fjhm + '</span></div>' +
+                                '<div class="detail02"><span>前面还有 <span style="color:#ff0000;margin-left: 0">' + n.pdhm + '</span> 人就诊</span><span></span></div>' +
+                                '<div class="lineup-out">取消报到</div>' +
+                                '</div>';
+                    } else {
+                        //排队过好或已结束
+                    }
+
+                    $('.lineup-out').on('click', function () {
+                        $.JDoAjax().add('YY020401', lineupClose, {thbs: n.pdlsh});
+                    })
+                });
+                if ($.isEmptyObject(contactsData)) {
+                    $('.line-cure').html(getNothingHtml('当前还未有排队信息，请稍等片刻，信息会自动刷新'));
+                } else {
+                    $('.line-cure').html(contactsData);
+                }
+            }
+        }
+    }
+
+    $(function () {
+        setTimeout($.JDoAjax().add('YY020201', lineInfoSuccess).run(), 30000);
+    })
+</script>
+
+</body>
+
+</html>

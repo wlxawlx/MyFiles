@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta http-equiv="Expires" content="-1">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta http-equiv="Cache" content="no-cache">
+    <title>检验检查单</title>
+    <link rel="stylesheet" type="text/css" href="frozenui-1.3.0/css/frozen.css"/>
+    <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="css/main.css"/>
+    <script type="text/javascript" src="js/min/zepto-min.js"></script>
+    <script type="text/javascript" src="js/min/base-min.js"></script>
+
+</head>
+
+<body>
+
+<div class="orderHistory checkList accountRecord">
+    <div class="tabs-02">
+        <div class="tab01 action">检验单</div>
+        <div class="tab02">检查单</div>
+    </div>
+    <div class="container">
+        <ul id="menu01_list" class="ui-list ui-list-text ui-list-link markStatu00">
+            <div class="ui-tooltips ui-tooltips-guide">
+                <div class="ui-tooltips-cnt ui-border-b">
+                    <span id="check_name" class="name"></span>
+                    <span>检验报告单</span>
+                </div>
+            </div>
+            <!--<li class="ui-border-t link">-->
+            <!--<h4 class="ui-nowrap">哈哈</h4>-->
+            <!--<div class="ui-txt-info">京津冀</div>-->
+            <!--</li>-->
+        </ul>
+        <ul id="menu02_list" class="ui-list ui-list-text ui-list-link markStatu00 hide">
+            <div class="ui-tooltips ui-tooltips-guide">
+                <div class="ui-tooltips-cnt ui-border-b">
+                    <span id="test_name" class="name"></span>
+                    <span>检查报告单</span>
+                </div>
+            </div>
+        </ul>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var flag = false;
+    $('.tabs-02 div').on('click', function () {
+        $('.tabs-02 div').removeClass('action');
+        $(this).addClass('action');
+        switch ($(this).text()) {
+            case '检验单':
+                $('.markStatu00').addClass('hide');
+                $('#menu01_list').removeClass('hide');
+                break;
+            case '检查单':
+                $('.markStatu00').addClass('hide');
+                $('#menu02_list').removeClass('hide');
+                if (!flag) {
+                    var content = '';
+                    var linkmanid = sessionStorage.reportLinkmanid;
+                    if (!$.isEmptyObject(linkmanid)) {
+                        content = {'linkmanid': linkmanid};
+                    }
+                    $.JDoAjax().isLoading(false).add("EX020101", test_success, content).run();
+                    flag = true;
+                    console.log(flag);
+                }
+
+                break;
+            default:
+        }
+    });
+
+    $(function () {
+
+
+    });
+
+    $('#menu01_list li').remove();
+    $('#menu02_list li').remove();
+    $('.test-list-physical li').remove();
+
+    var callSize = 2;
+
+    var check_success = function (returnData) {
+        callSize--;
+        if (returnData.status == "99") {
+            $('#menu01_list').html(getNothingHtml(returnData.msg));
+        } else {
+            var data = returnData.data;
+            $('#check_name').html(data.name);
+            if (data.list.length == 0) {
+                $('#menu01_list').append(getNothingHtml('没有检验单报告'));
+            } else {
+                var contactsData = '';
+                $.each(data.list, function (i, n) {
+                    var info = "doctadviseno=" + encodeURIComponent(n.doctadviseno);
+                    contactsData += "<li class=\"ui-border-t link\" data-info=\"" + info + "\">" +
+                            "<h4 class=\"ui-nowrap\">" + n.examinaim + "</h4>" +
+                            "<div class=\"ui-txt-info\">" + n.requesttime + "</div>" +
+                            "</li>";
+                });
+                $('#menu01_list').append(contactsData);
+
+                $(".link").on("click", function () {
+                    var info = $(this).attr("data-info");
+                    location.href = "reportDetail.html?" + info;
+                });
+            }
+        }
+
+        if (callSize == 0) {
+            dismissLoading();
+        }
+    };
+
+    var test_success = function (returnData) {
+        callSize--;
+        if (returnData.status == "99") {
+            $('#menu02_list').html(getNothingHtml(returnData.msg));
+        } else {
+            var data = returnData.data;
+            $('#test_name').html(data.name);
+            if (data.list.length == 0) {
+                $('#menu02_list').append(getNothingHtml('没有检查单报告'));
+            } else {
+                var contactsData = "";
+                $.each(data.list, function (i, n) {
+                    var info = "doctadviseno=" + encodeURIComponent(n.doctadviseno);
+                    contactsData += "<li class=\"ui-border-t check_link\" data-info=\"" + info + "\">" +
+                            "<h4 class=\"ui-nowrap\">" + n.examinaim + "</h4>" +
+                            "<div class=\"ui-txt-info\">" + n.requesttime + "</div>" +
+                            "</li>";
+                });
+                $('#menu02_list').append(contactsData);
+
+                $(".check_link").on('click', function () {
+                    var info = $(this).attr("data-info");
+                    location.href = "reportDetailCheck.html?" + info;
+                });
+            }
+        }
+        if (callSize == 0) {
+            dismissLoading();
+        }
+    };
+
+    $(function () {
+        var content = '';
+        var linkmanid = sessionStorage.reportLinkmanid;
+        if (!$.isEmptyObject(linkmanid)) {
+            content = {'linkmanid': linkmanid};
+        }
+
+        callSize = 2;
+        $.JDoAjax().isLoading(false).add("EX010101", check_success, content).run();
+//        $.JDoAjax().isLoading(false).add("EX020101", content, test_success).run();
+    });
+</script>
+
+</body>
+
+</html>

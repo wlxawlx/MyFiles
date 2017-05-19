@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta http-equiv="Expires" content="-1">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta http-equiv="Cache" content="no-cache">
+    <title>住院缴费明细</title>
+    <link rel="stylesheet" type="text/css" href="frozenui-1.3.0/css/frozen.css"/>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" type="text/css" href="css/iconfont/iconfont.css">
+
+</head>
+
+<body>
+
+<div class="cost-detail">
+    <div class="cost-cell">
+        <div class="detail00">氯化钠</div>
+        <div class="detail01">药品信息:<span>500ml</span>、¥<span>100.00</span>/<span>袋</span></div>
+        <div class="detail03">总计:¥<span>256.00</span></div>
+        <div class="detail04">自付:<span class="red"> ¥<span>256.00</span></span></div>
+    </div>
+</div>
+<script type="text/javascript" src="js/min/zepto-min.js"></script>
+<script type="text/javascript" src="js/min/base-min.js"></script>
+<script type="text/javascript">
+//    var costDetailSuccess = function (returnData) {
+//        if (returnData.status == '99') {
+//            $('.cost-detail').html(getNothingHtml(returnData.msg));
+//        } else {
+//            var listData = returnData.data;
+//            var detailList = '';
+//            $.each(listData.list, function (index, value) {
+//                detailList += '<div class="cost-cell">' +
+//                        '<div class="detail00">'+value.fymc+'</div>' +
+//                        '<div class="detail01">药品信息:<span>'+value.fygg+'</span>、¥<span>'+value.fydj+'</span>/<span>'+value.fydw+'</span></div>' +
+//                        '<div class="detail03">总计:¥<span>'+value.zjje+'</span></div>' +
+//                        '<div class="detail04">自付:<span class="red"> ¥<span>'+value.zfje+'</span></span></div>' +
+//                        '</div>';
+//            });
+//            $('.cost-detail').html(detailList);
+//        }
+//    };
+//
+//    $(function () {
+//        var content = JSON.stringify({
+//            'linkmanid':sessionStorage.linkmanid,
+//            'fyxm':sessionStorage.itemId,
+//            'fyrq':''
+//        });
+//        console.log(content);
+//        $.JDoAjax().isLoading(false).add('IN010203',costDetailSuccess,error);
+//    })
+</script>
+</body>
+
+</html>

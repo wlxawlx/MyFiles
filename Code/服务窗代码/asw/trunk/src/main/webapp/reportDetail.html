@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta http-equiv="Expires" content="-1">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta http-equiv="Cache" content="no-cache">
+    <title>检验报告详细</title>
+    <link rel="stylesheet" type="text/css" href="frozenui-1.3.0/css/frozen.css"/>
+    <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
+    <script type="text/javascript" src="js/min/zepto-min.js"></script>
+    <script type="text/javascript" src="js/min/base-min.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/main.css"/>
+    <style>
+        .eleName {
+            color: #ff6344;
+        }
+
+        .detailInfo li {
+            border-bottom: 1px rgba(33, 161, 244, 0.98) solid;
+            padding: 5px;
+        }
+
+        .range span:first-child {
+            color: #777;
+        }
+
+        .range .number {
+            display: block;
+            float: right;
+            text-align: right;
+        }
+    </style>
+</head>
+
+<body>
+<div class="report-detail">
+
+    <div class="baseInfo">
+        <div class="clear">
+            <span class="name">申请科室</span>
+            <span id="section" class="info blue"></span>
+        </div>
+        <div class="clear">
+            <span class="name">检验内容</span>
+            <span id="examinaim" class="info blue"></span>
+        </div>
+        <div class="clear">
+            <span class="name">标本名称</span>
+            <span id="sampletype" class="info blue"></span>
+        </div>
+        <div class="clear">
+            <span class="name">检验人</span>
+            <span id="receiver" class="info blue"></span>
+        </div>
+        <div class="clear">
+            <span class="name">送检人</span>
+            <span id="requester" class="info blue"></span>
+        </div>
+        <div class="clear">
+            <span class="name">审核人</span>
+            <span id="checker" class="info blue"></span>
+        </div>
+        <div class="clear">
+            <span class="name">采集时间</span>
+            <span id="executetime" class="info blue"></span>
+        </div>
+        <div class="clear">
+            <span class="name">检验时间</span>
+            <span id="receivetime" class="info blue"></span>
+        </div>
+
+    </div>
+    <div class="hintTitle">检验指标结果</div>
+    <div class="detailInfo">
+        <ul id="detailInfoList">
+        </ul>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var callSize = 2;
+
+    var info_success = function (returnData) {
+        callSize--;
+        if (returnData.status == "99") {
+            swal(returnData.msg);
+        } else {
+            var data = returnData.data;
+            $("#section").text(data.section);
+            $("#examinaim").text(data.examinaim);
+            $("#sampletype").text(data.sampletype);
+            if (!$.isEmptyObject(data.receiver)) {
+                $("#receiver").text(data.receiver);
+            } else {
+                $("#receiver").html("&nbsp;&nbsp;");
+            }
+            $("#requester").text(data.requester);
+            $("#checker").text(data.checker);
+            $("#executetime").text(data.executetime);
+            if (!$.isEmptyObject(data.receivetime)) {
+                $("#receivetime").text(data.receivetime);
+            } else {
+                $("#receivetime").html("&nbsp;&nbsp;");
+            }
+        }
+
+        if (callSize == 0) {
+            dismissLoading();
+        }
+    };
+
+    $("#detailInfoList li").remove();
+
+    var detail_success = function (returnData) {
+        callSize--;
+        if (returnData.status == "99") {
+            swal(returnData.msg);
+        } else {
+            var data = returnData.data;
+            var contactsData = '';
+            $.each(data, function (i, n) {
+                contactsData += '<li>' +
+                        '<div class="eleName">' + n.xmmc + '</div>' +
+                        '<div class="range">' +
+                        '<span>参考范围</span>' +
+                        '<span class="blue">&nbsp;&nbsp;' + n.ckfw + '</span>' +
+                        '<span class="number ' + (n.hint == null ? "blue" : "red") + '">' + n.result + '&nbsp;' + n.xmdw + '&nbsp;' + n.hint + '</span>' +
+                        '</div>' +
+                        '</li>';
+            });
+            $('#detailInfoList').html(contactsData);
+        }
+
+        if (callSize == 0) {
+            dismissLoading();
+        }
+    };
+
+    var error = function () {
+        console.log("error");
+    };
+
+    $(function () {
+        var doctadviseno = getURLData('doctadviseno');
+        if ($.isEmptyObject(doctadviseno)) {
+            return;
+        }
+
+        callSize = 2;
+        var data = {"doctadviseno": doctadviseno};
+        $.JDoAjax().add('EX010201', info_success, data).add('EX010301', detail_success, data).run();
+    });
+
+</script>
+
+
+</body>
+
+</html>

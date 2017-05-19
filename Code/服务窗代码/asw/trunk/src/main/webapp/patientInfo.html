@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta http-equiv="Expires" content="-1" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Cache-Control" content="no-cache" />
+    <meta http-equiv="Cache" content="no-cache" />
+    <title>我的信息</title>
+    <link rel="stylesheet" type="text/css" href="frozenui-1.3.0/css/frozen.css"/>
+    <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/main.css"/>
+
+</head>
+<body>
+<div class="head-img">
+    <img class="" id="headimg" src="image/default_patient.jpg" />
+</div>
+<div class="personInfo">
+    <ul class="">
+        <li class="section-lr">
+            <div class="detail03">
+                <span class="letter-2">姓名</span>
+                <span class="name"></span>
+            </div>
+            <div class="detail04">
+                <span>身份证号</span>
+                <span class="idcardno"></span>
+            </div>
+            <div class="detail05">
+                <span>手机号码</span>
+                <span class="phone"></span>
+            </div>
+        </li>
+    </ul>
+</div>
+<script type="text/javascript" src="js/min/zepto-min.js"></script>
+<script type="text/javascript" src="js/min/base-min.js"></script>
+<script type="text/javascript">
+    var s_getPatientInfo = function (returnData) {
+        if (returnData.status == '99') {
+            swal(returnData.msg);
+            $('.personInfo').addClass('hide-test');
+        } else {
+            var data = returnData.data;
+            $('.name').html(data.name);
+            $('.idcardno').html(data.idcardno);
+            $('.phone').html(data.phone);
+            $("#headimg").attr("src", data.headurl);
+        }
+    };
+    $(function () {
+        $.JDoAjax().isLoading(false).add('BA010301', s_getPatientInfo).run();
+    });
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta http-equiv="Expires" content="-1">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta http-equiv="Cache" content="no-cache">
+    <title>报名课程列表</title>
+    <link rel="stylesheet" type="text/css" href="frozenui-1.3.0/css/frozen.css"/>
+    <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
+    <script type="text/javascript" src="js/min/zepto-min.js"></script>
+
+    <script type="text/javascript" src="js/min/base-min.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/main.css" />
+
+</head>
+
+<body>
+<div class="trainCenter">
+    <!--<div class="card-white-blue">-->
+        <!--<div class="detail00">拯救心脏CPR AED(非健康从业人员课程)</div>-->
+        <!--<div class="detail01">报名人数:<span>11</span></div>-->
+        <!--<div class="detail01">报名时间:<span>11</span></div>-->
+        <!--<div class="detail01">费用合计:<span class="red">11</span><span class="grey-c7 float-r">缴费失败</span></div>-->
+    <!--</div>-->
+</div>
+<script type="text/javascript">
+    var selfTrainSuccess = function (returnData) {
+        if (returnData.status == '99') {
+            $('.trainCenter').html(getNothingHtml(returnData.msg));
+        } else {
+            console.log(returnData)
+            var trainList = returnData.data;
+            var trainHtml = '';
+            $.each(trainList, function (index, value) {
+                trainHtml += '<div class="trainItemCell card-white-blue">' +
+                        '<div class="detail00">'+value.fymc+'</div> ' +
+                        '<div class="detail01">报名人数:<span>'+value.fysl+'</span></div>' +
+                        '<div class="detail01">报名时间:<span>'+value.ctime+'</span></div>' +
+                        '<div class="detail01">费用合计:<span class="red">'+value.orderm+'</span><span class="grey float-right">'+getPayState(value.orderstatus)+'</span></div>' +
+                        '</div>';
+            });
+            $('.trainCenter').html(trainHtml);
+        }
+    };
+
+    $(function () {
+        $.JDoAjax().isLoading(false).add('SK010501',selfTrainSuccess,error);
+    })
+</script>
+
+</body>
+
+</html>

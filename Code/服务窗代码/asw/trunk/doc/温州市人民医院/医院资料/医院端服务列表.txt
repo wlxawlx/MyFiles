@@ -1,0 +1,221 @@
+//A账户操作
+        //判断卡是否正确
+        public const string Command_Payment_VaildCard    = "A001";
+        //卡绑定
+        public const string Command_Payment_BindCard     = "A002";
+        //生成订单
+        public const string Command_Payment_CreateOrder  = "A003";
+        //完成订单
+        public const string Command_Payment_FinishOrder  = "A004";
+        //作废订单
+        public const string Command_Payment_CancelOrder  = "A005";
+        //订单状态
+        public const string Command_Payment_StatusOrder  = "A006";
+        //插入银行记录
+        public const string Command_Payment_InsertCcb    = "A007";
+        //转账
+        public const string Command_Payment_TransferCash = "A008";
+        //账户查询
+        public const string Command_Payment_QueryBalance = "A009";
+        //收支明细
+        public const string Command_Payment_QueryDetail  = "A010";
+
+        //药品查询
+        public const string Command_Payment_QueryMedicine = "A013";
+        //费用查询
+        public const string Command_Payment_QueryCharge = "A014";
+        //专家列表
+        public const string Command_Payment_ListDoctor = "A015";
+        //专家介绍
+        public const string Command_Payment_QueryDoctor = "A016";
+
+        //药品列表（增补）
+        public const string Command_Payment_PageMedicine = "A017";
+        //费用列表（增补）
+        public const string Command_Payment_PageCharge = "A018";
+        //专家列表（增补）
+        public const string Command_Payment_PageDoctor = "A019";
+
+
+        //B用户注册
+        //用户注册
+        public const string Command_Register_UserRegister = "B001";
+        //用户登录
+        public const string Command_Register_UserLogin = "B002";
+        //密码重置
+        public const string Command_Register_UserPwdReset = "B003";
+        //密码修改
+        public const string Command_Register_UserPwdChange = "B004";
+
+        //添加常用联系人
+        public const string Command_Register_PatientAdd = "B005";
+        //删除常用联系人
+        public const string Command_Register_PatientDelete= "B006";
+        //常用联系人列表
+        public const string Command_Register_PatientList = "B007";
+
+        //验证手机号码是否注册
+        public const string Command_Register_MobileCheck = "B008";
+        //修改用户注册信息
+        public const string Command_Register_UserChange = "B009";
+        //根据用户手机手机号码返回病人信息
+        public const string Command_Register_UserInfo = "B010";
+
+        //C卡操作
+        //绑定就诊卡
+        public const string Command_Register_BoundCard = "C001";
+        //取消绑定就诊卡
+        public const string Command_Register_UnboundCard = "C002";
+        //就诊卡列表
+        public const string Command_Register_CardList = "C003";
+        //常用联系人绑定就诊卡
+        public const string Command_Register_BoundCardLink = "C004";
+        //常用联系人取消绑定就诊卡
+        public const string Command_Register_UnboundCardLink = "C005";
+        //根据卡号返回病人信息
+        public const string Command_Register_CardInfo = "C006";
+        //建立病人档案和磁卡档案
+        public const string Command_Register_CardCreate = "C007";
+
+        //D预约信息
+        //预约科室列表
+        public const string Command_Register_YyksList = "D001";
+        //预约医生列表
+        public const string Command_Register_YyysList = "D002";
+        //医生排班表
+        public const string Command_Register_YspbList = "D003";
+        //预约号源表(pblsh)
+        public const string Command_Register_YyhyList01 = "D004";
+        
+        //微信预约
+        public const string Command_Register_wechatYy = "D005";
+        //预约信息列表（全部的）
+        public const string Command_Register_YyxxList = "D006";
+        //预约取消
+        public const string Command_Register_YyxxCancel = "D007";
+
+
+        //门诊预约报道
+        public const string Command_Register_DoctorReport = "D008";
+        //检查预约报道
+        public const string Command_Register_CheckReport = "D009";
+        //门诊候诊信息
+        public const string Command_Register_DoctorWaiting = "D010";
+        //检查候诊信息
+        public const string Command_Register_CheckWaiting = "D011";
+        //医院信息
+        public const string Command_Register_HospitalInfo = "D012";
+        //医生查询(拼音码或者中文字)
+        public const string Command_Register_DoctorSearch = "D013";
+        //医生信息
+        public const string Command_Register_DoctorInfo = "D014";
+        //医生停诊信息
+        public const string Command_Register_DoctorStop = "D015";
+
+
+        //门诊排队列表
+        public const string Command_Register_DoctorQueueList = "D016";
+        //门诊预约报道列表
+        public const string Command_Register_DoctorReportList = "D017";
+        //检查预约报道列表
+        public const string Command_Register_CheckReportList = "D018";
+        //检查预约信息列表
+        public const string Command_Register_CheckYyxxList = "D019";
+        //检查预约注意事项
+        public const string Command_Register_CheckZysxList = "D020";
+
+
+        //药房取药信息
+        public const string Command_Register_TakeMedicineInfo = "D021";
+
+        //病人服药列表
+        public const string Command_Register_DictMedicineList = "D022";
+        //病人服药信息
+        public const string Command_Register_DictMedicineInfo = "D023";
+
+        //门诊预约信息列表
+        public const string Command_Register_DoctorYyxxList = "D024";
+        //预约号源表（pbrq,ysbm,ksdm,zblb）
+        public const string Command_Register_YyhyList02 = "D025";
+
+
+        //预约信息列表（当前登记）
+        public const string Command_Register_YyxxDqdjList = "D026";
+
+        //门诊未付款信息列表
+        public const string Command_Register_UnfinishPayList = "D027";
+        //门诊已付款信息列表
+        public const string Command_Register_FinishPayList = "D028";
+
+        //门诊付款信息明细
+        public const string Command_Register_PayDetialInfo = "D029";
+
+        //门诊就诊信息列表
+        public const string Command_Register_ClinicHistoryList = "D030";
+        //门诊电子病历
+        public const string Command_Register_ClinicEmr= "D031";
+        //门诊就诊信息指引单
+        public const string Command_Register_ClinicTheWay = "D032";
+
+
+
+        //D检查单查询
+        //化验列表
+        public const string Command_Check_InspectionList = "E001";
+        //化验台头
+        public const string Command_Check_InspectionHead = "E002";
+        //化验明细
+        public const string Command_Check_InspectionDetail = "E003";
+        //检查列表
+        public const string Command_Check_CheckList = "E004";
+        //检查台头
+        public const string Command_Check_CheckHead = "E005";
+        //检查明细
+        public const string Command_Check_CheckDetail = "E006";
+        
+        //F微信充值
+        //微信门诊充值---创建订单
+        public const string Command_WxPay_CreateOrderWx = "F001";
+        //微信门诊充值---取消订单
+        public const string Command_WxPay_CancelOrderWx = "F002";
+        //微信门诊充值---查询订单信息
+        public const string Command_WxPay_QueryOrderWx = "F003";
+        //微信门诊充值---完成订单
+        public const string Command_WxPay_FinishOrderWx = "F004";
+        //支付宝门诊充值---完成订单
+        public const string Command_WxPay_FinishOrderZfb = "F005";
+
+        //微信住院充值---创建订单
+        public const string Command_WxPay_CreateInpatientOrderWx = "F006";
+        //微信住院充值---取消订单
+        public const string Command_WxPay_CancelInpatientOrderWx = "F007";
+        //微信住院充值---查询订单信息
+        public const string Command_WxPay_QueryInpatientOrderWx = "F008";
+        //微信住院充值---完成订单
+        public const string Command_WxPay_FinishInpatientOrderWx = "F009";
+        //支付宝住院充值---完成订单
+        public const string Command_WxPay_FinishInpatientOrderZfb = "F010";
+
+        //住院信息
+        //住院信息--住院病人基本信息
+        public const string Command_Hospitalization_InpatientInfoINzyhm = "G001";
+        //住院信息--住院费用分类汇总
+        public const string Command_Hospitalization_InpatientChargeTotal = "G002";
+        //住院信息--住院费用分类明细
+        public const string Command_Hospitalization_InpatientChargeTypeDetail = "G003";
+        //住院信息--住院预交金查询
+        public const string Command_Hospitalization_InpatientPrepayQuery = "G004";
+        //住院信息--住院状态
+        public const string Command_Hospitalization_InpatientOperCheck = "G005";
+        //住院信息--床号查询
+        public const string Command_Hospitalization_InpatientInfoINbrch = "G006";
+
+        //T体检信息
+        //体检---体检套餐列表
+        public const string Command_Examination_TjtcList = "T001";
+        //体检---体检套餐明细
+        public const string Command_Examination_TcmxList = "T002";
+        //体检---体检状态信息
+        public const string Command_Examination_TjxxInfo = "T003";
+        //体检---体检查询报告
+        public const string Command_Examination_TjcxReport = "T004";

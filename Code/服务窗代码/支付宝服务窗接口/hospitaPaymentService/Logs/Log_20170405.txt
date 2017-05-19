@@ -1,0 +1,1 @@
+2017-04-05 16:31:43,551 [88] INFO  log - OR020201:<root><departcode>null</departcode><scheduledate>null</scheduledate><doctorcode>305003</doctorcode></root>

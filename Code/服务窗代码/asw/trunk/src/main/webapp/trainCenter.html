@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta http-equiv="Expires" content="-1">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta http-equiv="Cache" content="no-cache">
+    <title>培训中心</title>
+    <link rel="stylesheet" type="text/css" href="frozenui-1.3.0/css/frozen.css"/>
+    <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
+    <script type="text/javascript" src="js/min/zepto-min.js"></script>
+
+    <script type="text/javascript" src="js/min/base-min.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/main.css" />
+
+    <style>
+        .trainCenter {
+            background-color: #ffffff;
+            height: 100%;
+            width: 100%;
+        }
+        .detail00 {
+            padding: 0 10px;
+            height: 45px;
+            line-height: 45px;
+            position: relative;
+        }
+        .content-info {
+            position: relative;
+            padding: 10px 10px 20px 10px;
+            height: calc(100% - 133px);
+            box-sizing: border-box;
+            overflow: scroll;
+        }
+        .traintitle {
+            height: 30px;
+            line-height: 30px;
+            margin-left: 10px;
+            position: relative;
+        }
+        .traintitle::after {
+            content: "";
+            position: absolute;
+            height: 30px;
+            width: 1px;
+            box-shadow: 0 0 2px #03A6E0;
+            left: -10px;
+        }
+        .more-info {
+            position: absolute;
+            top: 50%;
+            margin-top: -8px;
+            right: 20px;
+        }
+        .link-foot {
+            text-decoration: none;
+            height: 45px;
+            line-height: 45px;
+        }
+    </style>
+</head>
+
+<body>
+<div class="trainCenter">
+    <div class="head-blue-blue-12">温州市人民医院培训中心</div>
+    <div class="train-list">
+        <!--<div class="trainitem">-->
+        <!--<div class="detail00 bottomborder showinfo">-->
+        <!--<span>拯救心脏</span><i class="blue more-info fa fa-chevron-down"></i>-->
+        <!--</div>-->
+        <!--<div class="content-info ">-->
+        <!--<div class="traintitle">报名说明</div>-->
+        <!--<div class="explain-content">-->
+        <!--<div class="level00">1.培训人数：每期12人，满员开班。</div>-->
+        <!--<div class="level00">2.培训费用：含理论及实践培训费+学习教材费 +AHA证书费+设备模型使用。</div>-->
+        <!--<div class="level01">a) Heartsaver CPR AED课程（非健康从业人员课程）：500元/人</div>-->
+        <!--<div class="level01">b) BLS培训费（健康从业人员课程）：500元/人</div>-->
+        <!--</div>-->
+        <!--<div class="traintitle">注意事项</div>-->
+        <!--<div class="prompt-content">-->
+        <!--<div class="level00">1.培训人数：每期12人，满员开班。</div>-->
+        <!--<div class="level00">2.培训费用：含理论及实践培训费+学习教材费 +AHA证书费+设备模型使用。</div>-->
+        <!--</div>-->
+        <!--<a class="footer course-list" href="trainExplain.html">-->
+        <!--<button class="ui-btn-lg ui-btn-primary">预约报名</button>-->
+        <!--</a>-->
+        <!--</div>-->
+        <!--</div>-->
+
+    </div>
+    <a class="bookingRecord link-foot" href="trainItemList.html">报名记录</a>
+</div>
+<script type="text/javascript">
+    var flag = false;
+
+
+    // 课程列表
+    var trainDict = {};
+
+    // 获得课程分类
+    var trainListSuccess = function (returnData) {
+        if (returnData.status == '99') {
+            $('.train-list').append(getNothingHtml(returnData.msg));
+        } else {
+            var courses = returnData.data.list;
+            var coursesHtml = '';
+
+            $.each(courses, function (index, value) {
+                var explain = value.explain.split('\n');
+                var excontent = "<div class='level00'/>";
+                $.each(explain, function (index, value) {
+                    if (!isNaN(parseFloat(value))) {
+                        excontent += "<div class='level00'>" + value + "</div>";
+                    } else {
+                        excontent += "<div class='level01'>" + value + "</div>";
+                    }
+                });
+                var prompt = value.prompt.split('\n');
+                var prcontent = "<div class='level00'/>";
+                $.each(prompt, function (index, value) {
+                    if (!isNaN(parseFloat(value))) {
+                        prcontent += "<div class='level00'>" + value + "</div>";
+                    } else {
+                        prcontent += "<div class='level01'>" + value + "</div>";
+                    }
+                });
+
+                coursesHtml += '<div class="trainitem"><div class=\"detail00 bottomborder showinfo\">' +
+                        '<span>' + value.coursename + '</span><i class=\"blue more-info fa fa-chevron-down\"></i></div>' +
+                        '<div class=\"content-info hide\">' +
+                        '<div class=\"traintitle\">报名说明</div>' +
+                        '<div class=\"explain-content level\">' + excontent + '</div>' +
+                        '<div class=\"traintitle\">注意事项</div>' +
+                        '<div class=\"prompt-content\">' + prcontent + '</div>' +
+                        '<a class=\"footer course-list\" data-id=\"' + value.coursecode + '\">' +
+                        '<button class=\"ui-btn-lg ui-btn-primary\">预约报名</button>' +
+                        '</a>' +
+                        '</div></div>';
+
+                trainDict[value.coursecode] = value;
+            });
+            $('.train-list').html(coursesHtml);
+            // 150 是两个标题,一个按钮的高度
+            $('.content-info').css('height', (document.body.clientHeight - 150) + 'px');
+            $('.showinfo').on('click', function () {
+                switch (flag) {
+                    case false:
+                        $('.showinfo i').removeClass('fa-chevron-down');
+                        $('.showinfo i').addClass('fa-chevron-up');
+
+                        $('.content-info').addClass('hide');
+                        $('.trainitem').addClass('hide');
+
+                        $('.bookingRecord').addClass('hide');
+
+                        $(this).parent().removeClass('hide');
+                        $(this).parent().find('.content-info').removeClass('hide');
+                        break;
+                    case true:
+                        $('.showinfo i').removeClass('fa-chevron-up');
+                        $('.showinfo i').addClass('fa-chevron-down');
+
+                        $('.content-info').addClass('hide');
+                        $('.trainitem').removeClass('hide');
+
+                        $('.bookingRecord').removeClass('hide');
+                        break;
+                    default:
+                        break;
+                }
+                flag = !flag;
+            });
+        }
+
+        $('.course-list').on('click', function () {
+            var courseid = $(this).attr('data-id');
+            sessionStorage.trainClassifyInfo = JSON.stringify(trainDict[courseid]);
+            location.href = "trainCourses.html";
+        });
+    };
+
+    $(function () {
+
+        trainDict = [];
+        $.JDoAjax().isLoading(false).add('SK010101', trainListSuccess).run();
+    })
+</script>
+
+</body>
+
+</html>

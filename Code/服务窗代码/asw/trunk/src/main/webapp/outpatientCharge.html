@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta http-equiv="Expires" content="-1">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta http-equiv="Cache" content="no-cache">
+    <title>门诊预存</title>
+    <link rel="stylesheet" type="text/css" href="frozenui-1.3.0/css/frozen.css"/>
+    <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="css/main.css"/>
+    <style>
+        .detail08 {
+            margin-top: 11px;
+            height: 46px;
+            font-size: 1.2em;
+
+        }
+
+        .detail08 > span:first-child {
+            width: 78px !important;
+            font-weight: bolder;
+        }
+
+        .detail08 input {
+            margin-right: 10px;
+            height: 40px;
+            width: 130px;
+            border: 0;
+            text-align: right;
+        }
+    </style>
+    <script type="text/javascript" src="js/min/zepto-min.js"></script>
+    <script type="text/javascript" src="js/min/base-min.js"></script>
+
+
+    <link rel="stylesheet" type="text/css" href="/css/main.css"/>
+
+</head>
+
+<body>
+<div class="personInfo mzcz ">
+    <ul class="patientInfo">
+        <li class="section-lr">
+            <div class="detail03">
+                <span class="letter-2">姓名</span>
+                <span class="card-name grey-77 float-r" id="name"></span>
+                <div class="patient-choose hide" id="patient-choose">
+                    <div>11</div>
+                    <div>22</div>
+                </div>
+            </div>
+            <div class="detail03">
+                <span class="letter-2">卡号</span>
+                <span class="card-num"></span>
+            </div>
+            <div class="detail03">
+                <span>身份证号</span>
+                <span class="patient-idcard"></span>
+            </div>
+            <div class="detail03">
+                <span>账户余额</span>
+                <span class="card-over red"></span>
+            </div>
+            <div class="detail08">
+                <span>预存金额</span>
+                <span class="red">
+                    <input id="number" class="money" type="number" name="name" value="" placeholder="00.00"
+                           class="money">元</span>
+            </div>
+        </li>
+    </ul>
+    <div class="hint pd-20x">
+        <i class="fa fa-info-circle blue"></i>为了保障您账户资金安全，请不要泄露支付相关信息！仅支持单笔¥10000.00以下转账。
+    </div>
+    <div id="removeJYLXR" class="ui-btn-wrap">
+        <button class="ui-btn-lg ui-btn-primary submit-pay">确认预存</button>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+
+    // 联系选择事件注册
+    var more = false;
+    SwitchTab00(more);
+
+    // 是否是前置界面选择了联系人
+    var isFirstPageSelect = false;
+
+    function SwitchTab00(flag) {
+        $('#name').on('click', function () {
+            flag = !flag;
+            switchStatu00(flag);
+        });
+
+        $('#patient-choose > div').on('click', function () {
+            flag = !flag;
+            switchStatu00(flag);
+            $('.card-name').html($(this).text());
+
+            $('.card-type').html('');
+            $('.card-num').html('');
+            $('.patient-idcard').html('');
+            $('.card-over').html('');
+            $('.patientInfo').removeAttr('data-patientid');
+
+            var linkmanid = $(this).attr('data-manid');
+            if (linkmanid == "-1") {
+                $.JDoAjax().isLoading(false).add('BA030301', getCardInfoSuccess).run();
+            } else {
+                // 获得联系人的已绑卡信息
+                $.JDoAjax().isLoading(false).add("BA030501", getCardInfoSuccess, {'linkmanid': linkmanid}).run();
+            }
+        });
+    }
+
+
+    // 获得联系人成功
+    var contactlistsuccess = function (returnData) {
+        if (returnData.status == "99") {
+            $('.personInfo').html(getNothingHtml(returnData.msg));
+        } else {
+            var data = returnData.data.list;
+
+            var contactsData = "";
+            $.each(data, function (i, n) {
+                if (i == 0 && !isFirstPageSelect) {
+                    $('.card-name').html(n.name);
+                }
+                contactsData += "<div data-manid='" + n.linkmanid + "' data-idcardno='" + n.idcardno + "'>" + n.name + "</div>";
+            });
+            $('#patient-choose').html(contactsData);
+
+            SwitchTab00(more);
+
+            if (!isFirstPageSelect) {
+                // 获得本人的已绑门诊卡信息
+                $.JDoAjax().isLoading(false).add('BA030301', getCardInfoSuccess).run();
+            }
+        }
+    };
+
+    // 先获得联系人列表
+    $(function () {
+        $('#patient-choose div').remove();
+
+        isFirstPageSelect = !$.isEmptyObject(sessionStorage.name) && !$.isEmptyObject(sessionStorage.linkmanid);
+        // 前置界面选择的
+        if (isFirstPageSelect) {
+            $('.patient-name').html(sessionStorage.name);
+
+            if (sessionStorage.linkmanid == "-1") {
+                $.JDoAjax().isLoading(false).add('BA030301', getCardInfoSuccess).run();
+            } else {
+                $.JDoAjax().isLoading(false).add("BA030501", getCardInfoSuccess, {'linkmanid': sessionStorage.linkmanid}).run();
+            }
+        }
+        sessionStorage.removeItem("name");
+        sessionStorage.removeItem("linkmanid");
+
+        $.JDoAjax().add("BA020201", contactlistsuccess).run();
+    });
+
+    // 获得就诊卡信息完成
+    function getCardInfoSuccess(returnData) {
+        if (returnData.status == '99') {
+            swal($('.card-name').html() + " 还未绑卡,请绑卡后再操作");
+        } else {
+            var data = returnData.data;
+            $('.card-type').html(data.cardtype);
+            $('.card-num').html(data.cardno);
+            $('.patient-idcard').html(data.idcardno);
+            $('.card-name').html(data.patientname);
+            $('.card-over').html('￥' + data.balance);
+            $('.patientInfo').attr('data-patientid', data.patientid);
+        }
+        $('.personInfo').removeClass('hide');
+    }
+
+    function paySuccess(returnData) {
+        if (returnData.status == '99') {
+            swal(returnData.msg);
+        } else {
+            var data = returnData.data;
+            sessionStorage.orderNo = data.orderno;
+            location.href = data.aliwappayurl;
+        }
+    }
+
+    $(function () {
+        $('.submit-pay').click(function () {
+            var money = $('.money').val();
+
+            var brid = $('.patientInfo').attr('data-patientid');
+            if ($.isEmptyObject(brid)) {
+                swal($('.card-name').html() + " 信息不完整，请联系医护人员。")
+                return false;
+            }
+            if (judgMoney(money, 2000.00)) {
+                if ($.isEmptyObject(money)) { // 判断是否是空字符串，而不是null
+                    swal("请输入金额");
+                    return false;
+                } else {
+                    swal({
+                        title: '确定充值' + money + '元?',
+                        text: "到账户姓名为:" + $('.card-name').html(),
+                        type: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#DD6B55",
+                        cancelButtonText: "取消",
+                        confirmButtonText: "确定",
+                        closeOnConfirm: false
+                    }, function () {
+                        $.JDoAjax().add('PA010102', paySuccess, {
+                            'patientid': brid,
+                            'patientname': $('.card-name').html(),
+                            'patientidcard': $('.patient-idcard').html(),
+                            'cardno': $('.card-num').html(),
+                            'money': money,
+                            'showurl': 'payFinish.html'
+                        }).run();
+                    });
+                }
+            }
+        });
+    })
+</script>
+
+</body>
+
+</html>

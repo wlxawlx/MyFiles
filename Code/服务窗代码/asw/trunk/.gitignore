@@ -1,0 +1,12 @@
+*.iml
+.idea
+out
+.settings
+bin/
+
+WebContent/bower_components
+build
+CrunchifyTest.log
+.gradle
+target/
+src/main/java/com/jandar/cloud/hospital/util/SerialNumberUtil.java.rej

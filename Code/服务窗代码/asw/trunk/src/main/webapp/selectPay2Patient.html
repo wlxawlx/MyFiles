@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta http-equiv="Expires" content="-1">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta http-equiv="Cache" content="no-cache">
+    <title>就诊人选择</title>
+    <link rel="stylesheet" type="text/css" href="frozenui-1.3.0/css/frozen.css"/>
+    <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/main.css"/>
+    <script type="text/javascript" src="js/min/zepto-min.js"></script>
+    <script type="text/javascript" src="js/min/base-min.js"></script>
+
+</head>
+
+<body>
+<div class="jzrInfo jzrSelect">
+    <div class="">常用联系人</div>
+    <ul class="contacts cylxr"></ul>
+</div>
+
+<script type="text/javascript">
+    function success(returnData) {
+        if (returnData.status == '99') {
+            swal(returnData.msg);
+        } else {
+            var data = returnData.data.list;
+            var contactsData = '';
+            $.each(data, function (i, n) {
+                var myselftext = '';
+                if (n.linkmanid == '-1') {
+                    myselftext = '本人';
+                }
+                if (!$.isEmptyObject(myselftext)) {
+                    contactsData += '<li class="myself">'
+                } else {
+                    contactsData += '<li>';
+                }
+
+                contactsData += '<span class="icon">' +
+                        '<img src="image/default_patient.jpg" onerror="this.src=\'image/default_doctor.png\'"/>' +
+                        '</span>' +
+                        '<div class="lxr info" data-num=' + n.linkmanid + '>' +
+                        '<div class="lxr-name detail01">' + n.name + '</div>' +
+                        '<div class="lxr-cardno">' + n.idcardno + '</div>' +
+                        '<div class="rightInfo">' +
+                        '<div class="red" id=" + n.idcardno + ">' + (n.inpatentflag == '1' ? '有住院信息' : '') + '</div>' +
+                        '<div class="blue">' + myselftext + '</div>' +
+                        '</div></div></li>';
+            });
+            $('.cylxr').html(contactsData);
+
+            $('.contacts li').on('click', function () {
+                sessionStorage.sfzh = $(this).find('.lxr-cardno').html();
+                sessionStorage.name = $(this).find('.lxr-name').html();
+
+                if (!$.isEmptyObject($(this).find('.red').html())) {
+                    location.href = locationURL('inpatientCharge.html');
+                } else {
+                    var name = $(this).find('.lxr-name').html();
+                    swal(name + " 没有住院信息,无法进行住院预缴");
+                }
+            });
+        }
+    }
+
+    $(function () {
+        $.JDoAjax().add('BA020201', success).run();
+
+        $('.add-contact').click(function () {
+            location.href = 'contactAdd.html';
+        });
+    });
+</script>
+
+</body>
+
+</html>

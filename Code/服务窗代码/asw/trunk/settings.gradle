@@ -1,0 +1,11 @@
+rootProject.name = 'servicewindows'
+include ":cloudend", ":restfulclient"
+// cludend 为 git@git-server:zzw/cloudhospitad-endlibrary.git 项目
+//def projectDir = "../cloudhospitad-endlibrary.git";
+def projectDir = "../cloudhospitad-endlibrary";
+project(":cloudend").projectDir = new File(settingsDir, projectDir)
+// restfulclient 为 git@git-server:zzw/restfulclient.git
+//def restfulDir = "../restfulclient"
+def restfulDir = "../restfulclient"
+
+project(":restfulclient").projectDir = new File(settingsDir, restfulDir)

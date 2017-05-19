@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-module
+  type="WEB"
+  name="meeting_openmas_service"
+  id="myeclipse.1338726209047"
+  context-root="/meeting_openmas_service"
+  j2ee-spec="5.0"
+  archive="meeting_openmas_service.war">
+  <attributes>
+    <attribute name="webrootdir" value="WebRoot" />
+  </attributes>
+</project-module>
+

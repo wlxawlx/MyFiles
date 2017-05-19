@@ -1,0 +1,103 @@
+{
+  "data": [
+    {
+      "name": "精神分裂症",
+      "code": "01",
+      "symptom": [
+        {"name":"亲情冷淡","code":"01","corCode":"01"},
+        {"name":"自我封闭","code":"02","corCode":"02"},
+        {"name":"古里古怪的思想和动作","code":"03","corCode":"03"},
+        {"name":"对着空气讲话","code":"04","corCode":"04"},
+        {"name":"自言自语","code":"05","corCode":"05"}
+      ]
+    },
+    {
+      "name": "双相情感障碍",
+      "code": "02",
+      "symptom": [
+        {"name":"不开心、心情压抑、郁闷","code":"01","corCode":"06"},
+        {"name":"睡眠障碍、食欲下降","code":"02","corCode":"06"},
+        {"name":"自我评价低","code":"03","corCode":"06"},
+        {"name":"自杀、自伤行为","code":"04","corCode":"06"},
+        {"name":"兴奋、睡眠需求减少，精力旺盛","code":"05","corCode":"06"},
+        {"name":"爱吹牛、乱花钱","code":"06","corCode":"06"},
+        {"name":"话多、语速快、语音高亢","code":"07","corCode":"06"}
+      ]
+    },
+    {
+      "name": "焦虑障碍",
+      "code": "03",
+      "symptom": [
+        {"name":"紧张不安、提心吊胆，恐惧、害怕","code":"01","corCode":"07"},
+        {"name":"头晕、胸闷、心慌、呼吸急促、口干、出汗","code":"02","corCode":"07"},
+        {"name":"坐立不安、烦躁","code":"03","corCode":"07"},
+        {"name":"突发濒死感，觉得自己要死了","code":"04","corCode":"07"},
+        {"name":"广场恐惧症","code":"05","corCode":"07"}
+      ]
+    },
+    {
+      "name": "睡眠障碍",
+      "code": "04",
+      "symptom": [
+        {"name":"入睡困难、睡后易醒、早醒、多梦，睡眠时间过少和过多","code":"01","corCode":"08"},
+        {"name":"心情差，烦躁，记忆力下降","code":"02","corCode":"08"}
+      ]
+    },
+    {
+      "name": "儿童问题",
+      "code": "05",
+      "symptom": [
+        {"name":"多动、上课注意力不集中","code":"01","corCode":"09"},
+        {"name":"品行问题，电脑成瘾","code":"02","corCode":"09"},
+        {"name":"学习成绩下降，不敢去学校","code":"03","corCode":"09"},
+        {"name":"离不开家长","code":"04","corCode":"09"}
+      ]
+    },
+    {
+      "name": "精神活性物质",
+      "code": "06",
+      "symptom": [
+        {"name":"网络成瘾","code":"01","corCode":"10"},
+        {"name":"毒品成瘾","code":"02","corCode":"10"},
+        {"name":"使用酒精引起的精神和行为障碍","code":"03","corCode":"11"},
+        {"name":"酒精依赖，酒不离身","code":"04","corCode":"11"}
+      ]
+    },
+    {
+      "name": "痴呆",
+      "code": "07",
+      "symptom": [
+        {"name":"记忆力下降","code":"01","corCode":"12"},
+        {"name":"日常生活能力下降","code":"02","corCode":"12"},
+        {"name":"做事漫不经心","code":"03","corCode":"12"},
+        {"name":"日常习性改变","code":"04","corCode":"12"},
+        {"name":"脾气暴躁，容易生气","code":"05","corCode":"12"},
+        {"name":"认错人，不认识路，回不了家","code":"06","corCode":"12"}
+      ]
+    },
+    {
+      "name": "躯体形式障碍",
+      "code": "08",
+      "symptom": [
+        {"name":"胃肠道不舒服、皮肤瘙痒、烧灼感，疑病症，坚信自己生病了，反复就医","code":"01","corCode":"13"},
+        {"name":"灾难过后、突发生活事件、长期压力等造成的反应，恐惧感，做噩梦","code":"02","corCode":"13"},
+        {"name":"反复洗手，反复重复一句话，反复确认一件事情，拖延症","code":"03","corCode":"13"}
+      ]
+    }
+  ],
+  "correspond":[
+    {"name":[{"text":"普通精神科","departid":"401"}],"code":"01"},
+    {"name":[{"text":"超过60岁-老年记忆障碍门诊","departid":"406"}],"code":"02"},
+    {"name":[{"text":"第一次发病-早期干预科","departid":"409"}],"code":"03"},
+    {"name":[{"text":"中西医结合治疗精神障碍门诊","departid":"419"}],"code":"04"},
+    {"name":[{"text":"儿童青少年患者都看儿童青少年门诊","departid":"418"}],"code":"05"},
+    {"name":[{"text":"18周岁以下:儿童青少年门诊","departid":"418"},{"text":"超过60周岁:老年记忆障碍门诊","departid":"406"},{"text":"其他年龄:情感障碍科","departid":"407"},{"text":"其他年龄:普通精神科","departid":"401"}],"code":"06"},
+    {"name":[{"text":"焦虑障碍门诊","departid":"421"},{"text":"心身医学科","departid":"404"},{"text":"临床心理学科","departid":"415"},{"text":"普通精神科","departid":"401"},{"text":"中西医结合情志病科","departid":"411"}],"code":"07"},
+    {"name":[{"text":"睡眠障碍科","departid":"408"},{"text":"中西医结合治疗精神障碍门诊","departid":"419"},{"text":"中西医结合情志病科","departid":"411"},{"text":"普通精神科","departid":"401"}],"code":"08"},
+    {"name":[{"text":"儿童青少年心理问题门诊","departid":"420"},{"text":"儿童心理障碍门诊","departid":"418"},{"text":"普通精神科","departid":"401"}],"code":"09"},
+    {"name":[{"text":"成瘾行为科","departid":"405"},{"text":"普通精神科","departid":"401"},{"text":"中西医结合情志病科","departid":"411"}],"code":"10"},
+    {"name":[{"text":"戒酒门诊","departid":"416"},{"text":"普通精神科","departid":"401"},{"text":"中西医结合情志病科","departid":"411"}],"code":"11"},
+    {"name":[{"text":"老年记忆障碍门诊","departid":"406"},{"text":"普通精神科","departid":"401"}],"code":"12"},
+    {"name":[{"text":"心身医学科","departid":"404"},{"text":"心理咨询科","departid":"410"},{"text":"普通精神科","departid":"401"},{"text":"中西医结合情志病科","departid":"411"}],"code":"13"}
+  ]
+}

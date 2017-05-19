@@ -1,0 +1,17 @@
+{"partname":"头部","partcode":"01","subpart":[{"partname":"鼻","partcode":"0101"},{"partname":"耳","partcode":"0102"},{"partname":"口","partcode":"0103"},{"partname":"颅脑","partcode":"0104"},{"partname":"面部","partcode":"0105"},{"partname":"咽喉","partcode":"0106"},{"partname":"眼","partcode":"0107"}]}
+{"partname":"颈部","partcode":"02","subpart":[{"partname":"气管","partcode":"0202"}]}
+{"partname":"胸部","partcode":"03","subpart":[{"partname":"肺","partcode":"0301"},{"partname":"乳房","partcode":"0303"},{"partname":"心脏","partcode":"0305"}]}
+{"partname":"腹部","partcode":"04","subpart":[{"partname":"肠","partcode":"0401"},{"partname":"肝","partcode":"0405"},{"partname":"胃","partcode":"0408"}]}
+{"partname":"腰部","partcode":"05","subpart":[{"partname":"肾","partcode":"0501"},{"partname":"肾上腺","partcode":"0502"},{"partname":"输尿管","partcode":"0503"}]}
+{"partname":"臀部","partcode":"06","subpart":[{"partname":"肛门","partcode":"0601"}]}
+{"partname":"上肢","partcode":"07","subpart":[{"partname":"肩部","partcode":"0701"},{"partname":"上臂","partcode":"0703"},{"partname":"手部","partcode":"0704"}]}
+{"partname":"下肢","partcode":"08","subpart":[{"partname":"大腿","partcode":"0801"},{"partname":"膝部","partcode":"0802"},{"partname":"小腿","partcode":"0803"},{"partname":"足部","partcode":"0804"}]}
+{"partname":"骨","partcode":"09","subpart":[{"partname":"骨髓","partcode":"0901"},{"partname":"关节","partcode":"0902"},{"partname":"脊髓","partcode":"0903"},{"partname":"脊柱","partcode":"0904"},{"partname":"肋骨","partcode":"0905"},{"partname":"颅骨","partcode":"0906"},{"partname":"盆骨","partcode":"0907"},{"partname":"其他骨","partcode":"0908"},{"partname":"上肢骨","partcode":"0909"},{"partname":"下肢骨","partcode":"0910"}]}
+{"partname":"会阴部","partcode":"10"}
+{"partname":"男性生殖","partcode":"11","subpart":[{"partname":"睾丸","partcode":"1101"},{"partname":"阴茎","partcode":"1104"},{"partname":"阴囊","partcode":"1105"}]}
+{"partname":"女性生殖","partcode":"12","subpart":[{"partname":"卵巢","partcode":"1201"},{"partname":"输卵管","partcode":"1202"},{"partname":"阴道","partcode":"1204"},{"partname":"子宫","partcode":"1205"}]}
+{"partname":"盆腔","partcode":"13","subpart":[{"partname":"膀胱","partcode":"1301"},{"partname":"尿道","partcode":"1302"}]}
+{"partname":"全身","partcode":"14","subpart":[{"partname":"肌肉","partcode":"1401"},{"partname":"淋巴","partcode":"1402"},{"partname":"免疫系统","partcode":"1403"},{"partname":"皮肤","partcode":"1404"},{"partname":"血液血管","partcode":"1405"},{"partname":"周围神经系统","partcode":"1406"}]}
+{"partname":"心理","partcode":"15"}
+{"partname":"背部","partcode":"16"}
+{"partname":"其他","partcode":"17"}

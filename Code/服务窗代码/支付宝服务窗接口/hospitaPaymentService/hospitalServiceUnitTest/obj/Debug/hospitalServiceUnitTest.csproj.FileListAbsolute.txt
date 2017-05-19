@@ -1,0 +1,17 @@
+D:\七院接口\git2_code\联众\hospitaPaymentService\hospitalServiceUnitTest\bin\Debug\hospitalServiceUnitTest.dll.config
+D:\七院接口\git2_code\联众\hospitaPaymentService\hospitalServiceUnitTest\bin\Debug\hospitalServiceUnitTest.dll
+D:\七院接口\git2_code\联众\hospitaPaymentService\hospitalServiceUnitTest\bin\Debug\hospitalServiceUnitTest.pdb
+D:\七院接口\git2_code\联众\hospitaPaymentService\hospitalServiceUnitTest\bin\Debug\hospitaPaymentService.dll
+D:\七院接口\git2_code\联众\hospitaPaymentService\hospitalServiceUnitTest\bin\Debug\hospitaPaymentService.pdb
+D:\七院接口\git2_code\联众\hospitaPaymentService\hospitalServiceUnitTest\obj\Debug\hospitalServiceUnitTest.csprojResolveAssemblyReference.cache
+D:\七院接口\git2_code\联众\hospitaPaymentService\hospitalServiceUnitTest\obj\Debug\hospitalServiceUnitTest.dll
+D:\七院接口\git2_code\联众\hospitaPaymentService\hospitalServiceUnitTest\obj\Debug\hospitalServiceUnitTest.pdb
+D:\七院2017-03-17\支付宝服务窗接口\hospitaPaymentService\hospitalServiceUnitTest\bin\Debug\hospitalServiceUnitTest.dll.config
+D:\七院2017-03-17\支付宝服务窗接口\hospitaPaymentService\hospitalServiceUnitTest\bin\Debug\hospitalServiceUnitTest.dll
+D:\七院2017-03-17\支付宝服务窗接口\hospitaPaymentService\hospitalServiceUnitTest\bin\Debug\hospitalServiceUnitTest.pdb
+D:\七院2017-03-17\支付宝服务窗接口\hospitaPaymentService\hospitalServiceUnitTest\bin\Debug\hospitaPaymentService.dll
+D:\七院2017-03-17\支付宝服务窗接口\hospitaPaymentService\hospitalServiceUnitTest\bin\Debug\hospitaPaymentService.pdb
+D:\七院2017-03-17\支付宝服务窗接口\hospitaPaymentService\hospitalServiceUnitTest\obj\Debug\hospitalServiceUnitTest.csprojResolveAssemblyReference.cache
+D:\七院2017-03-17\支付宝服务窗接口\hospitaPaymentService\hospitalServiceUnitTest\obj\Debug\hospitalServiceUnitTest.dll
+D:\七院2017-03-17\支付宝服务窗接口\hospitaPaymentService\hospitalServiceUnitTest\obj\Debug\hospitalServiceUnitTest.pdb
+D:\七院2017-03-17\支付宝服务窗接口\hospitaPaymentService\hospitalServiceUnitTest\bin\Debug\log4net.dll

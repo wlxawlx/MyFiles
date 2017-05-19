@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta http-equiv="Expires" content="-1">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta http-equiv="Cache" content="no-cache">
+    <title>常用联系人信息</title>
+    <link rel="stylesheet" type="text/css" href="frozenui-1.3.0/css/frozen.css"/>
+    <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
+    <style>
+        .bind span:nth-child(2) {
+            color: #777;
+            position: absolute;
+            left: 50%;
+        }
+    </style>
+
+    <link rel="stylesheet" type="text/css" href="/css/main.css"/>
+
+</head>
+
+<body>
+
+<div class="personInfo">
+    <ul class="">
+        <li class="section-lr">
+            <div class="detail03">
+                <span>姓名</span>
+                <span id="name"></span>
+            </div>
+            <div class="detail04">
+                <span>证件号</span>
+                <span id="idCardNo"></span>
+            </div>
+            <div class="detail05">
+                <span>手机号</span>
+                <span id="phone"></span>
+            </div>
+        </li>
+    </ul>
+    <div class="section-lr">
+        <div class="bind">
+            <span>门诊卡</span>
+            <span></span>
+            <span><button class="bind-btn link-red00" type="button" name="button">详细</button></span>
+        </div>
+    </div>
+    <div class="hint pd-20x">
+        <i class="fa fa-info-circle blue"></i>为了您亲友的方便就诊，请保证联系人个人信息真实。
+    </div>
+    <div id="removeJYLXR" class="ui-btn-wrap">
+        <button class="ui-btn-lg ui-btn-primary"> 删除联系人</button>
+    </div>
+</div>
+
+<script type="text/javascript" src="js/min/zepto-min.js"></script>
+<script type="text/javascript" src="js/min/base-min.js"></script>
+<script type="text/javascript">
+</script>
+
+</body>
+
+</html>

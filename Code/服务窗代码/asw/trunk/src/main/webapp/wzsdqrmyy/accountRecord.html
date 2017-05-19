@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta http-equiv="Expires" content="-1"/>
+    <meta http-equiv="Pragma" content="no-cache"/>
+    <meta http-equiv="Cache-Control" content="no-cache"/>
+    <meta http-equiv="Cache" content="no-cache"/>
+    <title>预存缴清单</title>
+    <link rel="stylesheet" type="text/css" href="/frozenui-1.3.0/css/frozen.css">
+    <link rel="stylesheet" type="text/css" href="/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/main.css"/>
+    <script type="text/javascript" src="/js/min/zepto-min.js"></script>
+    <script type="text/javascript" src="/js/min/base-min.js"></script>
+</head>
+
+<body>
+<div class="accountRecord orderHistory account">
+    <div class="tabs-02">
+        <div class="tab01 action">门诊清单</div>
+        <div class="tab02">住院清单</div>
+    </div>
+    <div class="container">
+        <div class="tab-lists">
+            <div id="menu01_list" class="markStatu00">
+                <ul class="line-account"></ul>
+            </div>
+            <div id="menu02_list" class="markStatu00 hide">
+                <ul class="line-account"></ul>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $('.tabs-02 div').on('click', function () {
+        $('.tabs-02 div').removeClass('action');
+        $(this).addClass('action');
+        switch ($(this).text()) {
+            case '门诊清单':
+                $('.markStatu00').addClass('hide');
+                $('#menu01_list').removeClass('hide');
+                break;
+            case '住院清单':
+                $('.markStatu00').addClass('hide');
+                $('#menu02_list').removeClass('hide');
+                break;
+            default:
+        }
+    });
+
+    var outpatientSuccess = function (returnData) {
+        if (returnData.status == '99') {
+            $('#menu01_list').html(getNothingHtml(returnData.msg));
+        } else {
+            var datalist = returnData.data.list;
+            var outPatientList = '';
+            $.each(datalist, function (index, value) {
+                var time = value.ctime.split(' ');
+                outPatientList += '<li class="">' +
+                        '<div class="detail01">' +
+                        '<div>' + time[0] + '</div>' +
+                        '<div>' + time[1] + '</div>' +
+                        '</div>' +
+                        '<div class="detail05">' +
+                        '<i class="fa fa-jpy"></i>' +
+                        '</div>' +
+                        '<div class="detail03">' +
+                        '<div>' + value.orderm + '</div>' +
+                        '<div><span>' + value.ordername + '</span><span class="username"> ' + value.brxm + '</span></div>' +
+                        '</div>' +
+                        '<div class="detail04 grey">' + getPayState(value.orderstatus) + '</div>' +
+                        '</li>'
+            });
+            $('#menu01_list ul').html(outPatientList);
+        }
+    };
+
+    var inpatientSuccess = function (returnData) {
+        if (returnData.status == '99') {
+            $('#menu02_list').html(getNothingHtml(returnData.msg));
+        } else {
+            var datalist = returnData.data.list;
+            var outPatientList = '';
+            $.each(datalist, function (index, value) {
+                var time = value.ctime.split(' ');
+                outPatientList += '<li class="">' +
+                        '<div class="detail01">' +
+                        '<div>' + time[0] + '</div>' +
+                        '<div>' + time[1] + '</div>' +
+                        '</div>' +
+                        '<div class="detail05">' +
+                        '<i class="fa fa-jpy"></i>' +
+                        '</div>' +
+                        '<div class="detail03">' +
+                        '<div>' + value.orderm + '</div>' +
+                        '<div><span>' + value.ordername + '</span><span class="username"> ' + value.brxm + '</span></div>' +
+                        '</div>' +
+                        '<div class="detail04 grey">' + getPayState(value.orderstatus) + '</div>' +
+                        '</li>'
+            });
+            $('#menu02_list ul').html(outPatientList);
+        }
+    };
+    $(function () {
+        $.JDoAjax().add('PA010302', outpatientSuccess).add('PA020301', inpatientSuccess).run();
+    })
+</script>
+</body>
+
+</html>

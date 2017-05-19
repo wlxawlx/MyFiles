@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta http-equiv="Expires" content="-1">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta http-equiv="Cache" content="no-cache">
+    <title>当日医生列表</title>
+    <link rel="stylesheet" type="text/css" href="frozenui-1.3.0/css/frozen.css"/>
+    <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/main.css"/>
+
+    <style>
+        .btn {
+            top: 100%;
+            margin-top: -34px;
+            right: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="doctor-list-today">
+    <!--<div class="card-white-grey">-->
+    <!--<div class="title">医生姓名<span>职位级别</span></div>-->
+    <!--<div class="detail02"><span>科室名称:</span><span>普通内科</span></div>-->
+    <!--<div class="detail02"><span>班次名称:</span><span>上午</span></div>-->
+    <!--<div class="detail02"><span>挂号费用:</span><span>上午</span></div>-->
+    <!--<div class="detail02"><span>就诊地址:</span><span>上午</span></div>-->
+    <!--<div class="detail02"><span>已挂人数:</span><span>上午</span></div>-->
+    <!--<div class="detail02"><span>预约未挂:</span><span>上午</span></div>-->
+    <!--<div class="detail02"><span>挂号限额:</span><span>上午</span></div>-->
+    <!--<div><span class="link-blue00 btn">预约</span></div>-->
+    <!--</div>-->
+
+</div>
+<script type="text/javascript" src="js/min/zepto-min.js"></script>
+<script type="text/javascript" src="js/min/base-min.js"></script>
+<script type="text/javascript">
+    /**
+     * 当日预约挂号-预约科室查医生列表 (DR010201)
+     *
+     * @param returnData
+     */
+    /*
+     需要显示的信息如下:
+     | ysjb | 医生级别 | 显示的是医生的职位级别 |
+     | ysxm | 医生姓名 | 医生姓名          |
+     | ksmc | 科室名称 | 医生所在的科室名称|
+     | bcmc | 班次名称| 上午&下午|
+     | ghf   | 挂号费   |                       |
+     | jzdd  | 就诊地址  |                         |
+     | ygrs | 已挂人数 | 已经挂号就诊人数 限额时人数要求小于等于挂号限额人数|
+     | yywg | 预约未挂 | 预约了但未挂号的人数|
+     | ghxe | 挂号限额 | 限额时允许挂号人数 |
+     | xebz | 限额标志 | 1是有限额 0是没有限额 |
+     如果有限额界面就显示出限额的数量,没有就一个预约的按钮
+     */
+    function success(returnData) {
+        if (returnData.status == "99") {
+            $('.doctor-list-today').html(getNothingHtml(returnData.msg));
+        } else {
+            var data = returnData.data.list;
+            if ($.isEmptyObject(data)) {
+                $('.item').html(getNothingHtml('没有就诊医生'));
+            } else {
+                $.each(data, function (name, value) {
+                    //TODO 添加医生列表结构
+
+                    var limitDom;
+                    var btnDom = '<div class="order-btn"><span class="link-blue00 btn">预约</span></div>';
+                    switch (value.ghxe) {
+                        case 0:
+                            limitDom = '';
+                            break;
+                        case 1:
+                            limitDom = '<div class="detail02"><span>挂号限额:</span><span>' + value.ghxe + '</span></div>';
+                            curNum = value.ygrs + value.yywg;
+                            if (curNum >= value.ghxe) {
+                                btnDom = '<div><span class="link-red00 btn">已满</span></div>';
+                            }
+                            break;
+                    }
+
+                    var doctorData = '<div class="card-white-grey" data-id="' + value.pblsh + '">' +
+                            '<div class="title">' + value.ysxm + '<span>' + value.ysjb + '</span></div>' +
+                            '<div class="detail02"><span>科室名称:</span><span>' + value.ksmc + '</span></div>' +
+                            '<div class="detail02"><span>班次名称:</span><span>' + value.bcmc + '</span></div>' +
+                            '<div class="detail02"><span>挂号费用:</span><span>' + value.ghf + '</span></div>' +
+                            '<div class="detail02"><span>就诊地址:</span><span>' + value.jzdd + '</span></div>' +
+                            '<div class="detail02"><span>已挂人数:</span><span>' + value.ygrs + '</span></div>' +
+                            '<div class="detail02"><span>预约未挂:</span><span>' + value.yywg + '</span></div>' + limitDom + btnDom + '</div>';
+
+                    $(".doctor-list-today").append(doctorData);
+                });
+
+                $(".order-btn").on("click", function () {
+                    //TODO 需要给confimOrderToday页面的信息
+                    sessionStorage.todayInfo = JSON.stringify(data[$('.order-btn').index($(this))]);
+                    location.href = 'confirmOrderToday.html';
+                });
+            }
+        }
+    }
+
+    $(function () {
+        $.JDoAjax().isLoading(false).add("DR010201", success, {
+            "departid": sessionStorage.departId
+        }).run();
+    });
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta http-equiv="Expires" content="-1"/>
+    <meta http-equiv="Pragma" content="no-cache"/>
+    <meta http-equiv="Cache-Control" content="no-cache"/>
+    <meta http-equiv="Cache" content="no-cache"/>
+    <title>就诊卡信息</title>
+    <link rel="stylesheet" type="text/css" href="frozenui-1.3.0/css/frozen.css"/>
+    <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="css/main.css"/>
+    <script type="text/javascript" src="js/min/zepto-min.js"></script>
+    <script type="text/javascript" src="js/min/base-min.js"></script>
+</head>
+<body>
+<div class="patientInfo">
+    <ul class="">
+        <li class="section-lr">
+            <div>
+                <span class="letter-3">卡类型</span>
+                <span class="card-type"></span>
+            </div>
+            <div>
+                <span class="letter-2">卡号</span>
+                <span class="card-id"></span>
+            </div>
+            <div>
+                <span class="letter-3">身份证</span>
+                <span class="card-userid"></span>
+            </div>
+            <div>
+                <span>病人姓名</span>
+                <span class="card-name"></span>
+            </div>
+            <div>
+                <span>出生年月</span>
+                <span class="card-day"></span>
+            </div>
+            <div>
+                <span>联系方式</span>
+                <span class="card-phone"></span>
+            </div>
+            <div>
+                <span>账户余额</span>
+                <span class="card-money red"></span>
+            </div>
+            <div>
+                <span>累计费用</span>
+                <span class="card-count red"></span>
+            </div>
+        </li>
+    </ul>
+    <div class="ui-btn-wrap">
+        <button class="ui-btn-lg ui-btn-primary submit">解除绑定</button>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var manid = getURLData('linkmanid');
+
+    var success = function (returnData) {
+        if (returnData.status == "99") {
+            if (getURLData("isbind") == 1) {
+                swal(returnData.msg);
+            } else {
+                location.href = "bindCard.html";
+            }
+        } else {
+            var data;
+            if (getURLData("isbind") == 1) {
+                data = returnData.data.list[0];
+            } else {
+                data = returnData.data;
+            }
+            $(".card-type").html(data.cardtype);
+            $(".card-id").html(data.cardno);
+            $(".card-userid").html(data.idcardno);
+            $(".card-name").html(data.patientname);
+            $(".card-day").html(data.birthday);
+            $(".card-phone").html(data.phone);
+            $(".card-money").html('￥' + data.balance);
+            $(".card-count").html('￥' + data.cost);
+            $(".patientInfo").attr("data-id", data.patientid);
+        }
+    };
+    var success2 = function (returnData) {
+        if (returnData.status == "99") {
+            swal(returnData.msg);
+        } else {
+            swal({
+                title: '绑定成功',
+                type: 'success',
+                confirmButtonText: '确定'
+            }, function () {
+                sessionStorage.bindcardflag = '1';
+                sessionStorage.patientid = $(".patientInfo").attr("data-id");
+                history.go(-2);
+            })
+        }
+    };
+
+    // 解绑操作成功
+    var success3 = function (returnData) {
+        if (returnData.status == "99") {
+            swal(returnData.msg);
+        } else {
+            swal({
+                title: '解除绑定成功',
+                type: 'success',
+                confirmButtonText: '确定'
+            }, function () {
+                if ($.isEmptyObject(manid) && !$.isEmptyObject(sessionStorage.patientInfo) || manid == '-1') {
+                    var patientInfo = JSON.parse(sessionStorage.patientInfo);
+                    patientInfo.cardbind = '0';
+                    sessionStorage.patientInfo = JSON.stringify(patientInfo);
+                }
+                sessionStorage.bindcardflag = '0';
+                sessionStorage.patientid = '';
+                history.back();
+            })
+        }
+    };
+    $(function () {
+        var whatDo = getURLData("isbind");
+        if ($.isEmptyObject(manid) || manid == '-1') {
+            //  本人
+            if (whatDo == 1) {
+                $.JDoAjax().add("BA030101", success, {"cardno": getURLData("cardnum")}).run();
+                $(".submit").html("绑定就诊卡");
+            } else {
+                $.JDoAjax().add("BA030301", success).run();
+                $(".submit").html("解除绑定");
+            }
+        } else {
+            // 联系人
+            if (whatDo == 1) {
+                $.JDoAjax().add("BA030102", success, {"cardno": getURLData("cardnum"), 'linkmanid': manid}).run();
+                $(".submit").html("绑定就诊卡");
+            } else {
+                $.JDoAjax().add("BA030501", success, {'linkmanid': manid}).run();
+                $(".submit").html("解除绑定");
+            }
+        }
+
+        $('.submit').click(function () {
+            var text = $(this).html();
+            if (text == "绑定就诊卡") {
+
+                var content = new Object();
+                content.cardno = $(".card-id").html();
+                content.patientid = $(".patientInfo").attr("data-id");
+
+                console.log(content.cardno);
+                console.log(content.patientid);
+
+                if ($.isEmptyObject(manid) || manid == '-1') {
+                    $.JDoAjax().add("BA030201", success2, content).run();
+                } else {
+                    content.linkmanid = manid;
+                    $.JDoAjax().add("BA020401", success2, content).run();
+                }
+            } else if (text == "解除绑定") {
+                if ($.isEmptyObject(manid) || manid == '-1') {
+                    $.JDoAjax().add("BA030401", success3).run();
+                } else {
+                    $.JDoAjax().add('BA020501', success3, {'linkmanid': manid}).run();
+                }
+            } else {
+                swal("错误协议")
+            }
+        });
+    });
+</script>
+</body>
+
+</html>

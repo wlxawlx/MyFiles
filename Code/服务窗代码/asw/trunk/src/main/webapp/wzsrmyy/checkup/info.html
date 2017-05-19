@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta http-equiv="Expires" content="-1"/>
+    <meta http-equiv="Pragma" content="no-cache"/>
+    <meta http-equiv="Cache-Control" content="no-cache"/>
+    <meta http-equiv="Cache" content="no-cache"/>
+    <title>体检套餐</title>
+    <link rel="stylesheet" type="text/css" href="/frozenui-1.3.0/css/frozen.css">
+    <link rel="stylesheet" type="text/css" href="/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/main.css"/>
+    <script src="/js/laydate/laydate.js" type="text/javascript"></script>
+    <script type="text/javascript" src="/js/min/zepto-min.js"></script>
+    <script type="text/javascript" src="/js/min/base-min.js"></script>
+    <style>
+        .box {
+            margin-left: 95px;
+        }
+
+        .first {
+            margin-bottom: 10px;
+            font-size: 0;
+            background-color: #FFFFFF;
+            padding: 0 10px;
+        }
+
+        .first > div {
+            display: inline-block;
+            width: 49%;
+            font-size: 16px;
+            text-align: center;
+            margin: 5px 0;
+            height: 30px;
+            line-height: 30px;
+            box-shadow: 0 0 1px rgba(17, 170, 225, 1);
+            color: #000;
+        }
+
+        .first > div:nth-child(1) {
+            margin-right: 2%;
+        }
+
+        .cur {
+            background-color: rgba(17, 170, 225, 1);
+            color: #FFFFFF !important;
+        }
+
+        .section-lr {
+            padding: 0;
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+
+<body>
+<div>
+    <div class="ui-border-t">
+        <div class="section-lr">
+            <div class="add-contact ">
+                <span class="lxr-name"></span>
+                <span class="blue left-btn" id="exchange"><i class="fa fa-exchange"></i></span>
+            </div>
+        </div>
+        <div class="ui-form-item ui-border-b line-cell">
+            <label>婚否</label>
+            <div id="marry" class="box">
+                <form>
+                    <label class="ui-radio">
+                        <input type="radio" checked="checked" name="radio" value="0" onchange="marrychuanged(this)"/>是
+                    </label>
+                    <label class="ui-radio">
+                        <input type="radio" name="radio" value="1" onchange="marrychuanged(this)"/>否
+                    </label>
+                </form>
+            </div>
+        </div>
+        <div class="ui-form-item ui-border-b line-cell">
+            <label>预约日期</label>
+            <input id="orderDate" type="text" placeholder="选择日期">
+        </div>
+    </div>
+    <div class="ui-btn-wrap footer">
+        <button class="ui-btn-lg ui-btn-primary sureBtn">确认预约</button>
+    </div>
+</div>
+<script type="text/javascript">
+    var marrystate = 0;
+
+    (function () {
+        laydate({
+            elem: '#orderDate'
+        });
+        laydate.skin('yalan');
+        $("#hjaddress").on('click', function () {
+            $(".address").removeClass("hide");
+            $(".ui-container").addClass("hide")
+        });
+        $(".sj").on('click', function () {
+            var address = $(this).html();
+            $("#hjaddress").val(address);
+            $(".ui-container").removeClass("hide");
+            $(".address").addClass("hide");
+        })
+    })();
+
+    function marrychuanged(sel) {
+        marrystate = sel.value;
+    }
+
+    function tjRegistSuccess(returnData) {
+        if(returnData.status == '99'){
+            swal({
+                title:returnData.msg,
+                type:'error',
+                confirmButtonText:'确定'
+            })
+        }else{
+            swal({
+                title:'预约成功',
+                type:'success',
+                confirmButtonText:'确定'
+            },function () {
+                location.href = 'history.html';
+            })
+        }
+    }
+
+    function userInfoSuccess(returnData) {
+        if (returnData.status == "99") {
+            swal(returnData.msg);
+        } else {
+            var userInfo = returnData.data;
+            $('.lxr-name').html(userInfo.name);
+            sessionStorage.tjName = userInfo.name;
+            sessionStorage.userId = '-1'
+        }
+    }
+
+    $(function () {
+        if ($.isEmptyObject(sessionStorage.tjName)) {
+            $.JDoAjax().add('BA010301', userInfoSuccess).run();
+        } else {
+            $('.lxr-name').html(sessionStorage.tjName);
+        }
+
+
+        $('.sureBtn').click(function () {
+            var context = {
+                linkmainid: sessionStorage.userId,
+                hyzk: marrystate,
+                yyrq: $('#orderDate').val(),
+                tcid: sessionStorage.checkinId
+            };
+            $.JDoAjax().add('TJ010301', tjRegistSuccess, context).run();
+        });
+
+        $('#exchange').click(function () {
+            location.href = 'selectPatient.html';
+        })
+
+    })
+</script>
+</body>
+
+</html>

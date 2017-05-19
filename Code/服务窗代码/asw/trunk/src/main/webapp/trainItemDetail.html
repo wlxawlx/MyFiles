@@ -1,0 +1,137 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta http-equiv="Expires" content="-1">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta http-equiv="Cache" content="no-cache">
+    <title>报名缴费</title>
+    <link rel="stylesheet" type="text/css" href="frozenui-1.3.0/css/frozen.css"/>
+    <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="css/main.css"/>
+
+    <style>
+        .ui-form-item label {
+            text-align: left;
+            text-align-last: left;
+        }
+
+        .ui-form-item {
+            padding-left: 10px;
+        }
+
+        .bg-white {
+            background-color: #FFFFFF;
+        }
+    </style>
+    <link rel="stylesheet" type="text/css" href="css/main.css"/>
+
+
+    <script type="text/javascript" src="js/min/zepto-min.js"></script>
+    <script type="text/javascript" src="js/min/base-min.js"></script>
+</head>
+
+<body>
+<div class="">
+    <div class="head-blue-blue-12 train-coursename"></div>
+    <div>
+        <div class="line-cell bottomborder">
+            <span>报名价格:</span>
+            <span><sapn class='test-html train-coursefee'>100</sapn>元/人</span>
+        </div>
+        <div class="line-cell bottomborder">
+            <span>报名人数:</span>
+            <span class="change-num-btn"><button><i class="fa fa-minus numMin button"></i></button><span
+                    class="trainerNum blue">1</span><button>
+                <i class="fa fa-plus numPlus button"></i></button>人</span>
+        </div>
+        <div class="line-cell bottomborder">
+            <span>缴费合计:</span>
+            <span><span class="train-money train-coursefee test-html">0</span>元</span>
+        </div>
+        <div class="ui-form-item ui-form-item-textarea ui-border-b border-lr bg-white">
+            <label>备注信息:</label>
+            <span><textarea class="text" placeholder="请输入备注信息"></textarea></span>
+        </div>
+    </div>
+    <div class="hint">
+        <i class="fa fa-info-circle blue"></i><span
+            class="test-html train-courseremark">具体培训时间由培训中心统一安排，每期12位学员，额满开班.</span>
+    </div>
+    <div class="ui-btn-wrap">
+        <button class="ui-btn-lg ui-btn-primary submit">确认报名缴费</button>
+    </div>
+
+</div>
+<script type="text/javascript">
+
+    $('.numPlus').on('click', function () {
+        var num = $('.trainerNum').text();
+        num++;
+        $('.trainerNum').text(num);
+    });
+    $('.numMin').on('click', function () {
+        var num = $('.trainerNum').text();
+        if (num > 0) {
+            num--;
+            $('.trainerNum').text(num);
+        }
+    });
+    var submitTrainSuccess = function (returnData) {
+        if (returnData.status == '99') {
+            swal(returnData.msg);
+        } else {
+            location.href = returnData.data.aliwappayurl;
+        }
+    };
+
+    $(function () {
+        if ($.isEmptyObject(sessionStorage.trainInfo)) {
+            $('.prep-data').html(getNothingHtml('没有培训信息'));
+        } else {
+            console.log(sessionStorage.trainInfo);
+            loadingData('train', JSON.parse(sessionStorage.trainInfo));
+        }
+        if ($.isEmptyObject($('.train-courseremark').html())) {
+            $('.train-courseremark').parent().addClass('hide');
+        }
+
+        $('.button').click(function () {
+            var num = $('.trainerNum').html();
+            $('.train-money').html(num * $('.train-coursefee').html());
+        });
+
+        $('.submit').click(function () {
+            var money = $('.train-money').html();
+            swal({
+                title: '确定缴费' + money + '元?',
+                text: $('.train-coursename').html() + ",报名人数:" + $('.trainerNum').html() + "人",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                cancelButtonText: "取消",
+                confirmButtonText: "确定",
+                closeOnConfirm: false
+            }, function () {
+                var content = {
+                    'coursecode': JSON.parse(sessionStorage.trainInfo).coursecode,
+                    'courseid': JSON.parse(sessionStorage.trainInfo).courseid,
+                    'enterpeople': $('.trainerNum').html(),
+                    'userremark': $('.text').val()
+                };
+                $.JDoAjax().isLoading(false).add('SK010301', submitTrainSuccess, content).run();
+            });
+        });
+
+    })
+</script>
+
+</body>
+
+</html>

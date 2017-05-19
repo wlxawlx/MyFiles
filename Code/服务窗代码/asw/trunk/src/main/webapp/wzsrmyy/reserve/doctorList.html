@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta http-equiv="Expires" content="-1">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta http-equiv="Cache" content="no-cache">
+    <title>科室医生</title>
+    <link rel="stylesheet" type="text/css" href="/frozenui-1.3.0/css/frozen.css">
+    <link rel="stylesheet" type="text/css" href="/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/main.css"/>
+
+</head>
+
+<body>
+
+<div class="doctor-list">
+    <ul class="listDetail">
+        <li class="doctorInfo hide test">
+            <i class="fa fa-angle-right indicate-01"></i>
+            <div class="detail01">
+                <span>等等</span>
+                <span>等等</span>
+            </div>
+            <div class="detail02 blue">可预约数:<span>出差</span></div>
+        </li>
+    </ul>
+</div>
+<script type="text/javascript" src="/js/min/zepto-min.js"></script>
+<script type="text/javascript" src="/js/min/base-min.js"></script>
+<script type="text/javascript">
+    var success = function (returnData) {
+        if (returnData.status == "99") {
+            $('.doctorList').html(getNothingHtml(returnData.msg));
+        } else {
+            var data = returnData.data.list;
+            if ($.isEmptyObject(data)) {
+                $(".icon-detail-cell").html(getNothingHtml('没有相关医院信息'));
+            } else {
+                var data = returnData.data.list;
+                if ($.isEmptyObject(data)) {
+                    $(".icon-detail-cell").html(getNothingHtml('没有相关医院信息'));
+                } else {
+                    var doctorData = "";
+                    $.each(data, function (name, value) {
+                        doctorData += '<li class="doctorInfo" data-num=' + value.reserve + ' data-id=' + value.doctorid + ' data-name=' + value.doctorname + '>' +
+                                '<i class="fa fa-angle-right indicate-01"></i>' +
+                                '<div class="detail01">' +
+                                '<span>' + value.doctorname + '</span>' +
+                                '<span>' + value.level + '</span>' +
+                                '</div>' +
+                                '<div class="detail02 blue">可预约数:<span>' + value.reserve + '</span></div>' +
+                                '</li>';
+                    });
+                    $(".listDetail").html(doctorData);
+                    $(".doctorInfo").on("click", function () {
+                        var num = $(this).attr("data-num");
+                        var docotorid = $(this).attr("data-id");
+                        sessionStorage.doctorName = $(this).attr("data-name");
+                        location.href = "doctorItem.html?doctorid=" + docotorid;
+                    });
+                }
+            }
+        }
+    };
+
+    $(function () {
+        if ($.isEmptyObject(sessionStorage.doctorDepart)) {
+            $('title').html('科室医生');
+        } else {
+            $('title').html(sessionStorage.doctorDepart);
+        }
+
+        $.JDoAjax().isLoading(false).add("YY010201", success, {
+            "departid": getURLData("departid")
+        }).run();
+    });
+</script>
+
+</body>
+
+</html>

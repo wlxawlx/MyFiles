@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta http-equiv="Expires" content="-1">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta http-equiv="Cache" content="no-cache">
+    <title>检查报告详细</title>
+    <link rel="stylesheet" type="text/css" href="frozenui-1.3.0/css/frozen.css"/>
+    <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
+    <script type="text/javascript" src="js/min/zepto-min.js"></script>
+
+    <script type="text/javascript" src="js/min/base-min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="css/main.css" />
+
+</head>
+
+<body>
+<div class="report-detail">
+
+    <div class="baseInfo">
+        <div class="clear">
+            <span class="name">申请科室</span>
+            <span id="section" class="info blue"></span>
+        </div>
+        <div class="clear">
+            <span class="name">检查内容</span>
+            <span id="examinaim" class="info blue"></span>
+        </div>
+        <div class="clear">
+            <span class="name">检查人</span>
+            <span id="receiver" class="info blue"></span>
+        </div>
+        <div class="clear">
+            <span class="name">送检人</span>
+            <span id="requester" class="info blue"></span>
+        </div>
+        <div class="clear">
+            <span class="name">审核人</span>
+            <span id="checker" class="info blue"></span>
+        </div>
+        <div class="clear">
+            <span class="name">申请时间</span>
+            <span id="requesttime" class="info blue"></span>
+        </div>
+        <div class="clear">
+            <span class="name">检查时间</span>
+            <span id="receivetime" class="info blue"></span>
+        </div>
+
+    </div>
+    <div class="hintTitle">检查结果</div>
+    <div class="detailInfo">
+        <ul>
+            <div class="">
+                <span class="name">检查所见</span>
+                <div id="studyresult" class="info"></div>
+            </div>
+            <div class="">
+                <span class="name">检查诊断</span>
+                <div id="diagresult" class="info"></div>
+            </div>
+        </ul>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var callSize = 2;
+
+    var info_success = function (returnData) {
+        callSize--;
+        if (returnData.status == "99") {
+            swal(returnData.msg);
+        } else {
+            var data = returnData.data;
+            $("#section").text(data.section);
+            $("#examinaim").text(data.examinaim);
+            if (!$.isEmptyObject(data.receiver)) {
+                $("#receiver").text(data.receiver);
+            } else {
+                $("#receiver").html("&nbsp;&nbsp;");
+            }
+            $("#requester").text(data.requester);
+            $("#checker").text(data.checker);
+            $("#requesttime").text(data.requesttime);
+            if (!$.isEmptyObject(data.checktime)) {
+                $("#receivetime").text(data.checktime);
+            } else {
+                $("#receivetime").html("&nbsp;&nbsp;");
+            }
+        }
+
+        if (callSize == 0) {
+            dismissLoading();
+        }
+    };
+
+    var detail_success = function (returnData) {
+        callSize--;
+        if (returnData.status == "99") {
+            swal(returnData.msg);
+        } else {
+            var data = returnData.data;
+            $("#studyresult").text(data.studyresult);
+            $("#diagresult").text(data.diagresult);
+        }
+
+        if (callSize == 0) {
+            dismissLoading();
+        }
+    };
+
+    var error = function () {
+        console.log("error");
+    };
+
+    $(function () {
+        var doctadviseno = getURLData('doctadviseno');
+        if ($.isEmptyObject(doctadviseno)) {
+            return;
+        }
+
+        callSize = 2;
+        $.JDoAjax().isLoading(false).add("EX020201", info_success,{"doctadviseno": doctadviseno}).run();
+        $.JDoAjax().isLoading(false).add("EX020301", detail_success,{"doctadviseno": doctadviseno}).run();
+    });
+
+</script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta http-equiv="Expires" content="-1"/>
+    <meta http-equiv="Pragma" content="no-cache"/>
+    <meta http-equiv="Cache-Control" content="no-cache"/>
+    <meta http-equiv="Cache" content="no-cache"/>
+    <title>体检套餐明细</title>
+    <link rel="stylesheet" type="text/css" href="/frozenui-1.3.0/css/frozen.css">
+    <link rel="stylesheet" type="text/css" href="/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/main.css"/>
+    <script type="text/javascript" src="/js/min/zepto-min.js"></script>
+    <script type="text/javascript" src="/js/min/base-min.js"></script>
+</head>
+
+<body>
+<div class="detail-list" style="margin-bottom: 60px;"></div>
+<div class="ui-btn-wrap footer">
+    <button class="ui-btn-lg ui-btn-primary sureBtn">体检预约</button>
+</div>
+<script type="text/javascript">
+    function checkinDetail(returnData) {
+        if (returnData.status == '99') {
+            swal(returnData.msg);
+        } else {
+            var checkinDetailList = returnData.data;
+            var checkinDetailListHtml = '';
+            $.each(checkinDetailList, function (index, value) {
+                var checkinDetailHtml = '<div class="checkup-detail ui-active">' +
+                        '<div class="detail00">'+value.xmfl+'</div>';
+                var detailCellHtml = '';
+                $.each(value.list,function (index2, value2) {
+                    detailCellHtml += '<div class="detail01">'+(index2+1)+'.'+value2+'</div>'
+                });
+                checkinDetailHtml += detailCellHtml+'</div>';
+                checkinDetailListHtml += checkinDetailHtml;
+            });
+            $('.detail-list').html(checkinDetailListHtml);
+        }
+    }
+
+    $(function () {
+        $.JDoAjax().add('TJ010201', checkinDetail, {tcid: sessionStorage.checkinId}).run();
+
+        $('.sureBtn').click(function () {
+            location.href = 'info.html';
+        })
+    })
+</script>
+</body>
+
+</html>

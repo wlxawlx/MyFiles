@@ -1,0 +1,67 @@
+//体检---体检套餐列表
+public const string Command_Examination_TjtcList = "T001";
+//体检---体检套餐明细
+public const string Command_Examination_TcmxList = "T002";
+//体检---体检状态信息(手机号码)
+public const string Command_Examination_TjxxInfoInSjhm = "T003";
+//体检---体检查询报告
+public const string Command_Examination_TjcxReport = "T004";
+//体检——体检预约
+public const string Command_Examination_Tjyy = "T005";
+//体检——体检预约作废
+public const string Command_Examination_TjyyCancel = "T006";
+//体检——预约信息查询
+public const string Command_Examination_TjyyList = "T007";
+
+ //体检套餐列表
+    public struct TjtcList
+    {
+        public string tcid; //套餐ID
+        public string tcmc; //套餐名称
+        public double tcjg;//套餐价格
+        public string tcbz; //套餐说明
+        public string tclb; //套餐性别
+    }
+    //体检套餐明细
+    public struct TcmxList
+    {
+        public string tcid; //套餐ID
+        public string xmfl; //项目分类
+        public string xmmc; //明细名称
+    }
+    //体检状态信息
+    public struct TjxxInfo
+    {
+        public string tjbh; //体检编号
+        public string xm;   //姓名
+        public string xb;   //性别
+        public long nl;     //年龄
+        public string tcmc; //套餐名称
+        public DateTime tjrq; //体检日期
+        public string tjzt; //体检状态
+    }
+
+    //体检列表
+    public struct TjyyList
+    {
+        public long   yylsh; //预约流水号
+        public long   yhid; //用户ID
+        public DateTime yyrq; //预约日期
+        public string brxm; //体检姓名
+        public string sfzh; //身份证号
+        public string lxdh; //联系电话
+        public string tcmc; //套餐金额
+        public double tcjg; //套餐价格
+        public string yyzt; //预约状态
+        public string bzxx; //备注信息
+    }
+
+
+
+
+
+
+
+
+
+

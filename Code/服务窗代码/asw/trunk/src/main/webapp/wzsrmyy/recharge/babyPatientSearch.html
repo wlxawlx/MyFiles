@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta http-equiv="Expires" content="-1">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta http-equiv="Cache" content="no-cache">
+    <title>婴儿住院信息查询</title>
+    <link rel="stylesheet" type="text/css" href="/frozenui-1.3.0/css/frozen.css">
+    <link rel="stylesheet" type="text/css" href="/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/main.css"/>
+
+    <style>
+        .ui-form-item label {
+            width: 80px !important;
+            text-align: left !important;
+        }
+
+        .ui-border-t {
+            background-color: #ffffff;
+            margin-top: 10px;
+        }
+    </style>
+    <script type="text/javascript" src="/js/min/zepto-min.js"></script>
+
+    <script type="text/javascript" src="/js/min/base-min.js"></script>
+</head>
+
+<body>
+<div class="ui-border-t">
+    <form action="#" id="jdForm" class="jdForm">
+        <div class="ui-form-item ui-border-b">
+            <label>住院床号</label>
+            <input id="bednum" type="number" placeholder="请输入住院床号">
+            <a href="#" class="ui-icon-close"></a>
+        </div>
+        <div class="ui-form-item ui-border-b">
+            <label>家长姓名</label>
+            <input id="name" type="text" placeholder="请输入婴儿家长姓名">
+            <a href="#" class="ui-icon-close"></a>
+        </div>
+    </form>
+</div>
+<div class="ui-btn-wrap">
+    <button class="ui-btn-lg ui-btn-primary sureBtn submit">查询</button>
+</div>
+
+<script type="text/javascript">
+    function success(returnData) {
+        if (returnData.status == "99") {
+            swal(returnData.msg);
+        } else {
+            sessionStorage.babyInpatientInfo = JSON.stringify(returnData.data);
+            location.href = 'babyInpatientCharge.html';
+        }
+    }
+
+    $(function () {
+        $(".submit").click(function () {
+            var name = $("#name").val();
+            var bednum = $("#bednum").val();
+
+            if ($.isEmptyObject(name)) {
+                swal("家长姓名不能为空");
+                return false;
+            }
+
+            if ($.isEmptyObject(bednum)) {
+                swal("床位号不能为空");
+                return false;
+            }
+
+            $.JDoAjax().add('IN020101', success,{"brch": bednum}).run();
+        });
+    });
+
+</script>
+
+</body>
+
+</html>

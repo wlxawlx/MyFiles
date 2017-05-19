@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta http-equiv="Expires" content="-1">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta http-equiv="Cache" content="no-cache">
+    <title>住院费用</title>
+    <link rel="stylesheet" type="text/css" href="frozenui-1.3.0/css/frozen.css"/>
+    <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="css/iconfont/iconfont.css">
+    <style>
+        .inHospitalCost {
+            height: 100%;
+        }
+
+        .grey {
+            color: #c7c7c7;
+        }
+
+        ul {
+            padding: 0 10px;
+            background: #fff;
+        }
+
+        li {
+            position: relative;
+            padding: 5px 10px;
+            background-color: #fff;
+            border-bottom: 1px #e5e6e7 solid;
+        }
+
+        .detail01 {
+            height: 30px;
+            line-height: 30px;
+        }
+
+        .detail01 span:nth-child(1) {
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        .head {
+            position: relative;
+            line-height: 45px;
+            padding: 0 10px;
+            /* border-top: 1px solid #e5e6e7; */
+        }
+
+        .costdetail {
+            background-color: #ffffff;
+        }
+
+        .head .itemtitle {
+            display: inline-block;
+            font-weight: bold;
+            font-size: 1.2em;
+            margin-right: 4px;
+            width: 78px;
+        }
+
+        .head > span:nth-child(2) {
+            position: absolute;
+            top: 50%;
+            margin-top: -22.5px;
+            right: 0;
+            width: 130px;
+        }
+
+        .head > span:nth-child(3) {
+            display: inline-block;
+            width: 60px;
+            text-align: right;
+            position: absolute;
+            top: 50%;
+            margin-top: -22.5px;
+        }
+    </style>
+    <script type="text/javascript" src="js/min/echarts.min.js"></script>
+    <script type="text/javascript" src="js/min/zepto-min.js"></script>
+    <script type="text/javascript" src="js/min/base-min.js"></script>
+
+
+    <link rel="stylesheet" type="text/css" href="/css/main.css"/>
+
+</head>
+
+<body>
+<div class="inHospitalCost prep-data">
+    <ul class="cost-list">
+        <li class="item" data-id="2">
+            <div class="detail01">
+                <div><span class="data-self-brxm test-html">胡静</span> <span
+                        class="data-self-bqmc test-html float-r grey">**区**床位</span>
+                </div>
+            </div>
+            <div class="detail02">
+                <div class="cost-all grey"><span class="data-self-xzmc"></span><span>病人</span><span
+                        class="float-r data-self-ryrq test-html">2016-1-1</span></div>
+            </div>
+            <div class="detail03">
+                <span class="cost-all data-self-hj test-html"><span>总费用: </span></span>
+                <span class="cost-all float-r data-self-jkje">预缴款: <span class="red cost-self"></span></span>
+            </div>
+            <div class="detail03">
+                <span class="cost-all data-self-yb test-html"><span>医保: </span></span>
+                <span class="cost-all float-r data-self-zfje">自负: <span class="red cost-self"></span></span>
+            </div>
+        </li>
+    </ul>
+    <div id="main" style="width: 100%;height:400px;"></div>
+    <div class="costdetail">
+        <!--<div class="head hide">-->
+        <!--<span class="itemtitle">-->
+        <!--<span class="xmmc">西药费</span>-->
+        <!--</span>-->
+        <!--<span>总计: <span class="zjje">200</span></span>-->
+        <!--<span class="percent">44.91</span><span>%</span>-->
+        <!--<span class="float-r">自付: <span class="red zfje">100</span></span>-->
+        <!--</div>-->
+        <!--<div class="cost-cell test">-->
+        <!--<div class="detail10">氯化钠</div>-->
+        <!--<div class="detail11">规格: <span>500ml</span>、<span>100.00</span> /<span>袋</span></div>-->
+        <!--<div class="detail13">数量: <span>256</span></div>-->
+        <!--<div class="detail13">合计: <span class="red"> <span>256.00</span></span></div>-->
+        <!--</div>-->
+        <!--<div class="head">-->
+        <!--<span class="itemtitle">-->
+        <!--<span class="xmmc">西药费</span>-->
+        <!--</span>-->
+        <!--<span>总计: <span class="zjje">2000</span></span>-->
+        <!--<span><span class="percent">12</span><span>%</span></span>-->
+        <!--</div>-->
+    </div>
+
+</div>
+<script type="text/javascript">
+
+    // 处理精度问题的四则运算
+    function fixMath(m, n, op) {
+        var a = (m + "");
+        var b = (n + "");
+        var x = 1;
+        var y = 1;
+        var c = 1;
+        if (a.indexOf(".") > 0) {
+            x = Math.pow(10, a.length - a.indexOf(".") - 1);
+        }
+        if (b.indexOf(".") > 0) {
+            y = Math.pow(10, b.length - b.indexOf(".") - 1);
+        }
+        switch (op) {
+            case '+':
+            case '-':
+                c = Math.max(x, y);
+                m = Math.round(m * c);
+                n = Math.round(n * c);
+                break;
+            case '*':
+                c = x * y;
+                m = Math.round(m * x);
+                n = Math.round(n * y);
+                break;
+            case '/':
+                c = Math.max(x, y);
+                m = Math.round(m * c);
+                n = Math.round(n * c);
+                c = 1;
+                break;
+        }
+        return eval("(" + m + op + n + ")/" + c);
+    }
+
+    /*Javascript设置要保留的小数位数，四舍五入。
+     *ForDight(Dight,How):数值格式化函数，Dight要格式化的 数字，How要保留的小数位数。
+     *这里的方法是先乘以10的倍数，然后去掉小数，最后再除以10的倍数。
+     */
+    function ForDight(Dight, How) {
+        Dight = Math.round(Dight * Math.pow(10, How)) / Math.pow(10, How);
+        return Dight.toFixed(How);
+    }
+
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('main'));
+    var costData = [];
+    var labelData = [];
+    // 指定图表的配置项和数据
+    option = {
+        title: {
+            text: '',
+            x: '38%',
+            y: '45%'
+        },
+        tooltip: {
+            showContent: false,
+            trigger: 'item',
+            formatter: "{a} <br/>{b}: {c} ({d}%)"
+        },
+        series: [
+            {
+                name: '费用成分',
+                type: 'pie',
+                radius: ['40%', '70%'],
+                center: ['50%', '55%'],
+                avoidLabelOverlap: false,
+//                selectedMode: 'single',
+//                label: {
+//                    normal: {
+//                        show: false,
+//                        position: 'center'
+//                    },
+//                    emphasis: {
+//                        show: true,
+//                        textStyle: {
+//                            fontSize: '30',
+//                            fontWeight: 'bold'
+//                        }
+//                    }
+//                },
+//                labelLine: {
+//                    normal: {
+//                        show: false
+//                    }
+//                },
+                data: [
+//                    {value: 335, name: '直接访问'},
+//                    {value: 310, name: '邮件营销'},
+//                    {value: 234, name: '联盟广告'},
+//                    {value: 135, name: '视频广告'},
+//                    {value: 1548, name: '搜索引擎'}
+                ]
+            }
+        ]
+    };
+    //    myChart.setOption(option);
+    //    //初始化图表的点击操作
+    //    myChart.on('click', function (param) {
+    //        console.log(param);
+    //
+    //    });
+
+    // 用于缓存处理
+    //    var lastfyxm = "";
+    //
+    //    var costDetailSuccess = function (returnData) {
+    //        if (returnData.status == '99') {
+    //            $('.costdetail').html(getNothingHtml(returnData.msg));
+    //        } else {
+    //            var listData = returnData.data;
+    //            var detailList = '<div class="detail-list" id=' + lastfyxm + '>';
+    //            $.each(listData.list, function (index, value) {
+    //                detailList += '<div class="cost-cell">' +
+    //                        '<div class="detail00">' + value.fymc + '</div>' +
+    //                        '<div class="detail02">规格: ';
+    //                if (!$.isEmptyObject(value.fygg)) {
+    //                    detailList += '<span>' + value.fygg + '</span>、';
+    //                }
+    //                detailList += '<span>' + value.fydj + '</span> /<span>' + value.fydw + '</span></div>' +
+    //                        '<div class="detail03">数量: <span>' + value.fysl + '</span>' +
+    //                        '<span class="float-r">合计: <span class="red"> <span>' + value.zjje + '</span></span></span>' +
+    //                        '</div>' +
+    //                        '</div>';
+    //            });
+    //            console.log($('#' + lastfyxm).length == 0);
+    //            if ($('#' + lastfyxm).length == 0) {
+    //                $('.costdetail').append(detailList + '</div>');
+    //            }
+    //        }
+    //    };
+
+    var totle = 100;
+
+    var costListSuccess = function (returnData) {
+        if (returnData.status == '99') {
+            $('#main').html(getNothingHtml(returnData.msg));
+        } else {
+            var costList = returnData.data.list;
+            if ($.isEmptyObject(costList)) {
+                $('#main').html(getNothingHtml('没有相关费用信息'));
+            } else {
+                $.each(costList, function (index, value) {
+                    costData.push({
+                        'value': value.zjje,
+                        'name': value.xmmc,
+                        'fyxm': value.fyxm,
+                        'zfje': value.zfje,
+                        'xmmc': value.xmmc,
+                        'zjje': value.zjje
+                    });
+
+                    labelData.push(value.xmmc);
+                });
+                myChart.hideLoading();
+                option.series[0]['data'] = costData;
+
+                // 使用刚指定的配置项和数据显示图表。
+                myChart.setOption(option);
+
+                console.log(myChart);
+                var chartData = myChart._chartsViews[0]._data;
+                console.log(chartData);
+                var costdetailHtml = '';
+                $.each(chartData._rawData, function (index, value) {
+
+                    var num = ForDight(fixMath(value.zjje, totle, '/') * 100, 2);
+
+                    costdetailHtml += '<div class="head">' +
+                            '<span class="itemtitle" style="color:' + chartData._itemVisuals[index].color + '">' +
+                            '    <span class="xmmc">' + value.xmmc + '</span>' +
+                            '</span>' +
+                            '    <span>总计: <span class="zjje">' + value.zjje + '</span></span>' +
+                            '    <span><span class="percent">' + num + '</span><span>%</span></span>' +
+                            '</div>';
+                });
+
+                $('.costdetail').html(costdetailHtml);
+
+                //初始化图表的点击操作
+//                myChart.on('click', function (param) {
+//
+//                    console.log(myChart);
+//                    $('.costdetail').removeClass('hide');
+//                    $('.xmmc').html(param.data.xmmc);
+//                    $('.zjje').html(param.data.zjje);
+//                    $('.zfje').html(param.data.zfje);
+//                    $('.percent').html(param.percent);
+//
+//                    if (!$.isEmptyObject(param.event.target.hoverStyle.fill)) {
+//                        $('.head').attr("style", "background: " + param.event.target.hoverStyle.fill + ";");
+//                    }
+//
+//                    lastfyxm = param.data.fyxm;
+//                    if ($('#' + lastfyxm).length == 0) {
+//                        var content = JSON.stringify({
+//                            'linkmanid': sessionStorage.linkmanid,
+//                            'fyxm': lastfyxm,
+//                            'fyrq': ''
+//                        });
+//                        showLoading();
+//                        $.JDoAjax().isLoading(false).add('IN010203', costDetailSuccess).run();
+//                        dismissLoading();
+//                    } else {
+//                        $('.detail-list').addClass('hide');
+//                        $('#' + lastfyxm).removeClass('hide');
+//                    }
+//                });
+            }
+        }
+    };
+
+    var patientInfoSuccess = function (returnData) {
+        var inpatientCost = $('.inHospitalCost');
+        if (returnData.status == '99') {
+            inpatientCost.html(getNothingHtml(returnData.msg));
+        } else {
+            var data = returnData.data;
+            loadingData('data-self', data);
+            $('.data-self-bqmc').append('  ' + data.brch + " 床");
+            $('.data-self-ryrq').text(data.ryrq.split(" ")[0] + " 入院");
+            totle = fixMath(data.ylhj, data.lwhj, '+');
+            $('.data-self-hj').text("总费用: " + totle);
+            $('.data-self-yb').text("医保: " + fixMath(fixMath(data.ylhj, data.lwhj, '+'), data.zfje, '-'));
+
+            option.title.text = "余额\n" + fixMath(data.jkje, data.zfje, '-');
+            // 使用刚指定的配置项和数据显示图表。
+            myChart.setOption(option);
+        }
+        inpatientCost.removeClass('hide');
+    };
+
+    $(function () {
+//        $('.item').click(function () {
+//            sessionStorage.itemId = $(this).attr('data-id');
+//            location.href = 'inpatientCostDetail.html'
+//        });
+        if ($.isEmptyObject(sessionStorage.sfzh)) {
+            location.href = 'selectInpatientCost2Patient.html';
+        } else {
+            $.JDoAjax().isLoading(false).add('IN020102', patientInfoSuccess, {
+                'sfzh': sessionStorage.sfzh,
+                'name': sessionStorage.name
+            }).run();
+        }
+
+        if ($.isEmptyObject(sessionStorage.linkmanid)) {
+            $('.inHospitalCost').html(getNothingHtml('请先选择需要查询的联系人'));
+        } else {
+            myChart.showLoading({text: '正在努力的读取数据中...'});
+            $.JDoAjax().isLoading(false).add('IN010103', costListSuccess, {
+                'linkmanid': sessionStorage.linkmanid
+            }).run();
+        }
+    })
+</script>
+</body>
+</html>

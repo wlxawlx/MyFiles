@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta http-equiv="Expires" content="-1">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta http-equiv="Cache" content="no-cache">
+    <title>预约</title>
+    <link rel="stylesheet" type="text/css" href="frozenui-1.3.0/css/frozen.css">
+    <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="css/main.css"/>
+    <script type="text/javascript" src="js/min/zepto-min.js"></script>
+    <script type="text/javascript" src="js/min/base-min.js"></script>
+    <style>
+        .in-the-top {
+            position: relative;
+            z-index: 999;
+        }
+
+        .double-column .list {
+            width: 100%;
+            position: relative;
+        }
+
+        .list-content .indicate-01 {
+            margin-top: -22.5px;
+        }
+    </style>
+</head>
+
+<body>
+<div class="chooseRoom accountRecord ui-tab">
+    <ul class="ui-tab-nav ui-border-b in-the-top">
+        <li class="current">按科室</li>
+        <li class="">按医生</li>
+    </ul>
+
+    <ul class="ui-tab-content" style="width:200%">
+        <li class="current">
+            <div class="double-column blue">
+                <div class="list">
+                </div>
+            </div>
+        </li>
+        <li>
+            <div>
+                <div class="ui-searchbar-wrap ui-border-b searchbar in-the-top">
+                    <div class="ui-searchbar ui-border-radius">
+                        <i class="ui-icon-search"></i>
+                        <div class="ui-searchbar-text">请输入医生姓名或医生拼音首字</div>
+                        <div class="ui-searchbar-input">
+                            <input class="pydm" type="search" placeholder="请输入医生姓名或医生拼音首字" autocapitalize="off"
+                                   onblur="keydown()">
+                        </div>
+                        <i class="ui-icon-close"></i>
+                    </div>
+                    <button class="ui-searchbar-cancel">取消</button>
+                </div>
+                <div class="doctor-list ui-scroller">
+                    <ul class="listDetail"></ul>
+                    <div class="hint">
+                        <i class="fa fa-info-circle blue"></i>
+                        请输入医生姓名或医生拼音首字。例如：要查询张三医生，可直接录入医生姓名或 zs (张三的拼音首字)来进行查询。
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>
+<script type="text/javascript">
+    var lastPage = false;
+    var doctorNum = 10;//每页数量
+    var content = {
+        'pydm': '',
+        'pageindex': 0,
+        'pagesize': doctorNum
+    };
+
+    var pageScroll;
+    var isFirst = true;//是否第一次执行
+    var haveData = true;//是否还有数据
+    var isLoading = false;
+
+    var doctorid;
+    function getDoctorInfo(returnData) {
+        if (returnData.status == "99") {
+            swal({
+                title: '获取医生信息失败',
+                type: 'error',
+                confirmButtonText: '确定'
+            })
+        } else {
+            var doctorInfo = returnData.data;
+            doctorInfo.ysbm = doctorid;
+            sessionStorage.tempDoctorInfo = JSON.stringify(doctorInfo);
+            location.href = 'doctorItem.html';
+        }
+    }
+
+    //捕捉回车事件
+    function keydown() {
+        content.pageindex = 0;
+        $('.listDetail').html('');
+        var pydm = $('.pydm').val().trim();
+        if (!$.isEmptyObject(pydm)) {
+            content.pageindex = 1;
+            content.pydm = pydm;
+            $.JDoAjax().add('BA040201', doctorSuccess, content).run();
+        }
+    }
+
+    function success(returnData) {
+        if (returnData.status == "99") {
+            $('.list').html(getNothingHtml(returnData.msg));
+            alert(returnData.msg);
+        } else {
+            var data = returnData.data.list;
+            var secondData = "<ul>";
+            $.each(data, function (name, value) {
+                secondData += '<li class="list-content" data-id="' + value.departid + '"> <span class="disease-room">' + value.departname + '</span> <span class="indicate-01"><i class="fa fa-angle-right"></i></span> </li>'
+            });
+            secondData += '</ul>';
+            $(".list").html(secondData);
+
+            $("li.list-content").on('click', function () {
+                sessionStorage.departId = $(this).attr("data-id");
+                window.location.href = "doctorList.html?departid=" + $(this).attr("data-id");
+                sessionStorage.doctorDepart = $(this).find('.disease-room').html();
+            });
+        }
+    }
+
+    function doctorSuccess(returnData) {
+        $('.hint').addClass('hide');
+        if (returnData.status == '99') {
+            haveData = false;
+            if (content.pageindex <= 1)
+                $('.listDetail').html(getNothingHtml(returnData.msg));
+            else {
+                if (!lastPage) {
+                    lastPage = true;
+                }
+            }
+        } else {
+            var doctorList = returnData.data;
+            if (doctorList.length == 0 && isFirst) {
+                $('.ui-list').html(getNothingHtml('没有相关症状'));
+                haveData = false;
+            } else {
+                if (doctorList.length < doctorNum) {
+                    haveData = false;
+                }
+                var doctorHtml = '';
+                $.each(doctorList, function (index, value) {
+                    doctorHtml += '<li class="doctorInfo" data-ysbm=' + value.ysbm + ' data-ksbm=' + value.ksbm + ' data-name=' + value.ysxm + '>' +
+                            '<i class="fa fa-angle-right indicate-01"></i>' +
+                            '<div class="detail01">' +
+                            '<span>' + value.ysxm + '</span>' +
+                            '<span>' + value.zcmc + '</span>' +
+                            '</div>' +
+                            '<div class="detail02">' + value.ksmc + '</div>' +
+                            '</li>';
+                });
+                $('.listDetail').append(doctorHtml);
+
+                if (typeof pageScroll == 'undefined' || content.pageindex <= 1) {
+                    pageScroll = new fz.Scroll('.ui-scroller', {
+                        scrollY: true
+                    });
+                } else {
+                    pageScroll.refresh();
+                }
+
+                $(".doctorInfo").on("click", function () {
+                    doctorid = $(this).attr('data-ysbm');
+                    $.JDoAjax().add("BA040301", getDoctorInfo, {"ysbm": doctorid}).run();
+                });
+            }
+        }
+    }
+
+    $(function () {
+        new fz.Scroll('.ui-tab', {
+            role: 'tab',
+            autoplay: false,
+            interval: 3000
+        });
+
+        $('.ui-scroller').height($(window).height() - 89);
+        $('.ui-scroller')[0].addEventListener('touchend', touchEnd, false);
+
+        function touchEnd(event) {
+            if (typeof pageScroll == 'undefined') {
+
+            } else {
+                var scollHeight = pageScroll.scrollerHeight - pageScroll.wrapperHeight;
+                if (pageScroll.getComputedPosition().y * -1 > scollHeight) {
+                    content.pageindex++;
+                    content.pydm = $('.pydm').val().trim();
+                    $.JDoAjax().add('BA040201', doctorSuccess, content).run();
+                }
+            }
+        }
+
+        $(".ui-searchbar").on('click', function () {
+            $('.ui-searchbar-wrap').addClass('focus');
+            $('.ui-searchbar-input input').focus();
+        });
+        $(".ui-searchbar-cancel").on('click', function () {
+            $('.ui-searchbar-wrap').removeClass('focus');
+        });
+
+        $.JDoAjax().add('YY010102', success).run();
+    });
+</script>
+</body>
+
+</html>

@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta http-equiv="Expires" content="-1">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta http-equiv="Cache" content="no-cache">
+    <title>科室医生</title>
+    <link rel="stylesheet" type="text/css" href="frozenui-1.3.0/css/frozen.css"/>
+    <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
+    <script type="text/javascript" src="js/min/zepto-min.js"></script>
+    <script type="text/javascript" src="js/min/base-min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/main.css"/>
+</head>
+
+<body>
+
+<div class="doctorRegister">
+    <div class="header">
+        <div class="doctor-info">
+            <!-- <i class="fa fa-user-md iconImg"></i> -->
+            <img class="icon doctor-icon" src="image/default_doctor.png" alt=""/>
+            <div class="info">
+                <div class="doctor-name"></div>
+                <div class="doctor-level"></div>
+                <div class="doctor-depart"></div>
+            </div>
+            <!--<div class="extra hide">-->
+            <!--<img class="code" src="image/code.jpg" alt=""/>-->
+            <!--<i class="fa fa-heart fa-2x" id="favorite"></i>-->
+            <!--</div>-->
+        </div>
+    </div>
+    <div class="tabs-flexible-02">
+        <div class="tab01 action">挂号</div>
+        <div class="tab02">介绍</div>
+    </div>
+    <ul class="tab-lists">
+        <li class="list01 hide">
+            <div class="room-display">
+                <span class="current">呼吸科室</span>
+                <span class="menu"><i class="fa fa-bars fa-2x"></i></span>
+                <span class="menu-list hide">
+                    <span>呼吸科室</span><br/>
+                    <span>儿科</span><br>
+                    <span>儿科2</span>
+                </span>
+            </div>
+            <div id="doctorOrder">
+                <div id="dateList">
+                    <div class="moreTime hide">
+                        <div class="datepoint">
+                            <span class="date">
+                                <span>01-05</span>
+                                <span>周五/上午</span>
+                            </span>
+                            <div class="room">
+                                <!-- <span>¥30</span> -->
+                                <i class="fa fa-angle-down"></i></div>
+                            <span class="total float-r"><span class="blue">30</span>/  30
+
+                            </span>
+                        </div>
+                        <div class="dateDetails ">
+                            <div class="detailBegin">
+                                挂号费: <span class="red">¥30</span>
+                            </div>
+                            <div class="checkTime">
+                                <div class="timePicker">11:10</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </li>
+        <li class="list02 hide">
+            <ul>
+                <li class="border-bottom bottomborder">
+                    <span class="blue">擅长:</span>
+                    <span class="doctor-good"></span>
+                </li>
+                <li class="">
+                    <span class="blue">简介:</span>
+                    <span class="doctor-detail"></span>
+                </li>
+            </ul>
+        </li>
+    </ul>
+
+</div>
+
+<div class="alert-hint hide" id="alert-hint">
+    <span class="favorite"> </span>
+</div>
+<script type="text/javascript">
+    var registLists = '';
+    var more = false;
+    SwitchTab00(more);
+
+    function SwitchTab00(flag) {
+        $('.menu').on('click', function () {
+            flag = !flag;
+            switchStatu00(flag);
+        });
+
+        $('.menu-list span').on('click', function () {
+            flag = !flag;
+            switchStatu00(flag);
+            $('.room-display .current').html($(this).text());
+            showRegistList(registLists[$(this).index() / 2]);
+        });
+    }
+    function switchStatu00(flag) {
+        console.log(flag);
+        switch (flag) {
+            case false:
+                $('.menu-list').removeClass('fade-in');
+                $('.menu-list').addClass('fade-out');
+                setTimeout(function () {  //下拉刷新完执行
+                    $('.menu-list').addClass('hide');
+                }, 900);
+
+                break;
+            case true:
+                $('.menu-list').removeClass('hide');
+                $('.menu-list').removeClass('fade-out');
+                $('.menu-list').addClass('fade-in');
+                break;
+            default:
+                break;
+        }
+    }
+
+    $('.tabs-flexible-02 div').on('click', function () {
+        $('.tabs-flexible-02 div').removeClass('action');
+        $(this).addClass('action');
+        switch ($(this).text()) {
+            case '挂号':
+                $('.list02').addClass('hide');
+                $('.list01').removeClass('hide');
+                break;
+            case '介绍':
+                $('.list01').addClass('hide');
+                $('.list02').removeClass('hide');
+                break;
+            default:
+
+        }
+    });
+
+    var success = function (returnData) {
+        if (returnData.status == "99") {
+            swal(returnData.msg);
+        } else {
+            var data = returnData.data;
+            $(".doctor-name").html(data.ysxm);
+            $(".doctor-level").html(data.zcmc);
+            $(".doctor-depart").html(data.ksmc);
+            $(".doctor-good").html(data.scjb);
+            $(".doctor-detail").html(data.ysjs);
+            $('.doctor-icon').attr('src', getDoctorImageUrl(getURLData('doctorid')));
+        }
+    };
+
+    var success2 = function (returnData) {
+        $('.list01').removeClass('hide');
+        if (returnData.status == "99") {
+            $('.list01').html(getNothingHtml('没有排班信息'));
+        } else {
+            var data = returnData.data.departlist;
+            registLists = data;
+            if ($.isEmptyObject(data)) {
+                $('.list01').html(getNothingHtml('没有排班信息'));
+            } else if (data.length == 1) {
+                $('.menu').addClass('hide');
+                $('.current').html(data[0].departname);
+                showRegistList(data[0]);
+            } else {
+                $('.current').html(data[0].departname);
+                var departList = '';
+                $.each(data, function (index, value) {
+                    departList += '<span>' + value.departname + '</span>';
+                    if (!(data.length == index + 1)) {
+                        departList += '<br>';
+                    }
+                    $('.menu-list').html(departList);
+                });
+                showRegistList(data[0]);
+                SwitchTab00(more);
+            }
+        }
+    };
+
+    var showRegistList = function (data) {
+        if ($.isEmptyObject(data)) {
+            $("#dateList").html(getNothingHtml('没有排班记录'));
+        } else {
+            var registList = '';
+            $.each(data.list, function (index, value) {
+                registList += '<div class="moreTime ">' +
+                        '<div class="datepoint">' +
+                        '<span class="date"><span>' + value.scheduledate + '</span><span>' + value.weekday + '/' + value.shiftname + '</span></span>' +
+                        '<div class="room"><i class="fa fa-angle-down"></i></div>' +
+                        '<span class="total float-r"><span class="blue">' + value.remain + '</span>/' + value.total + '</span>' +
+                        '</div><div class="dateDetails hide"><div class="detailBegin">' +
+                        '挂号费: <span class="red">¥' + value.fee + '</span>' +
+                        '</div>';
+
+                var timeList = '<div class="checkTime clear" data-day=' + value.scheduledate + ' data-time=' + value.shiftname + ' data-fee=' + value.fee + ' data-scheduleseq=' + value.scheduleseq + '>';
+                $.each(value.scheduleseqlist, function (index, value) {
+                    timeList += '<div class="timePicker" data-id=' + value.orderseq + ' data-orderendtime=' + value.orderendtime + ' data-shiftcode=' + value.shiftcode + ' data-orderno=' + value.orderno + '>' + value.ordertime + '</div>';
+
+                });
+                timeList += "</div>";
+                registList += timeList + '</div></div>'
+            });
+            $("#dateList").html(registList);
+
+            $('.moreTime .datepoint').on('click', function () {
+                var detail = $(this).parent().find('.dateDetails');
+                if (detail.hasClass('hide')) {
+                    $('.moreTime .datepoint').parent().find('.dateDetails').addClass('hide');
+                    detail.removeClass('hide');
+                } else {
+                    detail.addClass("hide");
+                }
+            });
+
+            $(".timePicker").on('click', function () {
+                sessionStorage.orderseq = $(this).attr('data-id');
+                sessionStorage.doctorName = $('.doctor-name').html();
+                sessionStorage.doctorDepart = $('.doctor-depart').html();
+                sessionStorage.doctorTime = $(this).parent().attr('data-day') + ' ' + $(this).parent().attr('data-time') + ' ' + $(this).html();
+                sessionStorage.fee = $(this).parent().attr('data-fee');
+                sessionStorage.ordertime = $(this).html();
+                sessionStorage.orderendtime = $(this).attr('data-orderendtime');
+                sessionStorage.shiftcode = $(this).attr('data-shiftcode');
+                sessionStorage.scheduleseq = $(this).parent().attr('data-scheduleseq');
+                sessionStorage.orderno = $(this).attr('data-orderno');
+                location.href = 'confirmOrder.html';
+            })
+        }
+    };
+
+    $(function () {
+
+        if ($.isEmptyObject(sessionStorage.doctorName)) {
+            $('title').html('科室医生');
+        } else {
+            $('title').html(sessionStorage.doctorName);
+            $(".doctor-name").html(sessionStorage.doctorName);
+        }
+
+        var content = {
+            "ysbm": getURLData("doctorid")
+        };
+        $.JDoAjax().isLoading(false).add("BA040301", success, content).run();
+
+        //医生排班查询
+        var registTimeContent = {
+            'doctorid': getURLData("doctorid")
+        };
+        if (!$.isEmptyObject(sessionStorage.departId)) {
+            registTimeContent = {
+                'doctorid': getURLData("doctorid"),
+                'departid': sessionStorage.departId
+            };
+        }
+        $.JDoAjax().add("YY010304", success2, registTimeContent).run();
+    });
+</script>
+</body>
+
+</html>

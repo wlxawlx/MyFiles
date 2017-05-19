@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta http-equiv="Expires" content="-1">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta http-equiv="Cache" content="no-cache">
+    <title>报名说明</title>
+    <link rel="stylesheet" type="text/css" href="frozenui-1.3.0/css/frozen.css"/>
+    <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
+
+    <link rel="stylesheet" type="text/css" href="css/main.css" />
+
+</head>
+
+<body>
+<div class="trainExpalin">
+    <div class="head head-white-black-10"><span></span>报名说明及注意事项</div>
+    <div id="expalin" class="line-info bottomborder">
+        <div class="title">报名说明</div>
+        <!--<div class="level00">1.培训人数：每期12人，满员开班。</div>-->
+        <!--<div class="level00">2.培训费用：含理论及实践培训费+学习教材费 +AHA证书费+设备模型使用。</div>-->
+        <!--<div class="level01">a) Heartsaver CPR AED课程（非健康从业人员课程）：500元/人</div>-->
+        <!--<div class="level01">b) BLS培训费（健康从业人员课程）：500元/人</div>-->
+    </div>
+    <div id="prompt" class="line-info">
+        <div class="title">注意事项</div>
+    </div>
+</div>
+
+<script type="text/javascript" src="js/min/zepto-min.js"></script>
+<script type="text/javascript" src="js/min/base-min.js"></script>
+<script type="text/javascript">
+
+    var success = function (returnData) {
+        if (returnData.status == "99") {
+            $('.trainExpalin').html(getNothingHtml(returnData.msg));
+        } else {
+            var data = returnData.data;
+            $('.head span').html(data.coursename);
+            var explain = data.explain.split('\n');
+            var excontent = "<div class='level00'/>";
+            $.each(explain, function (index, value) {
+                if (!isNaN(parseFloat(value))) {
+                    excontent += "<div class='level00'>" + value + "</div>";
+                } else {
+                    excontent += "<div class='level01'>" + value + "</div>";
+                }
+            });
+            $('#expalin').append(excontent);
+
+            var prompt = data.prompt.split('\n');
+            var prcontent = "<div class='level00'/>";
+            $.each(explain, function (index, value) {
+                if (!isNaN(parseFloat(value))) {
+                    prcontent += "<div class='level00'>" + value + "</div>";
+                } else {
+                    prcontent += "<div class='level01'>" + value + "</div>";
+                }
+            });
+            $('#prompt').append(prcontent);
+
+        }
+    };
+
+    $(function () {
+        $.JDoAjax().isLoading(false).add("SK010101", success,{
+            'doctorid': getURLData("coursecode")
+        }).run();
+    });
+
+</script>
+
+</body>
+
+</html>

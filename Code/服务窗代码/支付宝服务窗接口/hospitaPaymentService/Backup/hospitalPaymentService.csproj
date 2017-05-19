@@ -1,0 +1,228 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Test|AnyCPU'">
+    <OutputPath>bin\</OutputPath>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <DefineConstants>Test MyTest</DefineConstants>
+    <WarningLevel>4</WarningLevel>
+    <Optimize>false</Optimize>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{A2C969AB-804E-4B72-A8F3-0421A1C803C8}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>HospitaPaymentService</RootNamespace>
+    <AssemblyName>hospitaPaymentService</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>4.0</OldToolsVersion>
+    <UseIISExpress>false</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <FilesToIncludeForPublish>OnlyFilesToRunTheApp</FilesToIncludeForPublish>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.OracleClient" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="wzszhjk\service\HPService.asmx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="wzszhjk\BLL\Alipay\DoctorInfoLogic.cs" />
+    <Compile Include="wzszhjk\BLL\Alipay\InspectionCheckLogic.cs" />
+    <Compile Include="wzszhjk\BLL\Alipay\MzBindCardLogic.cs" />
+    <Compile Include="wzszhjk\BLL\Alipay\AlipayPaymentLogic.cs" />
+    <Compile Include="wzszhjk\BLL\Alipay\MzMedicalRecordsLogic.cs" />
+    <Compile Include="wzszhjk\BLL\Alipay\NotificationInformationLogic.cs" />
+    <Compile Include="wzszhjk\BLL\Alipay\PatientMedicationLogic.cs" />
+    <Compile Include="wzszhjk\BLL\Alipay\QueryOrderLogic.cs" />
+    <Compile Include="wzszhjk\BLL\Alipay\UserRegisterLogic.cs" />
+    <Compile Include="wzszhjk\BLL\BaseLogic.cs" />
+    <Compile Include="wzszhjk\BLL\BindCardLogic.cs" />
+    <Compile Include="wzszhjk\BLL\QueryLogic.cs" />
+    <Compile Include="wzszhjk\BLL\QueryReportLogic.cs" />
+    <Compile Include="wzszhjk\BLL\Wzsdqrmyy\QueryInfoBll.cs" />
+    <Compile Include="wzszhjk\BLL\Wzszyy\QueryLogicForWZSZYY.cs" />
+    <Compile Include="wzszhjk\Common\dbhelp\OracleHelper.cs" />
+    <Compile Include="wzszhjk\Common\dbhelp\SQLHelper.cs" />
+    <Compile Include="wzszhjk\Common\general\General.cs" />
+    <Compile Include="wzszhjk\Common\webservice\InvokeWebservice.cs" />
+    <Compile Include="wzszhjk\Common\xml\XMLHelper.cs" />
+    <Compile Include="wzszhjk\DAL\Database\Alipay\AilpayQueryReportDB.cs" />
+    <Compile Include="wzszhjk\DAL\Database\Alipay\DoctorInfoDB.cs" />
+    <Compile Include="wzszhjk\DAL\Database\Alipay\MzBindCardDB.cs" />
+    <Compile Include="wzszhjk\DAL\Database\Alipay\AilpayPaymentDB.cs" />
+    <Compile Include="wzszhjk\DAL\Database\Alipay\MzMedicalRecordsDB.cs" />
+    <Compile Include="wzszhjk\DAL\Database\Alipay\NotificationInformationDB.cs" />
+    <Compile Include="wzszhjk\DAL\Database\Alipay\PatientMedicationDB.cs" />
+    <Compile Include="wzszhjk\DAL\Database\Alipay\QueryOrderDB.cs" />
+    <Compile Include="wzszhjk\DAL\Database\Alipay\UserRegisterDB.cs" />
+    <Compile Include="wzszhjk\DAL\Database\Wzsdqrmyy\QueryInfoDal.cs" />
+    <Compile Include="wzszhjk\Model\UserInfo.cs" />
+    <Compile Include="wzszhjk\Util\ConfigString\WebConfigParameter.cs" />
+    <Compile Include="wzszhjk\Util\Sql\SqlUtils\SQLUtils._WZHTYY.cs" />
+    <Compile Include="wzszhjk\Util\Sql\SqlUtils\SQLUtils_Wzsrarmyy.cs" />
+    <Compile Include="wzszhjk\Util\Sql\SqlUtils\SQLUtils_Wzsrazyy.cs" />
+    <Compile Include="wzszhjk\Util\Sql\SqlUtils\SQLUtils_Wzstsxzyy.cs" />
+    <Compile Include="wzszhjk\Util\Sql\SqlUtils\SQLUtilsWzsyjxdsrmyy.cs" />
+    <Compile Include="wzszhjk\Util\Sql\SqlUtils\SQLUtils_Wzscnxfybjyy.cs" />
+    <Compile Include="wzszhjk\Util\Sql\SqlUtils\SQLUtils_Wzstxrmyy.cs" />
+    <Compile Include="wzszhjk\Util\String\StringHelper.cs" />
+    <Compile Include="wzszhjk\Util\Xml\XmlHelper.cs" />
+    <Compile Include="wzszhjk\DAL\BaseDB.cs" />
+    <Compile Include="wzszhjk\DAL\Database\Wzscnxdyrmyy\CheckDbForWzscnxdyrmyy.cs" />
+    <Compile Include="wzszhjk\DAL\Database\Wzszyy\FZPDInfoForWZSZYY.cs" />
+    <Compile Include="wzszhjk\DAL\Webservice\ReportInfoWZSZYY.cs" />
+    <Compile Include="wzszhjk\Util\Xml\ReplyXmlDoc.cs" />
+    <Compile Include="wzszhjk\DAL\Database\BaseReportDB.cs" />
+    <Compile Include="wzszhjk\DAL\Database\BindCardDB.cs" />
+    <Compile Include="wzszhjk\DAL\Database\QueryDB.cs" />
+    <Compile Include="wzszhjk\DAL\Database\QueryReportDB.cs" />
+    <Compile Include="wzszhjk\Log\UtilLog.cs" />
+    <Compile Include="wzszhjk\Main\OperatorHandle.cs" />
+    <Compile Include="wzszhjk\BLL\PaymentLogic.cs" />
+    <Compile Include="wzszhjk\Model\PainterQueueInfo.cs" />
+    <Compile Include="wzszhjk\Util\Sql\AppUtils\AppUtilsOpe.cs" />
+    <Compile Include="wzszhjk\Util\Sql\AppUtils\AppUtilsRetXml.cs" />
+    <Compile Include="wzszhjk\Util\Sql\Factory\SqlFactory.cs" />
+    <Compile Include="wzszhjk\Util\Sql\SQLUtils.cs" />
+    <Compile Include="wzszhjk\service\HPService.asmx.cs">
+      <DependentUpon>HPService.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="wzszhjk\Common\dbhelp\DbHelperOra.cs" />
+    <Compile Include="wzszhjk\Common\dbhelp\DbHelperSQL.cs" />
+    <Compile Include="wzszhjk\Common\readwebconfig\PubConstant.cs" />
+    <Compile Include="wzszhjk\Util\Sql\AppUtils\AppUtils.cs" />
+    <Compile Include="wzszhjk\DAL\Database\PaymentDB.cs" />
+    <Compile Include="wzszhjk\Model\PaymentDetail.cs" />
+    <Compile Include="wzszhjk\Util\Sql\BuilderSql.cs" />
+    <Compile Include="wzszhjk\DAL\Database\Wzsdsrmyy\CheckDBForWZSDSRMYY.cs" />
+    <Compile Include="wzszhjk\Model\Wzsdsrmyy\CheckDetail.cs" />
+    <Compile Include="wzszhjk\Util\Sql\SqlUtils\SQLUtils_Wzscnxdermyy.cs" />
+    <Compile Include="wzszhjk\Util\Sql\SqlUtils\SQLUtils_Wzscnxdsrmyy.cs" />
+    <Compile Include="wzszhjk\Util\Sql\SqlUtils\SQLUtils_Wzscnxdyrmyy.cs" />
+    <Compile Include="wzszhjk\Util\Sql\SqlUtils\SQLUtils_Wzscnxzyy.cs" />
+    <Compile Include="wzszhjk\Util\Sql\SqlUtils\SQLUtils_Wzsdeyy.cs" />
+    <Compile Include="wzszhjk\Util\Sql\SqlUtils\SQLUtils_Wzsdqrmyy.cs" />
+    <Compile Include="wzszhjk\Util\Sql\SqlUtils\SQLUtils_Wzsdsrmyy.cs" />
+    <Compile Include="wzszhjk\Util\Sql\SqlUtils\SQLUtils_Wzszxyjhyy.cs" />
+    <Compile Include="wzszhjk\Util\Sql\SqlUtils\SQLUtils_Wzszyy.cs" />
+    <Compile Include="wzszhjk\Main\ParameterHandler.cs" />
+    <Compile Include="wzszhjk\Main\ArgErrorException.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\PublishProfiles\配置文件1.pubxml" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+  </ItemGroup>
+  <PropertyGroup>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>5370</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>
+          </IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+    <MonoDevelop>
+      <Properties>
+        <XspParameters Port="8080" Address="127.0.0.1" SslMode="None" SslProtocol="Default" KeyType="None" CertFile="" KeyFile="" PasswordOptions="None" Password="" Verbose="True" />
+      </Properties>
+    </MonoDevelop>
+  </ProjectExtensions>
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

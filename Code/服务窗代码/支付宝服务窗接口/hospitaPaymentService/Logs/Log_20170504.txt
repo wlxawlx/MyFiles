@@ -1,0 +1,5 @@
+2017-05-04 14:52:39,148 [82] INFO  log - OR030205:
+2017-05-04 14:52:39,159 [82] DEBUG log - <root><result>wait</result><message><status>-1</status><remark>≥Ã–ÚŒ¥œÏ”¶£¨«Îµ»¥˝...</remark></message></root>
+2017-05-04 15:40:23,883 [88] INFO  log - OR030101:<root><orderseq>21</orderseq><patientphone>13868314597</patientphone><patientidcardno>330326199005286034</patientidcardno><patientid>1100107567</patientid><openid>20880027042145817191290881313545</openid><shiftcode>2</shiftcode><ordertime>16:05</ordertime><orderendtime>16:35</orderendtime><doctorcode>null</doctorcode><patientname>ÀÔ“£</patientname><patientaddress></patientaddress><scheduleseq>1000058163</scheduleseq><sourcetype>9</sourcetype></root>
+2017-05-04 16:23:46,840 [62] INFO  log - OR030205:
+2017-05-04 16:23:46,866 [62] DEBUG log - <root><result>failure</result><message><status>-1</status><remark>π“∫≈ ß∞‹</remark></message></root>

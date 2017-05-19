@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta http-equiv="Expires" content="-1"/>
+    <meta http-equiv="Pragma" content="no-cache"/>
+    <meta http-equiv="Cache-Control" content="no-cache"/>
+    <meta http-equiv="Cache" content="no-cache"/>
+    <title>体检套餐</title>
+    <link rel="stylesheet" type="text/css" href="/frozenui-1.3.0/css/frozen.css">
+    <link rel="stylesheet" type="text/css" href="/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/main.css"/>
+    <script type="text/javascript" src="/js/min/zepto-min.js"></script>
+    <script type="text/javascript" src="/js/min/base-min.js"></script>
+</head>
+
+<body>
+<div class="checkin-list"></div>
+</body>
+
+<script type="text/javascript">
+    function success(returnData) {
+        if (returnData.status == "99") {
+            $('.checkin-list').html(getNothingHtml(returnData.msg));
+        } else {
+            var data = returnData.data;
+            if ($.isEmptyObject(data)) {
+                $(".checkin-list").html(getNothingHtml('没有体检套餐'));
+            } else {
+                var checkinHtml = "";
+                $.each(data, function (name, value) {
+                    checkinHtml += '<div class="checkin-item"><div class="detail00">' + value.tcmc + '</div>' +
+                            '<div class="detail01">' + value.tcbz + '</div>' +
+                            '<div class="detail02">' +
+                            '<span>' + value.tclb + '</span>' +
+                            '<span class="red">¥' + value.tcjg + '</span>' +
+                            '</div></div>';
+                });
+                $(".checkin-list").html(checkinHtml);
+                $(".checkin-item").on("click", function () {
+                    sessionStorage.checkinId = data[$('.checkin-item').index($(this))].tcid;
+                    location.href = "detail.html";
+                });
+            }
+        }
+    }
+
+    $(function () {
+        $.JDoAjax().add("TJ010101", success, {
+            "tcid": 0
+        }).run();
+    });
+</script>
+
+</html>

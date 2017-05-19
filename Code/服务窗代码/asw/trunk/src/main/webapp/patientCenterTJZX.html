@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta http-equiv="Expires" content="-1"/>
+    <meta http-equiv="Pragma" content="no-cache"/>
+    <meta http-equiv="Cache-Control" content="no-cache"/>
+    <meta http-equiv="Cache" content="no-cache"/>
+    <title>个人中心</title>
+    <link rel="stylesheet" type="text/css" href="frozenui-1.3.0/css/frozen.css"/>
+    <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="css/iconfont/iconfont.css">
+    <script type="text/javascript" src="js/min/zepto-min.js"></script>
+
+    <script type="text/javascript" src="js/min/base-min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/main.css"/>
+
+    <style>
+        .margin-t {
+            margin-top: 15px;
+        }
+    </style>
+</head>
+
+<body>
+<div class="person-center">
+    <ul class="person-page">
+        <li class="person-info00">
+            <span class="person-icon">
+              <img src="" onerror="this.src='../image/default_patient.jpg'"/>
+            </span>
+            <div class="info">
+                <div class="name patient-name"></div>
+                <div class="phone patient-phone"></div>
+            </div>
+            <span class="indicate-00"><i class="fa fa-angle-right fa-2x"></i></span>
+        </li>
+        <li class="border-top">
+            <ul class="">
+                <li class="card-info center-line">
+                    <div class="hint-icon"><i class="fa fa-credit-card fontsize"></i></div>
+                    <div>我的就诊卡</div>
+                </li>
+                <li class="cylxr center-line">
+                    <div class="hint-icon"><i class="fa fa-users fontsize"></i></div>
+                    <div>我的联系人</div>
+                </li>
+                <li class="checkup">
+                    <div class="hint-icon"><i class="fa fa-user-md fontsize"></i></div>
+                    <div>体检预约</div>
+                </li>
+            </ul>
+        </li>
+        <li class="">
+            <ul class="">
+                <li class="checkup-self center-line">
+                    <div class="hint-icon"><i class="fa fa-file fontsize"></i></div>
+                    <div>我的体检</div>
+                </li>
+            </ul>
+        </li>
+        <li class="">
+            <ul class="">
+            </ul>
+        </li>
+
+    </ul>
+</div>
+<script type="text/javascript">
+    var cardBindStatu;
+    function setPatientInfo(patientInfo) {
+        loadingData('patient', patientInfo);
+        $(".person-icon img").attr('src', patientInfo.headurl);
+        $(".person-info00").click(function () {
+            location.href = "patientInfo.html";
+        });
+    }
+
+    // 获得用户信息成功
+    var loginSuccess = function (returnData) {
+        if (returnData.status == '99') {
+            $('.patient-name').html("");
+            $('.patient-phone').html("没有建档信息");
+            $(".person-info00").click(function () {
+                location.href = "newDocument.html";
+            });
+        } else {
+            var data = returnData.data;
+            sessionStorage.patientInfo = JSON.stringify(data);
+            setPatientInfo(data);
+            cardBindStatu = data.cardbind;
+            console.log(cardBindStatu);
+        }
+    };
+
+    // 卡状态, 0:没有卡,1:有卡但未绑,2:已绑卡
+    var cardStatus = null;
+
+    // 获得就诊卡列表成功
+    var successCardList = function (returnData) {
+        if (returnData.status != "00") {
+            cardStatus = 0;
+        } else {
+            cardStatus = 1;
+        }
+    };
+
+    // 点击卡信息时的操作
+    function clickCardButton(cardStatus) {
+        if (cardStatus == 2) {
+            location.href = "patientCardInfo.html";
+        } else if (cardStatus == 1) {
+            location.href = "bindCard.html";
+        } else {
+            swal("未在医院就过诊,无法进行绑卡操作")
+        }
+    }
+
+    // 获得已绑卡信息成功
+    var successCard = function (returnData) {
+        if (returnData.status == "99" || returnData.status == '02') {
+            // 获得就诊卡列表
+            $.JDoAjax().isLoading(false).add("BA030101", "", successCardList).run();
+        } else {
+            cardStatus = 2;
+        }
+        clickCardButton(cardStatus);
+    };
+
+    $(function () {
+        if (!$.isEmptyObject(sessionStorage.patientInfo))
+            setPatientInfo(JSON.parse(sessionStorage.patientInfo));
+        else {
+            $.JDoAjax().isLoading(false).add('BA010301', loginSuccess).run();
+        }
+
+        // 联系人列表
+        $(".cylxr").click(function () {
+            location.href = "contactList.html";
+        });
+        // 我的就诊卡点击
+        $(".card-info").click(function () {
+            if (cardStatus == null) {
+                // 获得已绑卡信息
+                $.JDoAjax().isLoading(false).add("BA030301", successCard).run();
+            } else {
+                clickCardButton(cardStatus);
+            }
+        });
+        //体检预约
+        $(".checkup").click(function () {
+            if (cardBindStatu) {
+                location.href = '';
+            } else {
+                swal('未绑卡,暂无信息!');
+            }
+        });
+        //我的体检
+        $(".checkup-self").click(function () {
+            if (cardBindStatu) {
+                location.href = '';
+            } else {
+                swal('未绑卡,暂无信息!');
+            }
+        });
+
+    });
+</script>
+</body>
+</html>

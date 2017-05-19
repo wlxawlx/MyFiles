@@ -1,0 +1,49 @@
+
+@font-face {
+  font-family: 'iconfont';
+  src: url('//at.alicdn.com/t/font_1457335778_800924.eot'); /* IE9*/
+  src: url('//at.alicdn.com/t/font_1457335778_800924.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url('//at.alicdn.com/t/font_1457335778_800924.woff') format('woff'), /* chrome、firefox */
+  url('//at.alicdn.com/t/font_1457335778_800924.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
+  url('//at.alicdn.com/t/font_1457335778_800924.svg#iconfont') format('svg'); /* iOS 4.1- */
+}
+
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-stroke-width: 0.2px;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+
+.icon-shoucang:before { content: "\e60f"; }
+.icon-zhongguoyiyuanxiehuixieyi:before { content: "\e600"; }
+.icon-zhongguoyiyuanxiehuiyuyue1:before { content: "\e601"; }
+.icon-yiyuanweizhanabout:before { content: "\e602"; }
+.icon-shoucang1:before { content: "\e610"; }
+.icon-address:before { content: "\e603"; }
+.icon-phone:before { content: "\e612"; }
+.icon-phone1:before { content: "\e613"; }
+.icon-yiyuanguahao:before { content: "\e615"; }
+.icon-phone2:before { content: "\e614"; }
+.icon-yiliaoqixiefuzhi:before { content: "\e618"; }
+.icon-yiyuan:before { content: "\e60d"; }
+.icon-yiyuanjieshao:before { content: "\e604"; }
+.icon-dizhi:before { content: "\e605"; }
+.icon-ren:before { content: "\e606"; }
+.icon-yaojiaonang:before { content: "\e607"; }
+.icon-yaojiaonang1:before { content: "\e619"; }
+.icon-qian:before { content: "\e61a"; }
+.icon-people:before { content: "\e608"; }
+.icon-dizhi1:before { content: "\e609"; }
+.icon-iconfontshoucang:before { content: "\e611"; }
+.icon-qian1:before { content: "\e60a"; }
+.icon-yiyuan1:before { content: "\e60e"; }
+.icon-qian2:before { content: "\e61b"; }
+.icon-axuanzeyiyuan:before { content: "\e616"; }
+.icon-yiyuan2:before { content: "\e617"; }
+.icon-iconfontzuobiao:before { content: "\e60b"; }
+.icon-yiyuanhospital14:before { content: "\e60c"; }

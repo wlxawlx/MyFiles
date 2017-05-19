@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta http-equiv="Expires" content="-1">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta http-equiv="Cache" content="no-cache">
+    <title>排队就诊</title>
+    <link rel="stylesheet" href="frozenui-1.3.0/css/frozen.css">
+    <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/main.css"/>
+    <style>
+        .oval {
+            position: absolute;
+            bottom: 15px;
+            right: 10px;
+            width: 100px;
+            height: 50px;
+            text-align: center;
+            color: #ffffff;
+            font-size: 1.2em;
+            line-height: 50px;
+            background-color: #e5e6e7;
+            border-radius: 50px / 25px;
+            transform: rotate(-20deg);
+        }
+
+        .checkin {
+            top: 100%;
+            margin-top: -37px;
+            right: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="line-cure"></div>
+
+<script type="text/javascript" src="js/min/zepto-min.js"></script>
+<script src="js/pages/inspectAction.js"></script>
+<script src="js/min/base-min.js"></script>
+<script type="text/javascript">
+
+
+    $(function () {
+        $.JDoAjax().isLoading(false).add('BD010101', inspectList).run();
+    })
+
+</script>
+
+</body>
+
+</html>

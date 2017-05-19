@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta http-equiv="Expires" content="-1">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta http-equiv="Cache" content="no-cache">
+    <title>症状选择</title>
+    <link rel="stylesheet" type="text/css" href="frozenui-1.3.0/css/frozen.css"/>
+    <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="css/main.css"/>
+    <script type="text/javascript" src="js/min/zepto-min.js"></script>
+    <script type="text/javascript" src="js/min/base-min.js"></script>
+    <style>
+        li {
+            text-align: center;
+            border-bottom: 1px solid #e5e6e7;
+        }
+    </style>
+</head>
+
+<body>
+<div class="smartbody">
+    <div id="header" class="ui-tooltips ui-tooltips-guide">
+        <div class="ui-tooltips-cnt ui-border-b">
+            若症状程度严重,反复或持续不缓解,甚至加剧,请及时就医!
+        </div>
+    </div>
+    <div class="ui-scroller">
+        <ul class="ui-list ui-list-text ui-list-link ui-border-tb"></ul>
+    </div>
+</div>
+<script type="text/javascript">
+    var diagnoseNum = 20;
+    var content = {
+        'partcode': sessionStorage.smallPartBodyId,
+        'classificcode': sessionStorage.diagnoseId,
+        'sex': sessionStorage.sex,
+        'pageindex': 1,
+        'pagesize': diagnoseNum
+    };
+
+    var pageScroll;
+    var haveData = true;//是否还有数据
+
+    var smallBodyPartSuccess = function (returnData) {
+        if (returnData.status == '99') {
+            $('.ui-list').html(getNothingHtml(returnData.msg));
+            haveData = false;
+        } else {
+            var data = returnData.data;
+            $('title').html(data.partname);
+            if (data.length == 0 && content.pageindex == 1) {
+                $('.ui-list').html(getNothingHtml('没有相关症状'));
+                haveData = false;
+            } else {
+                if (data.length < diagnoseNum) {
+                    haveData = false;
+                }
+                var diagnoseHtml = '';
+                $.each(data, function (index, value) {
+                    diagnoseHtml += '<li class="border-bottom" data-id="' + value.symptomcode + '" title="' + value.symptomname + '">' +
+                            '<h4 class="ui-nowrap">' + value.symptomname + '</h4>' +
+                            '</li>';
+                });
+                $('.ui-list').append(diagnoseHtml);
+
+                $('.border-bottom').on('click', function () {
+                    console.log('click');
+                    sessionStorage.symptomcode = $(this).attr("data-id");
+                    sessionStorage.symptomname = $(this).attr("title");
+                    location.href = 'smartQuestion.html';
+                });
+            }
+            pageScroll.refresh();
+        }
+    };
+
+    $(function () {
+
+        $('.ui-scroller').height($(window).height() - 44);
+        $('.ui-scroller')[0].addEventListener('touchend', touchEnd, false);
+
+        function touchEnd(event) {
+            if (typeof pageScroll == 'undefined') {
+
+            } else {
+                var scollHeight = pageScroll.scrollerHeight - pageScroll.wrapperHeight;
+                if (pageScroll.getComputedPosition().y * -1 > scollHeight && haveData) {
+                    content.pageindex = content.pageindex + 1;
+                    $.JDoAjax().add('SM010301', smallBodyPartSuccess, content).run();
+                }
+            }
+        }
+
+        pageScroll = new fz.Scroll('.ui-scroller', {
+            scrollY: true
+        });
+
+        $.JDoAjax().add('SM010301', smallBodyPartSuccess, content).run();
+    })
+</script>
+</body>
+
+</html>

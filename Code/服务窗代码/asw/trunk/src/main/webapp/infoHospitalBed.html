@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta http-equiv="Expires" content="-1">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta http-equiv="Cache" content="no-cache">
+    <title>住院床位</title>
+    <script type="text/javascript" src="js/min/zepto-min.js"></script>
+
+    <script type="text/javascript" src="js/min/base-min.js"></script>
+    <link rel="stylesheet" type="text/css" href="frozenui-1.3.0/css/frozen.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/main.css"/>
+
+</head>
+
+<body>
+<div class="bed-list"></div>
+<script type="text/javascript">
+    function bedInfo(returnData) {
+        if (returnData.state == '99') {
+            swal({
+                title: '获取床位信息失败',
+                type: 'error',
+                confirmButtonText: '确定'
+            }, function () {
+                history.back();
+            })
+        } else {
+            var bedData = returnData.data;
+            var bedHtml = '';
+            $.each(bedData, function (index, value) {
+                bedHtml += '<div class="bed-item bottomborder">' +
+                        '<div class="detail00">' + value.bqmc + '</div>' +
+                        '<div class="detail01">剩余<span class="blue">' + value.sycw + '</span>床位</div>' +
+                        '</div>';
+
+            });
+            $('.bed-list').append(bedHtml);
+        }
+
+    }
+
+    $(function () {
+        $.JDoAjax().isLoading(false).add('JB010101', bedInfo).run();
+    })
+</script>
+</body>
+
+</html>

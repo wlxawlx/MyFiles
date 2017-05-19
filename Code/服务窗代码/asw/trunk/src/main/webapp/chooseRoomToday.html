@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta http-equiv="Expires" content="-1">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta http-equiv="Cache" content="no-cache">
+    <title>预约</title>
+    <link rel="stylesheet" type="text/css" href="frozenui-1.3.0/css/frozen.css"/>
+    <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/main.css"/>
+    <script type="text/javascript" src="js/min/zepto-min.js"></script>
+    <script type="text/javascript" src="js/min/base-min.js"></script>
+    <style>
+        .container {
+            padding-top: 0;
+        }
+
+        .double-column .menu {
+            margin-top: 0;
+        }
+    </style>
+</head>
+
+<body>
+<div class="chooseRoom accountRecord">
+    <div class="container">
+        <div id="menu01_list" class="markStatu00">
+            <div class="double-column blue">
+                <div class="menu">
+                    <ul class="first list-unstyled">
+                    </ul>
+                </div>
+                <div class="list">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    function success(returnData) {
+        if (returnData.status == "99") {
+            $('.list').html(getNothingHtml(returnData.msg));
+            swal(returnData.msg);
+        } else {
+            var data = returnData.data;
+            $(".first li").remove();
+            var firstData = "";
+            var secondData = "";
+            $.each(data, function (name, value) {
+                if (name == 0) {
+                    firstData += "<li class='menu-title disease-title-" + name + " roomaction'>" + value.departname + "</li>";
+                    secondData += "<div class='disease-" + name + " active'> <ul class=' list-unstyled'>"
+                } else {
+                    firstData += "<li class='menu-title disease-title-" + name + "'>" + value.departname + "</li>";
+                    secondData += "<div class='disease-" + name + " hide'> <ul class=' list-unstyled'>"
+                }
+                var second = value.list;
+                $.each(second, function (name, value) {
+                    secondData += '<li class="list-content" data-id="' + value.departid + '"> <span class="disease-room">' + value.departname + '</span> <span class="indicate-01"><i class="fa fa-angle-right"></i></span> </li>'
+                });
+                secondData += '</ul></div>'
+            });
+            $(".first").html(firstData);
+            $(".list").html(secondData);
+
+            $("li.list-content").on('click', function () {
+                sessionStorage.departId = $(this).attr("data-id");
+                sessionStorage.doctorDepart = $(this).find('.disease-room').html();
+                location.href = 'doctorListToday.html';
+            });
+            var index_now = 0;
+            $('.menu-title').on('click', function () {
+                var index = $(".menu-title").index(this);
+                if (index_now != index) {
+                    $(".disease-" + index_now).removeClass("active");
+                    $(".disease-" + index_now).addClass("hide");
+                    $(".disease-" + index).addClass("active");
+                    $(".disease-" + index).removeClass("hide");
+                    $(".disease-title-" + index).addClass("roomaction");
+                    $(".disease-title-" + index_now).removeClass("roomaction");
+                    index_now = index;
+                }
+            });
+        }
+    }
+
+    $(function () {
+        $.JDoAjax().add('DR010101', success).run();
+    });
+</script>
+</body>
+
+</html>

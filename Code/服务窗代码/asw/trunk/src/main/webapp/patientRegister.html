@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta http-equiv="Expires" content="-1">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta http-equiv="Cache" content="no-cache">
+    <title>初诊建档</title>
+    <link rel="stylesheet" type="text/css" href="frozenui-1.3.0/css/frozen.css"/>
+    <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/main.css"/>
+
+    <script type="text/javascript" src="js/min/zepto-min.js"></script>
+
+    <style>
+        .card-menu {
+            padding-left: 95px;
+        }
+
+        .card-menu div:nth-child(1) {
+            position: relative;
+        }
+
+        .card-menu div:nth-child(1) i {
+            position: absolute;
+            right: 10px;
+            font-weight: bold;
+            font-size: 1.2em;
+            top: 13px;
+        }
+
+        .card-list {
+            position: relative;
+            z-index: 1;
+            background: #fff;
+            /* width: 100%; */
+            padding: 0 10px;
+            box-shadow: 0 0 20px #ddd;
+        }
+
+        .card-list div {
+            border-bottom: 1px solid #e5e6e7;
+        }
+
+    </style>
+</head>
+
+<body>
+<div class="head-img">
+    <img class="" id="headimg" src="image/default_patient.jpg"/>
+</div>
+<div class="ui-border-t">
+    <form action="#" id="jdForm" class="jdForm">
+        <div class="ui-form-item ui-border-b line-cell">
+            <label>姓名</label>
+            <input id="name" type="text" placeholder="请输入患者姓名" readonly="readonly">
+        </div>
+        <div class="ui-form-item ui-border-b line-cell">
+            <label>身份证号</label>
+            <input id="idcardno" type="text" placeholder="请输入患者身份证号" readonly="readonly">
+            <!--<a href="#" class="ui-icon-close"></a>-->
+        </div>
+        <div class="ui-form-item ui-border-b line-cell">
+            <label>手机号码</label>
+            <input id="phone" type="text" placeholder="请输入手机号码">
+            <a href="#" class="ui-icon-close">
+            </a>
+        </div>
+        <div class="ui-form-item ui-border-b line-cell card-select">
+            <label>就诊卡</label>
+            <div class="card-menu">
+                <div id="card-id"><span></span><i class="fa fa-angle-down blue"></i></div>
+                <div class="card-list hide"></div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="ui-btn-wrap">
+    <button class="ui-btn-lg ui-btn-primary sureBtn">确定</button>
+</div>
+<script type="text/javascript" src="js/min/base-min.js"></script>
+<script type="text/javascript">
+    function cardList(returnData) {
+        if (returnData.status == '99') {
+            $('.card-select').addClass('hide');
+        } else {
+            var cards = returnData.data.list;
+            if (cards.length == 0) {
+                $('.card-select').addClass('hide');
+            } else {
+                //TODO 显示卡信息
+                $.each(cards, function (index, info) {
+                    if (index == 0) {
+                        $('#card-id').find('span').html(info.cardno);
+                        $('#card-id').attr('patientid', info.patientid);
+                    }
+                    $('.card-list').append('<div data-id=' + info.cardno + '>' + info.cardtype + '</div>');
+                });
+
+                $('#card-id').on('click', function () {
+                    $('.card-list').removeClass('hide');
+                });
+                $('.card-list > div').on('click', function () {
+                    $('.card-list').addClass('hide');
+                    $('#card-id').find('span').html($(this).attr('data-id'));
+                });
+            }
+        }
+    }
+
+    var getAlipayUserInfoSuccess = function (returnData) {
+        if (returnData.status == '99') {
+            swal(returnData.msg);
+        } else {
+            $('#name').val(returnData.data.name);
+            $('#idcardno').val(returnData.data.idcardno);
+            $("#headimg").attr("src", returnData.data.headurl);
+
+            $.JDoAjax().isLoading(false).add('BA030103', cardList, {
+                'brxm': returnData.data.name,
+                'sfz': returnData.data.idcardno
+            }).run();
+        }
+    };
+
+    var buildPatientSuccess = function (returnData) {
+        if (returnData.status == '99') {
+            swal({
+                title: returnData.msg,
+                type: 'error',
+                confirmButtonText: '确定'
+            });
+        } else {
+            swal({
+                title: '注册成功',
+                type: 'success',
+                confirmButtonText: '确定'
+            }, function () {
+                history.go(-1);
+            })
+        }
+    };
+
+    $(function () {
+        $.JDoAjax().isLoading(false).add('BA010302', getAlipayUserInfoSuccess).run();
+
+        $(".sureBtn").click(function () {
+            var telphone = $('#phone').val();
+            if (!checkout.phone(telphone)) {
+                swal("请输入正确的联系电话");
+                return;
+            }
+            var content = {
+                'name': $('#name').val(),
+                'idcardno': $('#idcardno').val(),
+                'phone': telphone,
+                'cardno': $('#card-id').find('span').html()
+            };
+
+            var patientId = $('#card-id').attr('patientid');
+            if (!$.isEmptyObject(patientId))
+                content['patientid'] = patientId;
+
+            $.JDoAjax().isLoading(false).add('BA010101', buildPatientSuccess, content).run();
+        });
+    });
+</script>
+</body>
+
+</html>

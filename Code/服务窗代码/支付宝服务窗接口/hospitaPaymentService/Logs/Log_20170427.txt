@@ -1,0 +1,5 @@
+2017-04-27 14:39:00,014 [6] INFO  log - OR020201:<root><departcode>null</departcode><scheduledate>null</scheduledate><doctorcode>101002</doctorcode></root>
+2017-04-27 14:39:29,269 [5] INFO  log - OR020201:<root><departcode>null</departcode><scheduledate>null</scheduledate><doctorcode>101002</doctorcode></root>
+2017-04-27 14:39:59,179 [6] INFO  log - OR020201:<root><departcode>null</departcode><scheduledate>null</scheduledate><doctorcode>101002</doctorcode></root>
+2017-04-27 14:41:44,483 [5] INFO  log - OR020201:<root><departcode>null</departcode><scheduledate>null</scheduledate><doctorcode>101002</doctorcode></root>
+2017-04-27 14:42:56,522 [23] INFO  log - OR020201:<root><departcode>null</departcode><scheduledate>null</scheduledate><doctorcode>101002</doctorcode></root>

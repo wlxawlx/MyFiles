@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta http-equiv="Expires" content="-1"/>
+    <meta http-equiv="Pragma" content="no-cache"/>
+    <meta http-equiv="Cache-Control" content="no-cache"/>
+    <meta http-equiv="Cache" content="no-cache"/>
+    <title>个人中心</title>
+    <link rel="stylesheet" type="text/css" href="/frozenui-1.3.0/css/frozen.css">
+    <link rel="stylesheet" type="text/css" href="/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/iconfont/iconfont.css">
+    <link rel="stylesheet" type="text/css" href="/css/main.css"/>
+    <script type="text/javascript" src="/js/min/zepto-min.js"></script>
+    <script type="text/javascript" src="/js/base.js"></script>
+</head>
+
+<body>
+<div class="person-center">
+    <ul class="person-page">
+        <li class="person-info00">
+            <span class="person-icon">
+              <img src="" onerror="this.src='/image/default_patient.jpg'"/>
+            </span>
+            <div class="info">
+                <div class="name patient-name"></div>
+                <div class="phone patient-phone"></div>
+            </div>
+            <span class="indicate-00"><i class="fa fa-angle-right fa-2x"></i></span>
+        </li>
+        <li class="border-top">
+            <ul class="">
+                <li class="card-info center-line">
+                    <div class="hint-icon"><i class="fa fa-credit-card fontsize"></i></div>
+                    <div>我的就诊卡</div>
+                </li>
+                <li class="cylxr center-line">
+                    <div class="hint-icon"><i class="fa fa-users fontsize"></i></div>
+                    <div>我的联系人</div>
+                </li>
+                <li class="regist-record">
+                    <div class="hint-icon"><i class="fa fa-tag fontsize"></i></div>
+                    <div>挂号记录</div>
+                </li>
+            </ul>
+        </li>
+        <li class="">
+            <ul class="">
+                <li class="account-record center-line">
+                    <div class="hint-icon"><i class="fa fa-file fontsize"></i></div>
+                    <div>预存缴清单</div>
+                </li>
+                <li class="checklist center-line">
+                    <div class="hint-icon"><i class="fa fa-file-text fontsize"></i></div>
+                    <div>检验检查单</div>
+                </li>
+                <li class="medicine-record center-line">
+                    <div class="hint-icon"><i class="fa fa-medkit fontsize"></i></div>
+                    <div>门诊处方</div>
+                </li>
+            </ul>
+        </li>
+        <!--<li class="">-->
+        <!--<ul class="">-->
+        <!--<li class="lineorder center-line">-->
+        <!--<div class="hint-icon"><i class="fa fa-star fontsize"></i></div>-->
+        <!--<div>门诊排队</div>-->
+        <!--</li>-->
+        <!--&lt;!&ndash;<li class="linecheck center-line">&ndash;&gt;-->
+        <!--&lt;!&ndash;<div class="hint-icon"><i class="fa fa-male fontsize"></i></div>&ndash;&gt;-->
+        <!--&lt;!&ndash;<div>检查排队</div>&ndash;&gt;-->
+        <!--&lt;!&ndash;</li>&ndash;&gt;-->
+        <!--</ul>-->
+        <!--</li>-->
+    </ul>
+</div>
+<script type="text/javascript">
+    var cardBindStatu = true;
+
+    function setPatientInfo(patientInfo) {
+        loadingData('patient', patientInfo);
+        $(".person-icon img").attr('src', patientInfo.headurl);
+        $(".person-info00").click(function () {
+            location.href = "/patientEdit.html";
+        });
+        cardBindStatu = patientInfo.cardbind == "1";
+    }
+
+    // 获得用户信息成功
+    function loginSuccess(returnData) {
+        if (returnData.status == '99') {
+            $('.patient-name').html("");
+            $('.patient-phone').html("没有建档信息");
+            $(".person-info00").click(function () {
+                location.href = '/wzsdqrmyy/patientRegister.html';
+            });
+        } else {
+            var data = returnData.data;
+            sessionStorage.patientInfo = JSON.stringify(data);
+            setPatientInfo(data);
+        }
+    }
+
+    // 获得就诊卡列表成功
+    function successCardList(returnData) {
+        if (returnData.status != "00") {
+            swal("未在医院就过诊,无法进行绑卡操作")
+        } else {
+            location.href = "/bindCard.html";
+        }
+    }
+
+    // 获得已绑卡信息成功
+    function successCard(returnData) {
+        if (returnData.status == "99") {
+            swal({
+                title: returnData.msg,
+                type: 'error',
+                confirmButtonText: '确定'
+            });
+        } else {
+            location.href = "/patientCardInfo.html";
+        }
+    }
+
+    $(function () {
+        $.JDoAjax().add('BA010301', loginSuccess).run();
+
+        // 联系人列表
+        $(".cylxr").click(function () {
+            location.href = "/contactList.html";
+        });
+
+        // 我的就诊卡点击
+        $(".card-info").click(function () {
+            if (cardBindStatu) {
+                $.JDoAjax().add('BA030301', successCard).run();
+            } else {
+                $.JDoAjax().add("BA030101", successCardList).run();
+            }
+        });
+
+        // 检验检查单
+        $(".checklist").click(function () {
+            location.href = "/checkList.html";
+        });
+
+        $(".account-record").click(function () {
+            location.href = 'accountRecord.html';
+        });
+        $(".regist-record").click(function () {
+            location.href = "orderHistory.html";
+        });
+        $('.lineorder').click(function () {
+            location.href = 'lineUp/lineInfos.html';
+        });
+        $('.linecheck').click(function () {
+            if (cardBindStatu) {
+                location.href = '/lineCheck.html';
+            } else {
+                swal('未绑卡,暂无信息!');
+            }
+        });
+        $('.seedoctor').click(function () {
+            if (cardBindStatu) {
+                location.href = '/seeDoctorList.html';
+            } else {
+                swal('未绑卡,暂无信息!');
+            }
+        });
+        $('.medicine-record').click(function () {
+            location.href = '/selectPatient4MedicineRecord.html';
+        })
+    });
+</script>
+</body>
+</html>

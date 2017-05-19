@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta http-equiv="Expires" content="-1">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta http-equiv="Cache" content="no-cache">
+    <title>检查结果</title>
+    <link rel="stylesheet" type="text/css" href="/frozenui-1.3.0/css/frozen.css">
+    <link rel="stylesheet" type="text/css" href="/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/main.css"/>
+    <script type="text/javascript" src="/js/min/zepto-min.js"></script>
+    <script type="text/javascript" src="/js/min/base-min.js"></script>
+    <style media="screen">
+        .indicate-01 {
+            top: 0;
+            margin-top: 0;
+        }
+
+        .border-top {
+            border-top: 1px solid #e5e6e7;
+        }
+    </style>
+</head>
+
+<body>
+<div>
+    <div class="section-00 ui-active">
+        <div class="detail00 data-ckfw">
+            <span>参考范围</span>:
+            <span class="data-ckfw-html indicate-01"></span>
+        </div>
+
+        <div class="data-ycbz detail00">
+            <span>异常标志</span>:
+            <span class="data-ycbz-html indicate-01"></span>
+        </div>
+        <ul>
+            <li class="data-ycts detail01">
+                <span>异常提示</span>:
+                <span class="data-ycts-html indicate-01"></span>
+            </li>
+            <li class="detail01 border-top data-jg">
+                <span>结果</span>:
+                <span class="data-jg-html indicate-01"></span>
+            </li>
+        </ul>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function () {
+        var data = JSON.parse(sessionStorage.reportBaseData);
+        $('.data-jg-html').append(data.jg).append(data.dw);
+        if (!$.isEmptyObject(data.ckfw)) {
+            $('.data-ckfw-html').append(data.ckfw).append(data.dw);
+        } else {
+            $('.data-ckfw').css('display', 'none');
+        }
+        var ycbzElment = $('.data-ycbz-html');
+        if (!$.isEmptyObject(data.ycbz)) {
+            if (data.ycbz == '1') {
+                ycbzElment.html('异常');
+            } else {
+                ycbzElment.html('正常');
+            }
+        } else {
+            $('.data-ycbz').css('display', 'none');
+        }
+        if (!$.isEmptyObject(data.ycts)) {
+            $('.data-ycts-html').append(data.ycts);
+        } else {
+            $('.data-ycts').css('display', 'none');
+        }
+    })
+</script>
+</body>
+
+</html>
