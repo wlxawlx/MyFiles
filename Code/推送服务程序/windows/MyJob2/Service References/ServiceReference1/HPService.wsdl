@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="accountService">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="optype" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="paramxml" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="accountServiceResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="accountServiceResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="string" nillable="true" type="s:string" />
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="accountServiceSoapIn">
+    <wsdl:part name="parameters" element="tns:accountService" />
+  </wsdl:message>
+  <wsdl:message name="accountServiceSoapOut">
+    <wsdl:part name="parameters" element="tns:accountServiceResponse" />
+  </wsdl:message>
+  <wsdl:message name="accountServiceHttpGetIn">
+    <wsdl:part name="optype" type="s:string" />
+    <wsdl:part name="paramxml" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="accountServiceHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="accountServiceHttpPostIn">
+    <wsdl:part name="optype" type="s:string" />
+    <wsdl:part name="paramxml" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="accountServiceHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:portType name="HPServiceSoap">
+    <wsdl:operation name="accountService">
+      <wsdl:input message="tns:accountServiceSoapIn" />
+      <wsdl:output message="tns:accountServiceSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="HPServiceHttpGet">
+    <wsdl:operation name="accountService">
+      <wsdl:input message="tns:accountServiceHttpGetIn" />
+      <wsdl:output message="tns:accountServiceHttpGetOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="HPServiceHttpPost">
+    <wsdl:operation name="accountService">
+      <wsdl:input message="tns:accountServiceHttpPostIn" />
+      <wsdl:output message="tns:accountServiceHttpPostOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="HPServiceSoap" type="tns:HPServiceSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="accountService">
+      <soap:operation soapAction="http://tempuri.org/accountService" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="HPServiceSoap12" type="tns:HPServiceSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="accountService">
+      <soap12:operation soapAction="http://tempuri.org/accountService" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="HPServiceHttpGet" type="tns:HPServiceHttpGet">
+    <http:binding verb="GET" />
+    <wsdl:operation name="accountService">
+      <http:operation location="/accountService" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="HPServiceHttpPost" type="tns:HPServiceHttpPost">
+    <http:binding verb="POST" />
+    <wsdl:operation name="accountService">
+      <http:operation location="/accountService" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="HPService">
+    <wsdl:port name="HPServiceSoap" binding="tns:HPServiceSoap">
+      <soap:address location="http://localhost:8989/wzszhjk/service/HPService.asmx" />
+    </wsdl:port>
+    <wsdl:port name="HPServiceSoap12" binding="tns:HPServiceSoap12">
+      <soap12:address location="http://localhost:8989/wzszhjk/service/HPService.asmx" />
+    </wsdl:port>
+    <wsdl:port name="HPServiceHttpGet" binding="tns:HPServiceHttpGet">
+      <http:address location="http://localhost:8989/wzszhjk/service/HPService.asmx" />
+    </wsdl:port>
+    <wsdl:port name="HPServiceHttpPost" binding="tns:HPServiceHttpPost">
+      <http:address location="http://localhost:8989/wzszhjk/service/HPService.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

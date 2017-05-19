@@ -1,0 +1,1 @@
+..\NipicTaskServer.exe uninstall

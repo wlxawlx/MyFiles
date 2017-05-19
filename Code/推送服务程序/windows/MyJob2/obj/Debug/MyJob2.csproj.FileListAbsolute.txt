@@ -1,0 +1,9 @@
+C:\Users\Administrator\Desktop\考试试卷\windows\MyJob2\bin\Debug\MyJob2.dll.config
+C:\Users\Administrator\Desktop\考试试卷\windows\MyJob2\bin\Debug\MyJob2.dll
+C:\Users\Administrator\Desktop\考试试卷\windows\MyJob2\bin\Debug\MyJob2.pdb
+C:\Users\Administrator\Desktop\考试试卷\windows\MyJob2\bin\Debug\log4net.dll
+C:\Users\Administrator\Desktop\考试试卷\windows\MyJob2\bin\Debug\Quartz.dll
+C:\Users\Administrator\Desktop\考试试卷\windows\MyJob2\bin\Debug\C5.dll
+C:\Users\Administrator\Desktop\考试试卷\windows\MyJob2\bin\Debug\Common.Logging.dll
+C:\Users\Administrator\Desktop\考试试卷\windows\MyJob2\obj\Debug\MyJob2.dll
+C:\Users\Administrator\Desktop\考试试卷\windows\MyJob2\obj\Debug\MyJob2.pdb

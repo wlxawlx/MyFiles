@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<job-scheduling-data xmlns="http://quartznet.sourceforge.net/JobSchedulingData" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.0">
+  <processing-directives>
+    <overwrite-existing-data>true</overwrite-existing-data>
+  </processing-directives>
+  <schedule>
+    <!--<job>
+      <name>sampleJob1</name>
+      <group>sampleGroup1</group>
+      <description>Sample job for NipicTask</description>
+      <job-type>NipicTask.RefreshHTMLJob,RefreshHTMLJob</job-type>
+      <durable>true</durable>
+      <recover>false</recover>
+    </job>
+    <trigger>
+      <cron>
+        <name>cronName1</name>
+        <group>cronGroup1</group>
+        <job-name>sampleJob1</job-name>
+        <job-group>sampleGroup1</job-group>
+        <cron-expression>1/1 * * * * ?</cron-expression>
+      </cron>
+    </trigger>
+    <job>
+      <name>sampleJob2</name>
+      <group>sampleGroup2</group>
+      <description>Sample job for NipicTask</description>
+      <job-type>NipicTask.SendEmailJob,SendEmailJob</job-type>
+      <durable>true</durable>
+      <recover>false</recover>
+    </job>
+    <trigger>
+      <cron>
+        <name>cronName2</name>
+        <group>cronGroup2</group>
+        <job-name>sampleJob2</job-name>
+        <job-group>sampleGroup2</job-group>
+        <cron-expression>1/1 * * * * ?</cron-expression>
+      </cron>
+    </trigger>-->
+    <job>
+      <name>sampleJob4</name>
+      <group>sampleGroup4</group>
+      <description>Sample job for NipicTask</description>
+      <job-type>NipicTask.MyJob,MyJob</job-type>
+      <durable>true</durable>
+      <recover>false</recover>
+    </job>
+    <trigger>
+      <cron>
+        <name>cronName4</name>
+        <group>cronGroup4</group>
+        <job-name>sampleJob4</job-name>
+        <job-group>sampleGroup4</job-group>
+        <cron-expression>1/1 * * * * ?</cron-expression>
+      </cron>
+    </trigger>
+    <job>
+      <name>sampleJob3</name>
+      <group>sampleGroup3</group>
+      <description>Sample job for NipicTask</description>
+      <job-type>NipicTask.MyJob2,MyJob2</job-type>
+      <durable>true</durable>
+      <recover>false</recover>
+    </job>
+    <trigger>
+      <cron>
+        <name>cronName3</name>
+        <group>cronGroup3</group>
+        <job-name>sampleJob3</job-name>
+        <job-group>sampleGroup3</job-group>
+        <cron-expression>1/1 * * * * ?</cron-expression>
+      </cron>
+    </trigger>
+  </schedule>
+
+</job-scheduling-data>
