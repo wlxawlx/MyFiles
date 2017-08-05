@@ -3035,7 +3035,6 @@ namespace HospitaPaymentService.Wzszhjk
         /// <returns></returns>
         public static XmlDocument QueryPaymentInfo3(ParameterHandler handler)
         {
-             return ReplyXmlDoc.GetWaitXml("程序未响应，请等待...");
             string orderno = handler.getNotNullString("orderno");
             string paymenttype = handler.getNotNullString("paytype");
 

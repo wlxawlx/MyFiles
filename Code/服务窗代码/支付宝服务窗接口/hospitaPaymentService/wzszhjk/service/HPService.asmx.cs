@@ -237,11 +237,11 @@ namespace HospitaPaymentService
                 return "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"no\"?><root><result>success</result><message>FY030315接口被调用</message></root>";
             }
 
-            if (optype == "FY030306")
-            {
-                logger.Debug(ReplyXmlDoc.GetWaitXml("程序未响应，请等待...").OuterXml);
-                return "<?xml version=\"1.0\" encoding=\"utf-8\"?><root><message><value><msg>fail</msg><msg2>100抱歉,候诊时间已过！2017-5-4 16:35:00</msg2></value></message><result>success</result></root>";
-            }
+            //if (optype == "FY030306")
+            //{
+            //    logger.Debug(ReplyXmlDoc.GetWaitXml("程序未响应，请等待...").OuterXml);
+            //    return "<?xml version=\"1.0\" encoding=\"utf-8\"?><root><message><value><msg>fail</msg><msg2>100抱歉,候诊时间已过！2017-5-4 16:35:00</msg2></value></message><result>success</result></root>";
+            //}
 
             if (optype == "FY030303" || optype == "FY030305" || optype == "FY030306" || optype == "OR030204" || optype == "OR030205" || optype == "OR030206")
             {
