@@ -1,3 +1,0 @@
-E:\tfs\NipicRoot\Nipic.root\NipicTask\SendEmailJob\obj\Release\ResolveAssemblyReference.cache
-F:\mytest\汇图服务程序\WindowsService\windows\SendEmailJob\obj\Release\SendEmailJob.csprojResolveAssemblyReference.cache
-C:\Users\Administrator\Desktop\考试试卷\windows\SendEmailJob\obj\Release\SendEmailJob.csprojResolveAssemblyReference.cache

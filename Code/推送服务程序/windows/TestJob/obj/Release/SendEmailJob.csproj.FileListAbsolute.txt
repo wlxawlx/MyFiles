@@ -1,1 +1,0 @@
-E:\tfs\NipicRoot\Nipic.root\NipicTask\SendEmailJob\obj\Release\ResolveAssemblyReference.cache

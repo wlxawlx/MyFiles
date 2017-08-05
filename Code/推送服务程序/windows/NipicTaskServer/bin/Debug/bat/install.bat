@@ -1,2 +1,0 @@
-..\NipicTaskServer.exe install
-pause

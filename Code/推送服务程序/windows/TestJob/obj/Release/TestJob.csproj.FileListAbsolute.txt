@@ -1,2 +1,0 @@
-F:\mytest\汇图服务程序\WindowsService\windows\TestJob\obj\Release\TestJob.csprojResolveAssemblyReference.cache
-C:\Users\Administrator\Desktop\考试试卷\windows\TestJob\obj\Release\TestJob.csprojResolveAssemblyReference.cache
